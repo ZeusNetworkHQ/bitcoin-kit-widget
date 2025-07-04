@@ -1,1 +1,1 @@
-# zeus-widget
+# Zeus Widget
