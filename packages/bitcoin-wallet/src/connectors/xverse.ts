@@ -1,29 +1,30 @@
+// * This will only connect with Xverse wallet, if you use the request from sats-connect, it will pop up a dialog asking which wallet to connect
+
 import EventEmitter from "events";
 
-// * This will only connect with Xverse wallet, if you use the request from sats-connect, it will pop up a dialog asking which wallet to connect
 import { AddressType, request } from "@sats-connect/core";
 import * as bitcoin from "bitcoinjs-lib";
 import { AddressPurpose, getProviderById } from "sats-connect";
+import {
+  BitcoinNetworkType,
+  type SendBtcTransactionOptions,
+  type SignMessageOptions,
+} from "sats-connect";
 
 import { BaseConnector, type WalletMetadata } from "./base";
-
-import type {
-  SendBtcTransactionOptions,
-  SignMessageOptions,
-} from "sats-connect";
 
 import xverseIconSource from "@/assets/xverse.svg";
 import { WalletId } from "@/types";
 import { BitcoinNetwork } from "@/types";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export class XverseConnector extends BaseConnector {
   networks = [
     BitcoinNetwork.Mainnet,
     BitcoinNetwork.Testnet,
     BitcoinNetwork.Regtest,
   ];
-  _network: "Mainnet" | "Testnet" = "Mainnet";
+  _network: BitcoinNetworkType.Mainnet | BitcoinNetworkType.Testnet =
+    BitcoinNetworkType.Mainnet;
   _event = new EventEmitter();
   constructor() {
     super();
@@ -48,7 +49,7 @@ export class XverseConnector extends BaseConnector {
     const res = await request("wallet_connect", {
       message: "Address for receiving Ordinals",
       addresses: [AddressPurpose.Ordinals], // get Ordinals address only Prevent error for our system
-    });
+    } as never);
 
     if (res.status === "error") {
       console.error("Error connecting to wallet", JSON.stringify(res.error));
@@ -60,7 +61,7 @@ export class XverseConnector extends BaseConnector {
 
   private loadAccounts = async () => {
     // if already connected, return the addresses
-    let res = await request("wallet_getAccount", null);
+    let res = await request("wallet_getAccount", undefined);
 
     if (res.status === "error") {
       // which means not connected
@@ -134,7 +135,7 @@ export class XverseConnector extends BaseConnector {
       const signMessageOptions: SignMessageOptions = {
         payload: {
           network: {
-            type: this._network as any,
+            type: this._network,
           },
           address: inputAddress.address,
           message: signStr,
@@ -164,8 +165,11 @@ export class XverseConnector extends BaseConnector {
    * @param opt options
    * @returns hex string
    */
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  async signPsbt(psbt: string, _opt?: any): Promise<string> {
+  async signPsbt(
+    psbt: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _opt?: Record<string, unknown>
+  ): Promise<string> {
     const psbtParsed = bitcoin.Psbt.fromHex(psbt);
 
     const inputLength = psbtParsed.data.inputs.length;
@@ -221,7 +225,7 @@ export class XverseConnector extends BaseConnector {
 
     // ref: https://docs.xverse.app/sats-connect/wallet-methods/wallet_getnetwork
     // ! must grant permission to access the function
-    const res = await request("wallet_getNetwork" as any, null);
+    const res = await request("wallet_getNetwork", undefined);
     // if success response will be like
     // {
     //   "status": "success",
@@ -240,9 +244,11 @@ export class XverseConnector extends BaseConnector {
     }
 
     this._network =
-      res.result.bitcoin.name === "Mainnet" ? "Mainnet" : "Testnet";
+      res.result.bitcoin.name === "Mainnet"
+        ? BitcoinNetworkType.Mainnet
+        : BitcoinNetworkType.Testnet;
 
-    return this._network === "Mainnet" ? "livenet" : "testnet";
+    return this._network === BitcoinNetworkType.Mainnet ? "livenet" : "testnet";
   }
   async switchNetwork(): Promise<void> {
     throw new Error("Unsupported");
@@ -267,7 +273,7 @@ export class XverseConnector extends BaseConnector {
       const sendBtcOptions: SendBtcTransactionOptions = {
         payload: {
           network: {
-            type: this._network as any,
+            type: this._network,
           },
           recipients: [
             {
@@ -292,6 +298,6 @@ export class XverseConnector extends BaseConnector {
     return result;
   }
   disconnect() {
-    request("wallet_disconnect", null);
+    request("wallet_disconnect", undefined);
   }
 }

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 /// <reference types="vite/client" />
 
 import type {
@@ -12,8 +10,8 @@ declare global {
   interface Window {
     okxwallet?: OKXWalletMainnet & OKXWalletTestnet;
     phantom?: PhantomBitcoinWallet;
-    muses?: any;
-    unisat?: any;
-    xverse?: any;
+    muses?: unknown;
+    unisat?: unknown;
+    xverse?: unknown;
   }
 }

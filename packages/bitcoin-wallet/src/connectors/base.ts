@@ -19,7 +19,7 @@ export abstract class BaseConnector {
     signStr: string,
     type?: "ecdsa" | "bip322-simple"
   ): Promise<string>;
-  abstract signPsbt(psbt: string, opt?: any): Promise<string>;
+  abstract signPsbt(psbt: string, opt?: unknown): Promise<string>;
   abstract on(event: string, handler: (data?: unknown) => void): void;
   abstract removeListener(
     event: string,

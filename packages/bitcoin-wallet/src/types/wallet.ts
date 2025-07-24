@@ -39,9 +39,8 @@ export interface OKXWalletBase {
     signStr: string,
     type?: "ecdsa" | "bip322-simple"
   ): Promise<string>;
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  signPsbt(psbt: string, opts?: any): Promise<string>;
-  signPsbts(psbt: string[], opts?: any): Promise<string[]>;
+  signPsbt(psbt: string, opts?: Record<string, unknown>): Promise<string>;
+  signPsbts(psbt: string[], opts?: Record<string, unknown>): Promise<string[]>;
 }
 
 /**
@@ -61,18 +60,16 @@ export interface OKXWalletMainnet {
     getAccounts(): Promise<string[]>;
     getNetwork(): Promise<"livenet">; // mainnet only, return "livenet"
     getPublicKey(): Promise<string | null>;
-    /* eslint-disable @typescript-eslint/no-explicit-any */
     sendBitcoin(
       toAddress: string,
       satoshis: number,
-      opts?: any
+      opts?: Record<string, unknown>
     ): Promise<string>;
     sendInscription(
       address: string,
       inscriptionId: string,
-      opts?: any
+      opts?: Record<string, unknown>
     ): Promise<string>;
-    /* eslint-disable @typescript-eslint/no-explicit-any */
   };
 }
 
@@ -94,7 +91,10 @@ export interface PhantomBitcoinWallet {
     ): Promise<{
       signature: Uint8Array;
     }>;
-    signPSBT(psbtHex: Uint8Array, options?: any): Promise<Uint8Array>; // WARNING: this is not as same as the document, since the actual behavior is return Uint8Array
+    signPSBT(
+      psbtHex: Uint8Array,
+      options?: Record<string, unknown>
+    ): Promise<Uint8Array>; // WARNING: this is not as same as the document, since the actual behavior is return Uint8Array
   };
 }
 

@@ -1,6 +1,5 @@
 import EventEmitter from "events";
 
-
 import { BaseConnector, type WalletMetadata } from "./base";
 
 import okxIconSource from "@/assets/okx.svg";
@@ -90,18 +89,19 @@ export class OKXConnector extends BaseConnector {
     }
     return this.getProviderOrThrow().signMessage(signStr, type);
   }
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  async signPsbt(psbt: string, opt?: any): Promise<string> {
+
+  async signPsbt(psbt: string, opt?: Record<string, unknown>): Promise<string> {
     // ! Warning this might be failed to sign by web extension wallet if the psbt inputs include pubkey not equal to the wallet's pubkey
     // ! due to different web extension wallet design you must go through the documentation of the wallet you are using
     return this.getProviderOrThrow().signPsbt(psbt, {
       ...opt,
     });
   }
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+
   on(event: string, handler: (data?: unknown) => void) {
     return this._event.on(event, handler);
   }
+
   removeListener(event: string, handler: (data?: unknown) => void) {
     return this._event.removeListener(event, handler);
   }

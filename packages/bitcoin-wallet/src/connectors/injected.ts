@@ -9,22 +9,20 @@ export abstract class InjectedConnector extends BaseConnector {
     }
   }
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   isReady(): boolean {
     if (typeof window !== "undefined") {
       const props = this.property.split(".");
       if (props.length === 1) {
-        return typeof (window as any)[props[0]] !== "undefined";
+        return typeof window[props[0] as never] !== "undefined";
       } else {
         return (
-          typeof (window as any)[props[0]] !== "undefined" &&
-          typeof (window as any)[props[0]][props[1]] !== "undefined"
+          typeof window[props[0] as never] !== "undefined" &&
+          typeof window[props[0] as never][props[1] as never] !== "undefined"
         );
       }
     }
     return false;
   }
-  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   async requestAccounts(): Promise<string[]> {
     const accounts = await this.getProviderOrThrow().requestAccounts();
@@ -48,15 +46,15 @@ export abstract class InjectedConnector extends BaseConnector {
     }
     return this.getProviderOrThrow().signMessage(signStr, type);
   }
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  async signPsbt(psbt: string, opt?: any): Promise<string> {
+
+  async signPsbt(psbt: string, opt?: Record<string, unknown>): Promise<string> {
     // ! Warning this might be failed to sign by web extension wallet if the psbt inputs include pubkey not equal to the wallet's pubkey
     // ! due to different web extension wallet design you must go through the documentation of the wallet you are using
     return this.getProviderOrThrow().signPsbt(psbt, {
       ...opt,
     });
   }
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+
   on(event: string, handler: (data?: unknown) => void) {
     const provider = this.getProvider();
     return provider?.on?.(event, handler);
@@ -67,17 +65,16 @@ export abstract class InjectedConnector extends BaseConnector {
   }
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  getProvider() {
+  getProvider(): any {
     if (this.isReady()) {
       const props = this.property.split(".");
       if (props.length === 1) {
-        return (window as any)[props[0]];
+        return window[props[0] as never];
       } else {
-        return (window as any)[props[0]][props[1]];
+        return window[props[0] as never][props[1] as never];
       }
     }
   }
-  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   getProviderOrThrow() {
     const provider = this.getProvider();

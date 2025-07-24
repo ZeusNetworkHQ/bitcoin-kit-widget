@@ -103,10 +103,11 @@ export class PhantomConnector extends BaseConnector {
 
     return Buffer.from(result.signature).toString("base64");
   }
-  /* eslint-enable @typescript-eslint/no-unused-vars */
 
-  /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any */
-  async signPsbt(psbt: string, _opt?: any): Promise<string> {
+  async signPsbt(
+    psbt: string,
+    _opt?: Record<string, unknown>
+  ): Promise<string> {
     const psbtParsed = bitcoin.Psbt.fromHex(psbt);
     const inputLength = psbtParsed.data.inputs.length;
     const walletAddress = await this.getAccounts();
@@ -132,7 +133,6 @@ export class PhantomConnector extends BaseConnector {
 
     return toHex(signedPsbt);
   }
-  /* eslint-enable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any */
 
   on(event: string, handler: (data?: unknown) => void): void {
     this._event.on(event, handler);
