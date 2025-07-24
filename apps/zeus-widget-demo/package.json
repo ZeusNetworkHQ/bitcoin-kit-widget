@@ -1,5 +1,5 @@
 {
-  "name": "zeus-widget-demo",
+  "name": "@zeus-widget/zeus-widget-demo",
   "private": true,
   "version": "0.0.0",
   "type": "module",
