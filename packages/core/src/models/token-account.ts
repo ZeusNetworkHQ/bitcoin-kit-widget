@@ -3,7 +3,7 @@ import { PublicKey } from "@solana/web3.js";
 
 import CoreConfig from "@/config/core";
 
-export default class SolanaAccountModel {
+export default class TokenAccountModel {
   private readonly core: CoreConfig;
 
   constructor({ coreConfig = new CoreConfig() } = {}) {
