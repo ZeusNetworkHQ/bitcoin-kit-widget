@@ -2,9 +2,9 @@ import axios, { type AxiosInstance } from "axios";
 import z from "zod";
 
 import {
-  delegatorGuardianSettingScheme,
+  emissionSettingScheme,
   interactionSchema,
-  twoWayPegGuardianSettingScheme,
+  twoWayPegReserveSettingScheme,
 } from "./hermes.schema";
 
 import CoreConfig from "@/config/core";
@@ -40,25 +40,25 @@ export default class HermesClient {
     );
   }
 
-  public async getTwoWayPegGuardianSettings() {
+  public async getTwoWayPegReserveSettings() {
     return this.get(
       "/v1/raw/layer/two-way-peg/guardian-settings",
       {},
       z.object({
         data: z.object({
-          items: z.array(twoWayPegGuardianSettingScheme),
+          items: z.array(twoWayPegReserveSettingScheme),
         }),
       })
     );
   }
 
-  public async getDelegatorGuardianSettings() {
+  public async getEmissionSettings() {
     return this.get(
       "/v1/raw/layer/delegator/guardian-settings",
       {},
       z.object({
         data: z.object({
-          items: z.array(delegatorGuardianSettingScheme),
+          items: z.array(emissionSettingScheme),
         }),
       })
     );

@@ -51,7 +51,7 @@ export const interactionSchema = z.object({
 
 export type Interaction = z.infer<typeof interactionSchema>;
 
-export const twoWayPegGuardianSettingScheme = z.object({
+export const twoWayPegReserveSettingScheme = z.object({
   address: z.string(),
   seed: z.number(),
   guardianCertificate: z.string(),
@@ -63,11 +63,11 @@ export const twoWayPegGuardianSettingScheme = z.object({
   totalAmountPegged: z.string(),
 });
 
-export type TwoWayPegGuardianSetting = z.infer<
-  typeof twoWayPegGuardianSettingScheme
+export type TwoWayPegReserveSetting = z.infer<
+  typeof twoWayPegReserveSettingScheme
 >;
 
-export const delegatorGuardianSettingScheme = z.object({
+export const emissionSettingScheme = z.object({
   address: z.string(),
   seed: z.number(),
   status: z.number(),
@@ -92,6 +92,4 @@ export const delegatorGuardianSettingScheme = z.object({
   updatedAt: z.number(),
 });
 
-export type DelegatorGuardianSetting = z.infer<
-  typeof delegatorGuardianSettingScheme
->;
+export type EmissionSetting = z.infer<typeof emissionSettingScheme>;

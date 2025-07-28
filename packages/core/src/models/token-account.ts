@@ -11,7 +11,7 @@ export default class TokenAccountModel {
   }
 
   public async find(payload: { publicKey: string | PublicKey }) {
-    const { assetMint } = await this.core.accounts.guardian();
+    const { assetMint } = await this.core.accounts.reserveSetting();
     const ata = await getAssociatedTokenAddress(
       new PublicKey(assetMint),
       new PublicKey(payload.publicKey),

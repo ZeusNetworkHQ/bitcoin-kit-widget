@@ -8,7 +8,8 @@ import BigNumber from "bignumber.js";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
-import GuardianSettingModel from "./guardian-setting";
+import EmissionSettingModel from "./emission-setting";
+import ReserveSettingModel from "./reserve-setting";
 
 import HermesClient from "@/clients/hermes";
 import CoreConfig from "@/config/core";
@@ -22,18 +23,24 @@ const SAFETY_RATIO = 20000;
 
 export default class EntityDerivedReserveAddressModel {
   private readonly core: CoreConfig;
-  private readonly guardianSettingModel: GuardianSettingModel;
+  private readonly reserveSettingModel: ReserveSettingModel;
+  private readonly emissionSettingModel: EmissionSettingModel;
 
   constructor({
     coreConfig = new CoreConfig(),
     hermesClient = new HermesClient({ coreConfig }),
-    guardianSettingModel = new GuardianSettingModel({
+    reserveSettingModel = new ReserveSettingModel({
+      coreConfig,
+      hermesClient,
+    }),
+    emissionSettingModel = new EmissionSettingModel({
       coreConfig,
       hermesClient,
     }),
   } = {}) {
     this.core = coreConfig;
-    this.guardianSettingModel = guardianSettingModel;
+    this.reserveSettingModel = reserveSettingModel;
+    this.emissionSettingModel = emissionSettingModel;
   }
 
   public async findMany(payload: { solanaPublicKey: PublicKey }) {
@@ -52,34 +59,30 @@ export default class EntityDerivedReserveAddressModel {
 
     const twoWayPegClient = await this.core.getTwoWayPegClient();
 
-    const twoWayPegGuardianSettings =
-      await this.guardianSettingModel.twoWayPeg.findMany();
+    const twoWayPegReserveSettings = await this.reserveSettingModel.findMany();
 
-    const delegatorGuardianSettings =
-      await this.guardianSettingModel.delegator.findMany();
+    const emissionSettingModel = await this.emissionSettingModel.findMany();
 
-    const twoWayPegGuardiansWithQuota = twoWayPegGuardianSettings
-      .map((twoWayPegGuardianSetting) => {
+    const reserveSettingsWithQuota = twoWayPegReserveSettings
+      .map((reserveSetting) => {
         const zeusEscrowBalance = new BigNumber(
-          delegatorGuardianSettings.find(
-            (delegatorGuardianSetting) =>
-              delegatorGuardianSetting.guardianCertificate ===
-              twoWayPegGuardianSetting.guardianCertificate
+          emissionSettingModel.find(
+            (emissionSetting) =>
+              emissionSetting.guardianCertificate ===
+              reserveSetting.guardianCertificate
           )?.escrowBalance ?? 0
         );
 
         const maxBtcQuota =
           satoshiToBtc(zeusEscrowBalance).dividedBy(SAFETY_RATIO);
 
-        const totalBtcLocked = satoshiToBtc(
-          twoWayPegGuardianSetting.totalAmountLocked
-        );
+        const totalBtcLocked = satoshiToBtc(reserveSetting.totalAmountLocked);
 
         const remainingBtcQuota = maxBtcQuota.minus(totalBtcLocked);
 
         return {
-          address: twoWayPegGuardianSetting.address,
-          guardianCertificate: twoWayPegGuardianSetting.guardianCertificate,
+          address: reserveSetting.address,
+          guardianCertificate: reserveSetting.guardianCertificate,
           remainingBtcQuota,
           remainingBtcQuotaPercentage: remainingBtcQuota.dividedBy(maxBtcQuota),
         };
@@ -90,18 +93,18 @@ export default class EntityDerivedReserveAddressModel {
         )
       );
 
-    if (twoWayPegGuardiansWithQuota.length === 0) {
+    if (reserveSettingsWithQuota.length === 0) {
       throw new Error("No suitable guardians found after quota filtering.");
     }
 
     const startDate = dayjs.utc("2025-03-28");
     const diffDays = dayjs.utc().diff(startDate, "day");
-    const guardianIndex = diffDays % twoWayPegGuardiansWithQuota.length;
-    const selectedGuardian = twoWayPegGuardiansWithQuota[guardianIndex];
+    const reserveIndex = diffDays % reserveSettingsWithQuota.length;
+    const selectedReserveSetting = reserveSettingsWithQuota[reserveIndex];
 
     const edrList = await twoWayPegClient.accounts.getEntityDerivedReserves();
     const edr = edrList.find(
-      (edr) => edr.reserveSetting.toBase58() === selectedGuardian.address
+      (edr) => edr.reserveSetting.toBase58() === selectedReserveSetting.address
     );
 
     if (!edr)
@@ -116,7 +119,7 @@ export default class EntityDerivedReserveAddressModel {
       twoWayPegClient.instructions.buildCreateEntityDerivedReserveAddressIx(
         signer.publicKey,
         edr.reserveSetting,
-        new PublicKey(selectedGuardian.guardianCertificate),
+        new PublicKey(selectedReserveSetting.guardianCertificate),
         twoWayPegConfiguration.layerFeeCollector,
         edr.publicKey,
         BitcoinAddressType.P2tr

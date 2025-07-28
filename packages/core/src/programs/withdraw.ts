@@ -8,9 +8,9 @@ import BN from "bn.js";
 
 import type BigNumber from "bignumber.js";
 
-import HermesClient, { type TwoWayPegGuardianSetting } from "@/clients/hermes";
+import HermesClient, { type TwoWayPegReserveSetting } from "@/clients/hermes";
 import CoreConfig from "@/config/core";
-import GuardianSettingModel from "@/models/guardian-setting";
+import ReserveSettingModel from "@/models/reserve-setting";
 import { type SolanaSigner } from "@/types";
 import { btcToSatoshi, getReceiverXOnlyPubkey } from "@/utils";
 import { assertsSolanaSigner } from "@/utils";
@@ -18,23 +18,23 @@ import { assertsSolanaSigner } from "@/utils";
 interface WithdrawProgramParams {
   coreConfig?: CoreConfig;
   hermesClient?: HermesClient;
-  guardianSettingModel?: GuardianSettingModel;
+  reserveSettingModel?: ReserveSettingModel;
 }
 
 export default class WithdrawProgram {
   private readonly core: CoreConfig;
-  private readonly guardianSettingModel: GuardianSettingModel;
+  private readonly reserveSettingModel: ReserveSettingModel;
 
   constructor({
     coreConfig = new CoreConfig(),
     hermesClient = new HermesClient({ coreConfig }),
-    guardianSettingModel = new GuardianSettingModel({
+    reserveSettingModel = new ReserveSettingModel({
       coreConfig,
       hermesClient,
     }),
   }: WithdrawProgramParams = {}) {
     this.core = coreConfig;
-    this.guardianSettingModel = guardianSettingModel;
+    this.reserveSettingModel = reserveSettingModel;
   }
 
   public async signWithdraw(
@@ -47,15 +47,15 @@ export default class WithdrawProgram {
     try {
       assertsSolanaSigner(solanaSigner);
       const amountBN = new BN(btcToSatoshi(payloads.amount).toString());
-      const guardianSettings =
-        await this.guardianSettingModel.twoWayPeg.findMany();
+      const reserveSettings = await this.reserveSettingModel.findMany();
 
-      const guardianSettingsWithQuota = await Promise.all(
-        guardianSettings.map(async (guardianSetting) => {
-          const remainingQuota =
-            await this.guardianSettingModel.twoWayPeg.getQuota(guardianSetting);
+      const reserveSettingsWithQuota = await Promise.all(
+        reserveSettings.map(async (reserveSetting) => {
+          const remainingQuota = await this.reserveSettingModel.getQuota(
+            reserveSetting
+          );
 
-          return { ...guardianSetting, remainingQuota };
+          return { ...reserveSetting, remainingQuota };
         })
       );
 
@@ -63,23 +63,23 @@ export default class WithdrawProgram {
         payloads.bitcoinAddress
       );
 
-      guardianSettingsWithQuota.sort((a, b) =>
+      reserveSettingsWithQuota.sort((a, b) =>
         b.remainingQuota.cmp(a.remainingQuota)
       ); // Sort by remaining quota in descending order
 
       let remainingAmount = amountBN.clone();
       const ixs: TransactionInstruction[] = [];
 
-      for (const guardian of guardianSettingsWithQuota) {
+      for (const reserveSetting of reserveSettingsWithQuota) {
         const amountToWithdraw = BN.min(
-          guardian.remainingQuota,
+          reserveSetting.remainingQuota,
           remainingAmount
         );
 
         ixs.push(
           ...(await this.createWithdrawInstructions(solanaSigner, {
             xonlyReceiverPubkey,
-            guardian,
+            reserveSetting,
             amountToWithdraw,
           }))
         );
@@ -118,14 +118,14 @@ export default class WithdrawProgram {
     solanaSigner: Required<SolanaSigner>,
     payloads: {
       xonlyReceiverPubkey: Buffer;
-      guardian: TwoWayPegGuardianSetting;
+      reserveSetting: TwoWayPegReserveSetting;
       amountToWithdraw: BN;
     }
   ) {
     assertsSolanaSigner(solanaSigner);
-    const { xonlyReceiverPubkey, guardian, amountToWithdraw } = payloads;
+    const { xonlyReceiverPubkey, reserveSetting, amountToWithdraw } = payloads;
 
-    const { assetMint } = await this.core.accounts.guardian();
+    const { assetMint } = await this.core.accounts.reserveSetting();
     const { liquidityManagementProgramId } = await this.core.accounts.zpl();
 
     const twoWayPegClient = await this.core.getTwoWayPegClient();
@@ -136,14 +136,14 @@ export default class WithdrawProgram {
       await twoWayPegClient.accounts.getConfiguration();
 
     const vaultAta = liquidityManagementClient.pdas.deriveVaultSettingAddress(
-      new PublicKey(guardian.address)
+      new PublicKey(reserveSetting.address)
     );
 
     const storeIx = liquidityManagementClient.instructions.buildStoreIx(
       amountToWithdraw,
       solanaSigner.publicKey,
       new PublicKey(assetMint),
-      new PublicKey(guardian.address)
+      new PublicKey(reserveSetting.address)
     );
 
     const withdrawalRequestIx =
@@ -153,7 +153,7 @@ export default class WithdrawProgram {
         xonlyReceiverPubkey,
         solanaSigner.publicKey,
         twoWayPegConfiguration.layerFeeCollector,
-        new PublicKey(guardian.address),
+        new PublicKey(reserveSetting.address),
         new PublicKey(liquidityManagementProgramId),
         liquidityManagementClient.pdas.deriveConfigurationAddress(),
         vaultAta,

@@ -25,7 +25,7 @@ export default class AccountsConfig {
         >
       >
     | undefined;
-  private guardianAccounts:
+  private reserveSettingAccounts:
     | Promise<
         Record<
           | "guardianCertificate"
@@ -84,11 +84,11 @@ export default class AccountsConfig {
     return this.zplAccounts;
   }
 
-  public async guardian() {
-    const getGuardianAccounts = async () => {
-      const guardianSettingAccount =
+  public async reserveSetting() {
+    const getReserveSettingAccounts = async () => {
+      const reserveSettingAccount =
         await this.core.solanaConnection.getAccountInfo(
-          new PublicKey(this.getGuardianSettingAccountAddress())
+          new PublicKey(this.getReserveSettingAccountAddress())
         );
 
       const {
@@ -107,7 +107,7 @@ export default class AccountsConfig {
           borsh.publicKey("splTokenMintAuthority"),
           borsh.publicKey("splTokenBurnAuthority"),
         ])
-        .decode(guardianSettingAccount!.data.subarray(8));
+        .decode(reserveSettingAccount!.data.subarray(8));
 
       return {
         seed,
@@ -119,8 +119,9 @@ export default class AccountsConfig {
       };
     };
 
-    if (!this.guardianAccounts) this.guardianAccounts = getGuardianAccounts();
-    return this.guardianAccounts;
+    if (!this.reserveSettingAccounts)
+      this.reserveSettingAccounts = getReserveSettingAccounts();
+    return this.reserveSettingAccounts;
   }
 
   // --- PRIVATES ---
@@ -149,7 +150,7 @@ export default class AccountsConfig {
     );
   }
 
-  private getGuardianSettingAccountAddress() {
+  private getReserveSettingAccountAddress() {
     if (
       this.core.solanaNetwork === SolanaNetwork.Mainnet &&
       this.core.bitcoinNetwork === BitcoinNetwork.Mainnet
