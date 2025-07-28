@@ -5,7 +5,8 @@
     "build": "turbo run build",
     "lint": "turbo run lint",
     "widget": "pnpm --filter zeus-widget",
-    "demo": "pnpm --filter @zeus-widget/zeus-widget-demo"
+    "demo": "pnpm --filter @zeus-widget/zeus-widget-demo",
+    "bitcoin-wallet": "pnpm --filter @zeus-widget/bitcoin-wallet"
   },
   "license": "ISC",
   "packageManager": "pnpm@10.12.4",
