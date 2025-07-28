@@ -80,7 +80,7 @@ export default class InteractionModel {
       currentStepAt: createdAt,
       status: InteractionStatus.BitcoinDepositToHotReserve,
       interactionType: InteractionType.Deposit,
-      appDeveloper: "Apollo",
+      appDeveloper: "ZeusStack",
       minerFee: "0",
       serviceFee: depositServiceFee.toString(),
       swapInfo: null,
