@@ -183,12 +183,10 @@ interface TweakSignerOpts {
 }
 
 function tweakSigner(
-  signer: bitcoin.Signer,
+  signer: ECPairInterface,
   opts: TweakSignerOpts = { network: bitcoin.networks.regtest }
 ): bitcoin.Signer {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  let privateKey: Uint8Array | undefined = signer.privateKey!;
+  let privateKey: Uint8Array | undefined = signer.privateKey;
   if (!privateKey) {
     throw new Error("Private key is required for tweaking signer!");
   }
