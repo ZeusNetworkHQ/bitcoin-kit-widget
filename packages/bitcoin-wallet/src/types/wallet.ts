@@ -17,6 +17,7 @@ export enum WalletId {
   UniSat = "unisat",
   Xverse = "xverse",
   Phantom = "phantom",
+  DeriveWallet = "derive_wallet",
 }
 
 export interface Wallet {

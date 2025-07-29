@@ -7,3 +7,4 @@ export { OKXTestnetConnector } from "./okxTestnet";
 export { UniSatConnector } from "./unisat";
 export { XverseConnector } from "./xverse";
 export { PhantomConnector } from "./phantomMainnet";
+export { DeriveWalletConnector } from "./deriveWallet";
