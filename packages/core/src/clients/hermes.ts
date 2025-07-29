@@ -72,7 +72,7 @@ export default class HermesClient {
         bitcoinNetwork === BitcoinNetwork.Mainnet &&
         solanaNetwork === SolanaNetwork.Mainnet
       )
-        return "https://indexer-internal.zeuslayer.io";
+        return "https://indexer-internal.zeuslayer.io/api";
 
       if (
         bitcoinNetwork === BitcoinNetwork.Testnet &&
