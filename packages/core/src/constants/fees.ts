@@ -1,0 +1,1 @@
+export const DEPOSIT_SERVICE_FEE = 0.0001;
