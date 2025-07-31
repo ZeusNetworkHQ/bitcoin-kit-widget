@@ -1,7 +1,7 @@
 import {
   MINIMUM_WITHDRAW_AMOUNT_ZBTC,
   WITHDRAW_INFRASTRUCTURE_FEE_SOL,
-  WITHDRAW_SERVICE_FEE_BTC_RATE,
+  WITHDRAW_SERVICE_FEE_RATE,
 } from "@zeus-widget/core";
 import BigNumber from "bignumber.js";
 
@@ -10,8 +10,8 @@ import NumberInput from "@/components/NumberField";
 import usePrice from "@/hooks/usePrice";
 import { cn } from "@/utils/misc";
 
-const WITHDRAW_SERVICE_FEE_BTC_RATE_IN_PERCENT = new BigNumber(
-  WITHDRAW_SERVICE_FEE_BTC_RATE
+const WITHDRAW_SERVICE_FEE_RATE_IN_PERCENT = new BigNumber(
+  WITHDRAW_SERVICE_FEE_RATE
 ).times(100);
 
 interface ZBtcInputFieldProps {
@@ -78,7 +78,7 @@ function ZBtcInputField({
             value: `${
               amount?.gte(MINIMUM_WITHDRAW_AMOUNT_ZBTC)
                 ? BigNumber(
-                    amount.times(1 - WITHDRAW_SERVICE_FEE_BTC_RATE).toFixed(8)
+                    amount.times(1 - WITHDRAW_SERVICE_FEE_RATE).toFixed(8)
                   ).toFormat()
                 : 0
             } BTC`,
@@ -90,7 +90,7 @@ function ZBtcInputField({
           },
           {
             type: "Service Fee",
-            value: `${WITHDRAW_SERVICE_FEE_BTC_RATE_IN_PERCENT.toFormat()}%`,
+            value: `${WITHDRAW_SERVICE_FEE_RATE_IN_PERCENT.toFormat()}%`,
           },
         ].map((item) => (
           <div

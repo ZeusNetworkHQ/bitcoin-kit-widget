@@ -6,7 +6,7 @@ import {
   MINIMUM_WITHDRAW_AMOUNT_ZBTC,
   WalletConnectionError,
   WITHDRAW_INFRASTRUCTURE_FEE_SOL,
-  WITHDRAW_SERVICE_FEE_BTC_RATE,
+  WITHDRAW_SERVICE_FEE_RATE,
   WithdrawError,
 } from "@zeus-widget/core";
 import BigNumber from "bignumber.js";
@@ -75,7 +75,7 @@ function WithdrawDetails({
           {
             label: "You Will Receive",
             value: `${amount
-              .times(1 - WITHDRAW_SERVICE_FEE_BTC_RATE)
+              .times(1 - WITHDRAW_SERVICE_FEE_RATE)
               .toFixed()} BTC`,
           },
         ].map((item) => (
@@ -101,9 +101,7 @@ function WithdrawDetails({
         {[
           {
             label: "Service Fee",
-            value: `${amount
-              .times(WITHDRAW_SERVICE_FEE_BTC_RATE)
-              .toFormat()} BTC`,
+            value: `${amount.times(WITHDRAW_SERVICE_FEE_RATE).toFormat()} BTC`,
           },
           {
             label: "Infrastructure Fee",
