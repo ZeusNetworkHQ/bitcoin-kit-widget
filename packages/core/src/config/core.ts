@@ -48,11 +48,4 @@ export default class CoreConfig {
       new PublicKey(liquidityManagementProgramId)
     );
   }
-
-  public async getFees() {
-    return {
-      /** Deposit Service Fee (in satoshi) */
-      depositServiceFee: BigNumber(10000),
-    };
-  }
 }

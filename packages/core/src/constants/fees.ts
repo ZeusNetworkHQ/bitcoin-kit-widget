@@ -1,1 +1,15 @@
-export const DEPOSIT_SERVICE_FEE = 0.0001;
+// --- DEPOSIT ---
+
+export const DEPOSIT_SERVICE_FEE_BTC = 0.0001;
+
+export const MINIMUM_DEPOSIT_AMOUNT_BTC = 0.0001;
+
+export const EDRA_CREATE_FEE_SOL = 0.05;
+
+// --- WITHDRAW ---
+
+export const WITHDRAW_INFRASTRUCTURE_FEE_SOL = 0.05;
+
+export const WITHDRAW_SERVICE_FEE_BTC_RATE = 0.002;
+
+export const MINIMUM_WITHDRAW_AMOUNT_ZBTC = 0.0001;

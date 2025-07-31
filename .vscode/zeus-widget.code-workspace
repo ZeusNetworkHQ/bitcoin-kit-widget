@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"name": "✨ root",
+			"path": ".."
+		},
+		{
+			"name": "🚀 zeus-widget-demo",
+			"path": "../apps/zeus-widget-demo"
+		},
+		{
+			"name": "🧩 zeus-widget",
+			"path": "../packages/zeus-widget"
+		},
+		{
+			"name": "📦 bitcoin-wallet",
+			"path": "../packages/bitcoin-wallet"
+		},
+		{
+			"name": "📦 core",
+			"path": "../packages/core"
+		}
+	],
+	"settings": {}
+}

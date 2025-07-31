@@ -12,8 +12,9 @@ import HermesClient, { type TwoWayPegReserveSetting } from "@/clients/hermes";
 import CoreConfig from "@/config/core";
 import ReserveSettingModel from "@/models/reserve-setting";
 import { type SolanaSigner } from "@/types";
-import { btcToSatoshi, getReceiverXOnlyPubkey } from "@/utils";
+import { btcToSatoshi, getReceiverXOnlyPubkey, lamportsToSol } from "@/utils";
 import { assertsSolanaSigner } from "@/utils";
+import { WITHDRAW_INFRASTRUCTURE_FEE_SOL } from "@/constants";
 
 interface WithdrawProgramParams {
   coreConfig?: CoreConfig;
@@ -46,6 +47,17 @@ export default class WithdrawProgram {
   ) {
     try {
       assertsSolanaSigner(solanaSigner);
+
+      const solBalance = lamportsToSol(
+        await this.core.solanaConnection.getBalance(solanaSigner.publicKey)
+      );
+
+      if (solBalance.lt(WITHDRAW_INFRASTRUCTURE_FEE_SOL)) {
+        throw new Error(
+          `Insufficient SOL balance. Required: ${WITHDRAW_INFRASTRUCTURE_FEE_SOL} SOL, Available: ${solBalance} SOL`
+        );
+      }
+
       const amountBN = new BN(btcToSatoshi(payloads.amount).toString());
       const reserveSettings = await this.reserveSettingModel.findMany();
 

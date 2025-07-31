@@ -4,6 +4,16 @@
   "private": false,
   "types": "./dist/src/main.d.ts",
   "module": "./dist/main.js",
+  "exports": {
+    ".": {
+      "types": "./dist/src/main.d.ts",
+      "import": "./dist/main.js"
+    },
+    "./errors": {
+      "types": "./dist/src/errors/index.d.ts",
+      "import": "./dist/errors.js"
+    }
+  },
   "scripts": {
     "build": "rm -rf dist && vite build",
     "build:dev": "NODE_ENV=development TSX_COMPILE_ON_ERROR=true ESLINT_NO_DEV_ERRORS=true vite build",

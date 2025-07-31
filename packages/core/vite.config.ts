@@ -18,6 +18,7 @@ export default defineConfig({
     lib: {
       entry: {
         main: path.resolve(__dirname, "src/main.ts"),
+        errors: path.resolve(__dirname, "src/errors/index.ts"),
       },
       formats: ["es"],
     },

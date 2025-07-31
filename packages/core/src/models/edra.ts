@@ -14,7 +14,8 @@ import ReserveSettingModel from "./reserve-setting";
 import HermesClient from "@/clients/hermes";
 import CoreConfig from "@/config/core";
 import { type SolanaSigner } from "@/types";
-import { assertsSolanaSigner, satoshiToBtc } from "@/utils";
+import { assertsSolanaSigner, lamportsToSol, satoshiToBtc } from "@/utils";
+import { EDRA_CREATE_FEE_SOL } from "@/constants";
 
 dayjs.extend(utc);
 
@@ -62,6 +63,16 @@ export default class EntityDerivedReserveAddressModel {
     const twoWayPegReserveSettings = await this.reserveSettingModel.findMany();
 
     const emissionSettingModel = await this.emissionSettingModel.findMany();
+
+    const solBalance = lamportsToSol(
+      await this.core.solanaConnection.getBalance(signer.publicKey)
+    );
+
+    if (solBalance.lt(EDRA_CREATE_FEE_SOL)) {
+      throw new Error(
+        `Insufficient SOL balance. Required: ${EDRA_CREATE_FEE_SOL} SOL, Available: ${solBalance} SOL`
+      );
+    }
 
     const reserveSettingsWithQuota = twoWayPegReserveSettings
       .map((reserveSetting) => {

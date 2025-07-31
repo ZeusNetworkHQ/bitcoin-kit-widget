@@ -1,6 +1,169 @@
-@layer theme, base, components, utilities;
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/preflight.css" layer(base);
-@import "tailwindcss/utilities.css" layer(utilities);
+@import "tailwindcss";
 
 @config "../tailwind.config.ts";
+
+:host {
+  --default-transition-timing-function: ease;
+  --default-transition-duration: 300ms;
+}
+
+.zeus\:gradient-bg {
+  background: linear-gradient(
+    314.6deg,
+    #fff4ab 2.43%,
+    #ffebd4 24.82%,
+    #ffd4fd 59.61%,
+    #ceabff 97.04%
+  );
+
+  box-shadow: 0px 4px 12px 0px #ffffff80 inset, 0px 4px 4px 0px #ffffff40 inset;
+  color: black;
+}
+
+.zeus\:secondary-bg {
+  background: #2c2c36;
+  box-shadow: 0px 0px 16px 0px #ff674633 inset;
+  color: #f1f0f3;
+}
+
+.zeus\:tertiary-colors {
+  color: #c7c5d1;
+  background-color: #202027;
+  box-shadow: 0px 4px 12px 0px #8b8a9e26 inset;
+}
+
+.zeus\:tertiary-colors:hover {
+  background-color: #16161b;
+  color: #f1f0f3;
+  box-shadow: 0px -4px 12px 0px #8b8a9e26 inset,
+    0px 4px 12px 0px #8b8a9e26 inset;
+}
+
+.zeus\:gradient-bg-secondary {
+  position: relative;
+}
+
+.zeus\:gradient-bg-secondary * {
+  z-index: 1;
+}
+
+.zeus\:gradient-bg-secondary::before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(
+      90deg,
+      rgba(178, 131, 255, 0.25) 0.28%,
+      rgba(253, 131, 255, 0.25) 21.32%,
+      rgba(255, 191, 131, 0.25) 32.42%,
+      rgba(15, 15, 18, 0.25) 49.79%,
+      rgba(255, 103, 70, 0.25) 100%
+    ),
+    linear-gradient(0deg, rgba(139, 138, 158, 0.2), rgba(139, 138, 158, 0.2));
+  pointer-events: none;
+}
+
+.zeus\:gradient-bg-secondary::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
+  border-radius: inherit;
+  background: linear-gradient(
+      90.83deg,
+      rgba(253, 131, 255, 0.08) 0%,
+      rgba(178, 131, 255, 0.08) 10%,
+      rgba(123, 92, 175, 0.0711953) 22.46%,
+      rgba(15, 15, 18, 0.0540223) 41.2%,
+      rgba(15, 15, 18, 0) 56.08%,
+      rgba(255, 103, 70, 0.0500765) 81.52%,
+      rgba(255, 103, 70, 0.08) 100%
+    ),
+    linear-gradient(#16161b, #16161b);
+  pointer-events: none;
+}
+
+.zeus\:button {
+  border-radius: 12px;
+  padding: 8px 16px;
+  gap: 8px;
+}
+
+.zeus\:body-body1-semibold {
+  font-family: "Rethink Sans", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  vertical-align: middle;
+}
+
+.zeus\:body-body2-semibold {
+  font-family: Rethink Sans;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0px;
+  vertical-align: middle;
+}
+
+.zeus\:body-body2-medium {
+  font-family: Rethink Sans;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0px;
+  vertical-align: middle;
+}
+
+.zeus\:heading-heading5 {
+  font-family: Rethink Sans;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: 0px;
+  vertical-align: middle;
+}
+
+.zeus\:heading-heading6 {
+  font-family: Rethink Sans;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: 0px;
+  vertical-align: middle;
+}
+
+.zeus\:caption-caption {
+  font-family: Rethink Sans;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 150%;
+  letter-spacing: 0px;
+}
+
+.zeus\:divider {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+.zeus\:divider::before,
+.zeus\:divider::after {
+  content: "";
+  display: block;
+  flex: 1;
+  border-top: solid 1px;
+  border-color: inherit;
+}
+
+button[data-state="open"] {
+  pointer-events: none;
+}

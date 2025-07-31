@@ -9,3 +9,5 @@ export type * from "@/components/BitcoinWalletProvider";
 export * from "@/contexts/BitcoinWalletContext";
 
 export * as Connectors from "./connectors";
+
+export { default as useDeriveWalletConnector } from "./hooks/useDeriveWalletConnector";

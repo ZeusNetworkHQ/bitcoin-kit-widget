@@ -6,6 +6,8 @@ import HermesClient, { type Interaction } from "@/clients/hermes";
 import CoreConfig from "@/config/core";
 import Cache from "@/lib/cache";
 import { Chain, InteractionStatus, InteractionType } from "@/types";
+import { DEPOSIT_SERVICE_FEE_BTC } from "@/constants";
+import { btcToSatoshi } from "@/utils";
 
 export default class InteractionModel {
   private readonly core: CoreConfig;
@@ -57,7 +59,6 @@ export default class InteractionModel {
   }) {
     const createdAt = Math.floor(Date.now() / 1000);
     const twoWayPegClient = await this.core.getTwoWayPegClient();
-    const { depositServiceFee } = await this.core.getFees();
 
     const interactionId = twoWayPegClient.pdas
       .deriveInteraction(Buffer.from(data.transactionId, "hex"), new BN(0))
@@ -82,7 +83,7 @@ export default class InteractionModel {
       interactionType: InteractionType.Deposit,
       appDeveloper: "ZeusStack",
       minerFee: "0",
-      serviceFee: depositServiceFee.toString(),
+      serviceFee: btcToSatoshi(DEPOSIT_SERVICE_FEE_BTC).toString(),
       swapInfo: null,
     };
 

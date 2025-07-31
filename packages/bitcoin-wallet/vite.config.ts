@@ -26,7 +26,12 @@ export default defineConfig({
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: ["react", "react/jsx-runtime", "react-dom"],
+      external: [
+        "react",
+        "react/jsx-runtime",
+        "react-dom",
+        "@solana/wallet-adapter-react",
+      ],
       output: {
         globals: {
           react: "React",
