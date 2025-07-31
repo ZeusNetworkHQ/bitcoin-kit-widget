@@ -1,3 +1,5 @@
+"use client";
+
 export default function Hero() {
   return (
     <div className="flex-col gap-y-16 flex max-w-[500px] mx-auto items-center justify-center text-center">

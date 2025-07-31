@@ -1,3 +1,5 @@
+"use client";
+
 import Icon from "./Icon/Icon";
 
 export default function Footer() {

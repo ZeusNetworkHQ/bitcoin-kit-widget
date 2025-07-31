@@ -1,5 +1,5 @@
 {
-  "name": "zeus-widget-demo",
+  "name": "@zeus-widget/zeus-widget-demo",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -8,12 +8,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@solana/wallet-adapter-react": "^0.15.39",
+    "@solana/wallet-adapter-react-ui": "^0.9.39",
+    "@solana/wallet-adapter-wallets": "^0.19.37",
+    "@solana/web3.js": "^1.98.2",
     "clsx": "^2.1.1",
     "motion": "^12.23.11",
     "next": "15.4.4",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "tailwind-merge": "^3.3.1"
+    "tailwind-merge": "^3.3.1",
+    "zeus-widget": "workspace:*"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

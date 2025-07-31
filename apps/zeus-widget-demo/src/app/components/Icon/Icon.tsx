@@ -12,6 +12,7 @@ export interface IconProps {
 }
 
 const Icon = ({ className, name, size, animationTrigger }: IconProps) => {
+  if (!name) return null;
   const IconComponent = IconComponents[name];
 
   if (!IconComponent) {

@@ -1,8 +1,17 @@
 "use client";
+
 import { anticipate, motion } from "motion/react";
+import { ZeusWidget } from "zeus-widget";
+
 import BadgeButton from "../BadgeButton";
 
+import { useWidgetConfig } from "@/providers/WidgetConfigProvider";
+
+import "zeus-widget/assets/style.css";
+
 export default function ModalTab() {
+  const widgetConfig = useWidgetConfig();
+
   return (
     <div className="h-[300px] relative flex flex-col items-center justify-center">
       <div className="dashed-border"></div>
@@ -46,7 +55,10 @@ export default function ModalTab() {
           className="absolute left-1/2 -translate-x-1/2"
         ></img>
       </div>
-      <BadgeButton label="Open Demo Modal" icon="ArrowTopRight" />
+
+      <ZeusWidget.Dialog config={widgetConfig}>
+        <BadgeButton label="Open Demo Modal" icon="ArrowTopRight" />
+      </ZeusWidget.Dialog>
     </div>
   );
 }

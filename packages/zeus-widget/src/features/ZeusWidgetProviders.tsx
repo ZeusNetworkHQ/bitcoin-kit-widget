@@ -36,7 +36,7 @@ function ZeusWidgetProviders({
   );
 
   return (
-    <WalletModalProvider>
+    <WalletModalProvider className="zeus:wallet-adapter-modal">
       <BitcoinWalletProvider connectors={connectors} network={bitcoinNetwork}>
         <CorePoolProvider
           solanaNetwork={solanaNetwork}

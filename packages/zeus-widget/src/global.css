@@ -7,6 +7,10 @@
   --default-transition-duration: 300ms;
 }
 
+.zeus\:wallet-adapter-modal {
+  pointer-events: auto;
+}
+
 .zeus\:gradient-bg {
   background: linear-gradient(
     314.6deg,

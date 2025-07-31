@@ -26,17 +26,18 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { ZeusShadow } from "@/main";
 import { ZeusWidgetTab } from "@/types";
 import { cn } from "@/utils/misc";
 
-type ZeusWidgetWidgetConfig = Omit<ZeusWidgetProvidersProps, "children">;
+export type ZeusWidgetWidgetConfig = Omit<ZeusWidgetProvidersProps, "children">;
 
 interface ZeusWidgetProps {
   config?: ZeusWidgetWidgetConfig;
   className?: string;
 }
 
-function ZeusWidget({ config, className }: ZeusWidgetProps) {
+function ZeusWidgetBase({ config, className }: ZeusWidgetProps) {
   const [selectedTab, setSelectedTab] = useState(ZeusWidgetTab.DEPOSIT);
 
   const tabConfigs = [
@@ -148,76 +149,118 @@ function ZeusWidget({ config, className }: ZeusWidgetProps) {
   );
 }
 
-export interface ZeusWidgetPopoverProps
+// --- INTEGRATED VARIANT ---
+
+export interface IntegratedZeusWidgetProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  config?: ZeusWidgetWidgetConfig;
+}
+
+function ZeusWidget({
+  config,
+  className,
+  ...props
+}: IntegratedZeusWidgetProps): React.JSX.Element {
+  return (
+    <div
+      {...props}
+      className={cn(
+        "zeus:bg-[#202027] zeus:border zeus:border-solid zeus:border-[#8B8A9E4D] zeus:p-[12px] zeus:pt-0 zeus:w-[408px] zeus:max-w-[calc(100vw_-_32px)] zeus:rounded-[16px] zeus:max-h-[75vh] zeus:overflow-y-auto zeus:[&_.widget-tabs]:pt-[12px]",
+        className
+      )}
+    >
+      <ZeusWidgetBase config={config} />
+    </div>
+  );
+}
+
+// --- POPOVER VARIANT ---
+
+export interface PopoverZeusWidgetProps
   extends Pick<PopoverProps, "open" | "defaultOpen" | "onOpenChange">,
     PopoverContentProps {
   config?: ZeusWidgetWidgetConfig;
   children: React.ReactElement;
 }
-
-// --- POPOVER VARIANT ---
-
-ZeusWidget.Popover = ({
+ZeusWidget.Popover = function PopoverZeusWidget({
   config,
   children,
   open,
   defaultOpen,
   onOpenChange,
   ...props
-}: ZeusWidgetPopoverProps) => {
+}: PopoverZeusWidgetProps) {
   return (
     <Popover open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
 
       <PopoverContent {...props}>
-        <div className="zeus:bg-[#202027] zeus:border zeus:border-solid zeus:border-[#8B8A9E4D] zeus:p-[12px] zeus:pt-0 zeus:w-[408px] zeus:max-w-[calc(100vw_-_32px)] zeus:rounded-[16px] zeus:max-h-[75vh] zeus:overflow-y-auto zeus:[&_.widget-tabs]:pt-[12px]">
-          <ZeusWidget config={config} />
+        <div
+          className={cn(
+            "zeus:bg-[#202027] zeus:border zeus:border-solid zeus:border-[#8B8A9E4D] zeus:p-[12px] zeus:pt-0 zeus:w-[408px] zeus:max-w-[calc(100vw_-_32px)] zeus:rounded-[16px] zeus:max-h-[75vh] zeus:overflow-y-auto zeus:[&_.widget-tabs]:pt-[12px]"
+          )}
+        >
+          <ZeusWidgetBase config={config} />
         </div>
       </PopoverContent>
     </Popover>
   );
 };
 
-export interface ZeusWidgetDialogProps
+// --- DIALOG VARIANT ---
+
+export interface DialogZeusWidgetProps
   extends Pick<DialogProps, "open" | "defaultOpen" | "onOpenChange">,
     DialogContentProps {
   config?: ZeusWidgetWidgetConfig;
+  enableShadow?: boolean;
   children: React.ReactElement;
 }
 
-// --- DIALOG VARIANT ---
-
-ZeusWidget.Dialog = ({
+ZeusWidget.Dialog = function DialogZeusWidget({
   config,
   children,
   open,
   defaultOpen,
   className,
+  enableShadow,
   onOpenChange,
   ...props
-}: ZeusWidgetDialogProps) => {
+}: DialogZeusWidgetProps) {
+  const overlayElement = (
+    <DialogOverlay>
+      <div className="zeus:fixed zeus:inset-0 zeus:bg-black/50 zeus:opacity-0 zeus:transition-opacity zeus:pointer-events-none" />
+    </DialogOverlay>
+  );
+
+  const contentElement = (
+    <DialogContent
+      {...props}
+      className={cn(
+        "zeus:bg-[#202027] zeus:border zeus:border-solid zeus:border-[#8B8A9E4D] zeus:p-[12px] zeus:w-[408px] zeus:rounded-[16px] zeus:max-h-[calc(100vh_-_32px)] zeus:overflow-y-auto",
+        className
+      )}
+    >
+      <DialogTitle hidden />
+      <ZeusWidgetBase config={config} />
+    </DialogContent>
+  );
+
   return (
     <Dialog open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{children}</DialogTrigger>
 
-      <DialogOverlay>
-        <div
-          className={cn(
-            "zeus:fixed zeus:inset-0 zeus:bg-black/50 zeus:opacity-0 zeus:transition-opacity zeus:pointer-events-none"
-          )}
-        />
-      </DialogOverlay>
-
-      <DialogContent
-        {...props}
-        className={cn(
-          "zeus:bg-[#202027] zeus:border zeus:border-solid zeus:border-[#8B8A9E4D] zeus:p-[12px] zeus:w-[408px] zeus:rounded-[16px] zeus:max-h-[calc(100vh_-_32px)] zeus:overflow-y-auto",
-          className
-        )}
-      >
-        <DialogTitle hidden />
-        <ZeusWidget config={config} />
-      </DialogContent>
+      {enableShadow ? (
+        <ZeusShadow>
+          {overlayElement}
+          {contentElement}
+        </ZeusShadow>
+      ) : (
+        <>
+          {overlayElement}
+          {contentElement}
+        </>
+      )}
     </Dialog>
   );
 };

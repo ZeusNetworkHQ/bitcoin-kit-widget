@@ -18,6 +18,16 @@ export default defineConfig({
       rollupTypes: process.env.NODE_ENV === "production",
       insertTypesEntry: true,
     }),
+    {
+      name: "vite-plugin-use-client",
+      generateBundle(_, bundle) {
+        for (const [, file] of Object.entries(bundle)) {
+          if (/\.jsx?$/.test(file.fileName) && file.type === "chunk") {
+            file.code = `"use client";\n${file.code}`;
+          }
+        }
+      },
+    },
   ],
   resolve: {
     alias: {

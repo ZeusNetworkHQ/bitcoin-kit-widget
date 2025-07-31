@@ -3,6 +3,7 @@ import { Rethink_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Provider from "./provider";
 
 const rethinkSans = Rethink_Sans({
   variable: "--font-sans",
@@ -38,7 +39,7 @@ export default function RootLayout({
       <body className={`${rethinkSans.variable} antialiased`}>
         <div className="wrapper flex flex-col gap-y-64 lg:gap-y-48">
           <Header />
-          {children}
+          <Provider>{children}</Provider>
           <Footer />
         </div>
       </body>
