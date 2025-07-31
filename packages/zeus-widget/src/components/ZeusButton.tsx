@@ -45,7 +45,7 @@ function ZeusButton({
       {...props}
       className={cn(
         getVariantClass(),
-        "zeus:button zeus:body-body1-semibold zeus:relative zeus:px-[16px] zeus:py-[8px] zeus:flex zeus:flex-row zeus:items-center zeus:justify-center zeus:cursor-pointer",
+        "zeus:transition-shadow zeus:button zeus:body-body1-semibold zeus:relative zeus:px-[16px] zeus:py-[8px] zeus:flex zeus:flex-row zeus:items-center zeus:justify-center zeus:cursor-pointer",
         disabled && "zeus:cursor-not-allowed",
         className
       )}
