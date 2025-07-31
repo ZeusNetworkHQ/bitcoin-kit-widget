@@ -119,7 +119,7 @@ body {
 }
 
 .wrapper {
-  @apply mx-auto w-full px-16 lg:px-[80px] lg:max-w-[1280px];
+  @apply mx-auto w-full px-16 lg:px-20 lg:max-w-[1160px];
 }
 
 .dashed-border {

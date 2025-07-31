@@ -6,6 +6,13 @@ import { ChevronDown } from "./ChevronDown";
 import { ModalIcon } from "./Modal";
 import { IntegratedIcon } from "./Integrated";
 import { WidgetIcon } from "./Widget";
+import { WalletIcon } from "./Wallet";
+import { CloseIcon } from "./Close";
+import { PhantomIcon } from "./Phantom";
+import { MusesIcon } from "./Muses";
+import { OkxIcon } from "./Okx";
+import { XverseIcon } from "./Xverse";
+import { UnisatIcon } from "./Unisat";
 
 export const IconComponents = {
   Discord: DiscordIcon,
@@ -14,8 +21,15 @@ export const IconComponents = {
   ArrowTopRight: ArrowTopRight,
   ChevronDown: ChevronDown,
   ModalIcon: ModalIcon,
+  Wallet: WalletIcon,
   WidgetIcon: WidgetIcon,
   IntegratedIcon: IntegratedIcon,
+  Close: CloseIcon,
+  Phantom: PhantomIcon,
+  Muses: MusesIcon,
+  Okx: OkxIcon,
+  Xverse: XverseIcon,
+  Unisat: UnisatIcon,
 } as const;
 
 export type IconName = keyof typeof IconComponents;
