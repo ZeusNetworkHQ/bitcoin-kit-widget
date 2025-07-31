@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_圖層_1" data-name="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: #16161b;
+      }
+
+      .cls-3 {
+        clip-path: url(#clippath-1);
+      }
+
+      .cls-4 {
+        fill: #fff;
+      }
+
+      .cls-5 {
+        fill: url(#_未命名漸層_2);
+      }
+
+      .cls-6 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="cls-1" x="6.04" y="9.15" width="20.49" height="13.69"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <polygon class="cls-1" points="7.44 9.15 6.04 14.53 11.54 14.53 9.06 22.85 22.16 14.53 16.86 14.53 18.31 9.15 7.44 9.15"/>
+    </clipPath>
+    <linearGradient id="_未命名漸層_2" data-name="未命名漸層 2" x1="36.28" y1=".81" x2="36.32" y2=".81" gradientTransform="translate(231.71 -9743.63) rotate(90) scale(268.84)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffeb83"/>
+      <stop offset=".25" stop-color="#ffbf83"/>
+      <stop offset=".68" stop-color="#fd83ff"/>
+      <stop offset="1" stop-color="#b283ff"/>
+    </linearGradient>
+  </defs>
+  <rect class="cls-2" y="0" width="32" height="32" rx="5" ry="5"/>
+  <g id="logomark">
+    <g class="cls-6">
+      <g class="cls-3">
+        <rect class="cls-5" x="6.04" y="9.15" width="16.12" height="13.69"/>
+      </g>
+      <polygon class="cls-4" points="18.3 9.15 16.85 14.53 19.16 14.53 20.54 9.15 18.3 9.15"/>
+      <polygon class="cls-4" points="22.16 14.52 9.05 22.84 26.53 14.52 22.16 14.52"/>
+    </g>
+  </g>
+</svg>
