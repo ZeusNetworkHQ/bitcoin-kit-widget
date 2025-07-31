@@ -39,7 +39,8 @@ export class XverseConnector extends BaseConnector {
 
   isReady(): boolean {
     return (
-      typeof window !== "undefined" && typeof window.xverse !== "undefined"
+      typeof window !== "undefined" &&
+      typeof window.XverseProviders?.BitcoinProvider !== "undefined"
     );
   }
 
