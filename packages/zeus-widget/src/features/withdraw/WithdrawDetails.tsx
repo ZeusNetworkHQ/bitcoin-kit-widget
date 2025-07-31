@@ -74,7 +74,9 @@ function WithdrawDetails({
           { label: "You Withdraw", value: `${amount.toFixed()} zBTC` },
           {
             label: "You Will Receive",
-            value: `${amount.times(0.998).toFixed()} BTC`,
+            value: `${amount
+              .times(1 - WITHDRAW_SERVICE_FEE_BTC_RATE)
+              .toFixed()} BTC`,
           },
         ].map((item) => (
           <div

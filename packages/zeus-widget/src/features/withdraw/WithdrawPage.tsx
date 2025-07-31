@@ -53,7 +53,7 @@ function WithdrawPage() {
           <p
             className={cn(
               "zeus:body-body2-semibold zeus:text-[#8B8A9E] zeus:pr-[8px] zeus:transition-colors zeus:flex zeus:flex-row zeus:items-center zeus:gap-[6px]",
-              wallet.connected && "zues:text-[#F1F0F3]"
+              wallet.connected && "zeus:text-[#F1F0F3]"
             )}
           >
             <Icon variant="wallet-sm" size={14} />

@@ -41,7 +41,6 @@ export function getInteractionDetails(interaction: Interaction) {
         destination: "BTC",
         destinationChain: "Bitcoin",
       };
-      break;
     case InteractionType.Deposit:
     case InteractionType.ExternalReserveDeposit:
     default:
@@ -52,7 +51,6 @@ export function getInteractionDetails(interaction: Interaction) {
         destination: "zBTC",
         destinationChain: "Solana",
       };
-      break;
   }
 }
 

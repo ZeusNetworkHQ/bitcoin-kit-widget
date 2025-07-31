@@ -16,7 +16,7 @@ import ZeusButton from "@/components/ZeusButton";
 import { useErrorHandler, useSuccessHandler } from "@/contexts/ConextProvider";
 import { useDepositProgram } from "@/contexts/CorePoolProvider";
 import useReserveAddress from "@/hooks/useReserveAddress";
-import useSatoshiBalnace from "@/hooks/useSatoshiBalnace";
+import useSatoshiBalance from "@/hooks/useSatoshiBalance";
 import { cn, truncateMiddle } from "@/utils";
 
 function DepositDetails({
@@ -37,7 +37,7 @@ function DepositDetails({
 
   const depositProgram = useDepositProgram();
   const { data: reserveAddress } = useReserveAddress(wallet.publicKey);
-  const { data: satoshiBalance = 0, isLoading } = useSatoshiBalnace(
+  const { data: satoshiBalance = 0, isLoading } = useSatoshiBalance(
     bitcoinWallet.p2tr
   );
 

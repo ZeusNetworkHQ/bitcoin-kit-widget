@@ -4,8 +4,8 @@ import BigNumber from "bignumber.js";
 
 export interface NumberInputProps
   extends Omit<
-    React.ButtonHTMLAttributes<HTMLInputElement>,
-    "value" | "defaultValue" | "onChange"
+    React.InputHTMLAttributes<HTMLInputElement>,
+    "value" | "defaultValue" | "onChange" | "max" | "min"
   > {
   value?: number | BigNumber | string;
   defaultValue?: number | BigNumber | string;

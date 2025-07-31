@@ -3,7 +3,7 @@ import useSWR from "swr";
 
 import { useUtxoModel } from "@/contexts/CorePoolProvider";
 
-function useSatoshiBalnace(p2tr: string | null) {
+function useSatoshiBalance(p2tr: string | null) {
   const utxoModel = useUtxoModel();
 
   const swr = useSWR(
@@ -26,4 +26,4 @@ function useSatoshiBalnace(p2tr: string | null) {
   return swr;
 }
 
-export default useSatoshiBalnace;
+export default useSatoshiBalance;

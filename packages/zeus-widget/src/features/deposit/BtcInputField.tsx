@@ -66,12 +66,16 @@ function BtcInputField({
         {[
           {
             type: "Estimated Receive",
-            value: amount?.gte(MINIMUM_DEPOSIT_AMOUNT_BTC) ? amount : 0,
+            value: `${
+              amount?.gte(MINIMUM_DEPOSIT_AMOUNT_BTC)
+                ? amount.minus(DEPOSIT_SERVICE_FEE_BTC).toFormat()
+                : 0
+            } BTC`,
             primary: true,
           },
           {
             type: "Service Fee",
-            value: DEPOSIT_SERVICE_FEE_BTC,
+            value: `${new BigNumber(DEPOSIT_SERVICE_FEE_BTC).toFormat()} BTC`,
           },
         ].map((item) => (
           <div
@@ -82,7 +86,7 @@ function BtcInputField({
             )}
           >
             <span>{item.type}</span>
-            <span>{new BigNumber(item.value).toFormat()} BTC</span>
+            <span>{item.value}</span>
           </div>
         ))}
       </div>
