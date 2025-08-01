@@ -44,6 +44,10 @@ function DepositPage() {
     setReady(false);
   };
 
+  if (!wallet.connected && !wallet.publicKey && ready) {
+    setReady(false);
+  }
+
   if (ready && edra)
     return (
       <DepositDetails
