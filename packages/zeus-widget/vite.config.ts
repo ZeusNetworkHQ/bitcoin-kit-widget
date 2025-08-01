@@ -1,40 +1,46 @@
-import { execSync } from "child_process";
 import * as path from "path";
 
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
+import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    nodePolyfills(),
+    svgr(),
     dts({
       tsconfigPath: path.resolve(__dirname, "tsconfig.json"),
-      rollupTypes: true,
+      rollupTypes: process.env.NODE_ENV === "production",
+      insertTypesEntry: true,
     }),
-    {
-      name: "asset-build",
-      buildStart() {
-        execSync("tsc");
-      },
-    },
   ],
   resolve: {
     alias: {
-      src: path.resolve(__dirname, "src"),
+      ["@"]: path.resolve(__dirname, "src"),
     },
   },
   build: {
     lib: {
       entry: {
         main: path.resolve(__dirname, "src/main.ts"),
+        bitcoin: path.resolve(__dirname, "src/bitcoin.ts"),
       },
       formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: ["react", "react/jsx-runtime", "react-dom"],
+      external: [
+        "react",
+        "react/jsx-runtime",
+        "react/jsx-dev-runtime",
+        "react-dom",
+        "@solana/wallet-adapter-react",
+        "@solana/wallet-adapter-react-ui",
+      ],
       output: {
         globals: {
           react: "React",
