@@ -1,5 +1,7 @@
-import Icon from "../Icon/Icon";
-import { IconName } from "../Icon/icons";
+import { WalletName, WalletReadyState } from "@solana/wallet-adapter-base";
+import { useWallet } from "@solana/wallet-adapter-react";
+import Image from "next/image";
+
 import Modal, { ModalHeader } from "./Modal";
 
 export default function ConnectWalletModal({
@@ -9,18 +11,16 @@ export default function ConnectWalletModal({
   isOpen: boolean;
   onClose?: () => void;
 }) {
-  const wallets = [
-    {
-      name: "Phantom Wallet",
-      icon: "Phantom",
-      status: "detected",
-    },
-    {
-      name: "Muses Wallet",
-      icon: "Muses",
-      status: "install",
-    },
-  ];
+  const wallet = useWallet();
+
+  const wallets = wallet.wallets.filter(
+    (wallet) => wallet.readyState !== WalletReadyState.Unsupported
+  );
+
+  const connectWallet = async (walletName: WalletName) => {
+    wallet.select(walletName);
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -34,24 +34,39 @@ export default function ConnectWalletModal({
       <ModalHeader onClose={onClose} />
       <div className="px-20 pb-16">
         <span className="body-body1-semibold text-sys-color-text-secondary">
-          Connect a Bitcoin Wallet
+          Connect a Solana Wallet
         </span>
       </div>
       <div className="px-8">
         <div className="bg-sys-color-background-card rounded-12 border border-sys-color-text-mute/20 p-apollo-6 flex flex-col gap-y-8">
           {wallets.map((wallet) => (
             <button
-              key={wallet.name}
+              key={wallet.adapter.name}
+              onClick={async () => {
+                if (wallet.readyState === WalletReadyState.NotDetected) {
+                  return window.open(wallet.adapter.url, "_blank");
+                }
+                await connectWallet(wallet.adapter.name);
+                onClose?.();
+              }}
               className="cursor-pointer flex items-center justify-between rounded-[6px] py-8 px-12 hover:bg-sys-color-background-light transition duration-200"
             >
               <div className="flex items-center gap-x-12">
-                <Icon name={wallet.icon as IconName} />
+                <Image
+                  unoptimized
+                  width={18}
+                  height={18}
+                  src={wallet.adapter.icon}
+                  alt={`${wallet.adapter.name} icon`}
+                />
                 <span className="text-sys-color-text-primary body-body1-semibold">
-                  {wallet.name}
+                  {wallet.adapter.name}
                 </span>
               </div>
               <span className="body-body2-medium text-sys-color-text-mute capitalize">
-                {wallet.status}
+                {wallet.readyState !== WalletReadyState.NotDetected
+                  ? "Detected"
+                  : "Install"}
               </span>
             </button>
           ))}

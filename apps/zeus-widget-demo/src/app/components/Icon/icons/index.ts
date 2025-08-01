@@ -13,6 +13,7 @@ import { MusesIcon } from "./Muses";
 import { OkxIcon } from "./Okx";
 import { XverseIcon } from "./Xverse";
 import { UnisatIcon } from "./Unisat";
+import { TBtc } from "./TBtc";
 
 export const IconComponents = {
   Discord: DiscordIcon,
@@ -30,6 +31,7 @@ export const IconComponents = {
   Okx: OkxIcon,
   Xverse: XverseIcon,
   Unisat: UnisatIcon,
+  TBtc,
 } as const;
 
 export type IconName = keyof typeof IconComponents;

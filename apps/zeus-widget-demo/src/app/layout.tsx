@@ -38,9 +38,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${rethinkSans.variable} antialiased`}>
         <div className="wrapper flex flex-col gap-y-64 lg:gap-y-64">
-          <Header />
-          <Provider>{children}</Provider>
-          <Footer />
+          <Provider>
+            <Header />
+            {children}
+            <Footer />
+          </Provider>
         </div>
       </body>
     </html>

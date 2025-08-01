@@ -1,11 +1,15 @@
 "use client";
 
+import { useWallet } from "@solana/wallet-adapter-react";
 import { useState } from "react";
+
 import Button from "./Button";
 import ClaimTestnetModal from "./Modals/ClaimTestnet";
 import ConnectWalletModal from "./Modals/ConnectWallet";
 
 export default function Header() {
+  const wallet = useWallet();
+
   const [isClaimTestnetModalOpen, setIsClaimTestnetModalOpen] =
     useState<boolean>(false);
 
@@ -49,10 +53,11 @@ export default function Header() {
           </div>
           <Button
             onClick={() => {
+              if (wallet.connected) return wallet.disconnect();
               setIsConnectWalletModalOpen(true);
             }}
             theme="glass"
-            label="Connect Wallet"
+            label={wallet.connected ? "Connected" : "Connect Wallet"}
             icon="Wallet"
             isLoading={isConnectWalletModalOpen}
           />

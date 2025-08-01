@@ -1,6 +1,5 @@
 "use client";
 
-import { useWallet } from "@solana/wallet-adapter-react";
 import { createContext, use, useMemo } from "react";
 import { BitcoinNetwork, ZeusWidgetWidgetConfig } from "zeus-widget";
 import { Connectors, useDeriveWalletConnector } from "zeus-widget/bitcoin";
@@ -12,9 +11,6 @@ function WidgetConfigProvider({
   bitcoinNetwork,
   ...props
 }: React.PropsWithChildren<ZeusWidgetWidgetConfig>) {
-  const wallet = useWallet();
-  console.log({ WALLET: wallet });
-
   const derivedWalletConnector = useDeriveWalletConnector(
     bitcoinNetwork || BitcoinNetwork.Regtest
   );
