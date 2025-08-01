@@ -7,13 +7,13 @@ function useConnectWallet() {
   const wallet = useWallet();
   const walletModal = useWalletModal();
 
-  const resolveRef = useRef<() => void>(null);
-  const rejectRef = useRef<() => void>(null);
+  const resolveRef = useRef<() => void>();
+  const rejectRef = useRef<() => void>();
 
   if (wallet.connected) {
     resolveRef.current?.();
-    resolveRef.current = null;
-    rejectRef.current = null;
+    resolveRef.current = undefined;
+    rejectRef.current = undefined;
   }
 
   return useCallback(async () => {
