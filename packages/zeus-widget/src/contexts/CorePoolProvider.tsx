@@ -109,7 +109,7 @@ export const useEdraModel = () => {
   return useMemo(() => pool.edraModel, [pool]);
 };
 
-export const useSolanaAccountModel = () => {
+export const useTokenAccountModel = () => {
   const pool = useCorePool();
   return useMemo(() => pool.tokenAccountModel, [pool]);
 };

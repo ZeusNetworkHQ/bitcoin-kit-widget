@@ -4,17 +4,17 @@ import useSWR from "swr";
 
 import type { PublicKey } from "@solana/web3.js";
 
-import { useSolanaAccountModel } from "@/contexts/CorePoolProvider";
+import { useTokenAccountModel } from "@/contexts/CorePoolProvider";
 
 function useZBtcBalance(publicKey: PublicKey | null) {
-  const solanaAccountModel = useSolanaAccountModel();
+  const tokenAccountModel = useTokenAccountModel();
 
   const swr = useSWR(
     [publicKey, "zBtcBalance"],
     async ([publicKey]) => {
       if (!publicKey) return new BigNumber(0);
 
-      const account = await solanaAccountModel.find({ publicKey });
+      const account = await tokenAccountModel.find({ publicKey });
       return satoshiToBtc(account.amount);
     },
     {
