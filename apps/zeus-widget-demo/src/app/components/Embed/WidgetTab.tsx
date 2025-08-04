@@ -52,23 +52,25 @@ export default function WidgetTab() {
       </div>
 
       <ZeusWidget.Popover
-        side="top"
-        align="end"
         config={widgetConfig}
         open={isOpened}
         onOpenChange={setIsOpened}
       >
-        <motion.button
-          key={isHighlighted ? "highlight" : "normal"}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [1, 0.25, 1, 0.5, 1, 0.75, 1] }}
-          transition={{ duration: 1, ease: anticipate }}
-          onClick={() => setIsOpened(!isOpened)}
-          className="backdrop-blur-xl z-100 cursor-pointer !fixed right-16 bottom-16 md:bottom-24 flex items-center justify-center md:right-24 h-[50px] w-[50px] bg-white/5 hover:bg-white/8 transition-all duration-200 hover:shadow-[inset_0px_4px_12px_rgba(139,138,158,0.2)] shadow-[inset_0px_4px_10px_rgba(139,138,158,0.15)] gradient-border before:[background:linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] rounded-[12px]"
-        >
-          {!isOpened && <img src="branding/logo-glyph.svg"></img>}
-          {isOpened && <Icon name="ChevronDown" size={18} />}
-        </motion.button>
+        <ZeusWidget.Popover.Trigger asChild>
+          <motion.button
+            key={isHighlighted ? "highlight" : "normal"}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [1, 0.25, 1, 0.5, 1, 0.75, 1] }}
+            transition={{ duration: 1, ease: anticipate }}
+            onClick={() => setIsOpened(!isOpened)}
+            className="backdrop-blur-xl z-100 cursor-pointer !fixed right-16 bottom-16 md:bottom-24 flex items-center justify-center md:right-24 h-[50px] w-[50px] bg-white/5 hover:bg-white/8 transition-all duration-200 hover:shadow-[inset_0px_4px_12px_rgba(139,138,158,0.2)] shadow-[inset_0px_4px_10px_rgba(139,138,158,0.15)] gradient-border before:[background:linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] rounded-[12px]"
+          >
+            {!isOpened && <img src="branding/logo-glyph.svg"></img>}
+            {isOpened && <Icon name="ChevronDown" size={18} />}
+          </motion.button>
+        </ZeusWidget.Popover.Trigger>
+
+        <ZeusWidget.Popover.Content side="top" align="end" />
       </ZeusWidget.Popover>
 
       <div className="dashed-border"></div>

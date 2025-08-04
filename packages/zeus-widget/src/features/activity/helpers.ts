@@ -16,7 +16,7 @@ export function getStatus(interaction: Interaction) {
       return "complete";
 
     case InteractionStatus.BitcoinDepositToHotReserve:
-      return "initial";
+      return "initiating";
 
     default:
       return "processing";
@@ -59,7 +59,7 @@ export function getInteractionLink(
   {
     bitcoinNetwork,
     solanaNetwork,
-  }: Record<"bitcoinNetwork" | "solanaNetwork", string>
+  }: Record<"bitcoinNetwork" | "solanaNetwork", string>,
 ) {
   return `https://zeusscan.io/interaction/${interactionId}?network=${bitcoinNetwork}-${solanaNetwork}`;
 }
