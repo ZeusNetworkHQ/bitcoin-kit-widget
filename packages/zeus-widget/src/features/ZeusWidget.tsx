@@ -7,10 +7,15 @@ import ZeusWidgetProviders, {
   type ZeusWidgetProvidersProps,
 } from "./ZeusWidgetProviders";
 
-import type { DialogContentProps, DialogProps } from "@radix-ui/react-dialog";
+import type {
+  DialogContentProps,
+  DialogProps,
+  DialogTriggerProps,
+} from "@radix-ui/react-dialog";
 import type {
   PopoverContentProps,
   PopoverProps,
+  PopoverTriggerProps,
 } from "@radix-ui/react-popover";
 
 import Icon from "@/components/Icon";
@@ -28,15 +33,15 @@ import {
 } from "@/components/ui/popover";
 import { ZeusWidgetTab } from "@/types";
 import { cn } from "@/utils/misc";
+import WalletModalProvider from "@/components/WalletModalProvider";
 
-type ZeusWidgetWidgetConfig = Omit<ZeusWidgetProvidersProps, "children">;
+export type ZeusWidgetWidgetConfig = Omit<ZeusWidgetProvidersProps, "children">;
 
 interface ZeusWidgetProps {
-  config?: ZeusWidgetWidgetConfig;
   className?: string;
 }
 
-function ZeusWidget({ config, className }: ZeusWidgetProps) {
+function ZeusWidgetBase({ className }: ZeusWidgetProps) {
   const [selectedTab, setSelectedTab] = useState(ZeusWidgetTab.DEPOSIT);
 
   const tabConfigs = [
@@ -71,7 +76,7 @@ function ZeusWidget({ config, className }: ZeusWidgetProps) {
           className={cn(
             "zeus:grow zeus:p-[10px] zeus:flex zeus:flex-row zeus:items-center zeus:justify-center zeus:body-body2-semibold zeus:rounded-[12px] zeus:cursor-pointer zeus:text-[#8B8A9E] zeus:h-[40px] zeus:transition-colors zeus:gap-[8px]",
             selectedTab === tab.value &&
-              "zeus:text-[#FFABFE] zeus:bg-[#FD82FF1A]"
+              "zeus:text-[#FFABFE] zeus:bg-[#FD82FF1A]",
           )}
           onClick={() => setSelectedTab(tab.value)}
         >
@@ -107,9 +112,13 @@ function ZeusWidget({ config, className }: ZeusWidgetProps) {
           {
             variant: "brand.twitter",
             label: "X",
-            href: "https://x.com/ApolloByZeus",
+            href: "https://x.com/ZeusNetworkHQ",
           },
-          { variant: "brand.gitbook", label: "GitBook", href: undefined },
+          {
+            variant: "brand.gitbook",
+            label: "GitBook",
+            href: "https://zeusnetwork.xyz/developers",
+          },
         ] as const
       ).map((item) => (
         <a
@@ -126,100 +135,155 @@ function ZeusWidget({ config, className }: ZeusWidgetProps) {
   );
 
   return (
-    <ZeusWidgetProviders {...config}>
-      <div
-        className={cn(
-          "zeus:flex zeus:flex-col zeus:transition zeus:pb-[4px]",
-          className
-        )}
-      >
-        <div className="widget-tabs zeus:flex zeus:flex-row zeus:gap-[4px] zeus:items-center zeus:w-full zeus:mb-[12px] zeus:pb-[12px] zeus:transition-all zeus:sticky zeus:top-0 zeus:bg-[#202027]">
-          {tabsElement}
-        </div>
-
-        {contentsElement}
-
-        <div className="zeus:flex zeus:flex-row zeus:justify-between zeus:items-center zeus:gap-[8px] zeus:mt-[16px] zeus:text-[#8B8A9E] zeus:px-[8px]">
-          {footerLinksElement}
-          <p className="zeus:caption-caption">Powered by Zeus</p>
-        </div>
+    <div
+      className={cn(
+        "zeus:flex zeus:flex-col zeus:transition zeus:pb-[4px]",
+        className,
+      )}
+    >
+      <div className="widget-tabs zeus:flex zeus:flex-row zeus:gap-[4px] zeus:items-center zeus:w-full zeus:mb-[12px] zeus:pb-[12px] zeus:transition-all zeus:sticky zeus:top-0 zeus:bg-[#202027]">
+        {tabsElement}
       </div>
-    </ZeusWidgetProviders>
+
+      {contentsElement}
+
+      <div className="zeus:flex zeus:flex-row zeus:justify-between zeus:items-center zeus:gap-[8px] zeus:mt-[16px] zeus:text-[#8B8A9E] zeus:px-[8px]">
+        {footerLinksElement}
+        <p className="zeus:caption-caption">Powered by Zeus</p>
+      </div>
+    </div>
   );
 }
 
-export interface ZeusWidgetPopoverProps
-  extends Pick<PopoverProps, "open" | "defaultOpen" | "onOpenChange">,
-    PopoverContentProps {
+// --- INTEGRATED VARIANT ---
+
+export interface IntegratedZeusWidgetProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   config?: ZeusWidgetWidgetConfig;
-  children: React.ReactElement;
+}
+
+function ZeusWidget({
+  config,
+  className,
+  ...props
+}: IntegratedZeusWidgetProps) {
+  return (
+    <div
+      {...props}
+      className={cn(
+        "zeus:bg-[#202027] zeus:border zeus:border-solid zeus:border-[#8B8A9E4D] zeus:p-[12px] zeus:pt-0 zeus:w-[408px] zeus:max-w-[calc(100vw_-_32px)] zeus:rounded-[16px] zeus:max-h-[75vh] zeus:overflow-y-auto zeus:[&_.widget-tabs]:pt-[12px]",
+        className,
+      )}
+    >
+      <ZeusWidgetProviders {...config}>
+        <WalletModalProvider>
+          <ZeusWidgetBase />
+        </WalletModalProvider>
+      </ZeusWidgetProviders>
+    </div>
+  );
 }
 
 // --- POPOVER VARIANT ---
 
-ZeusWidget.Popover = ({
+export interface PopoverZeusWidgetProps extends PopoverProps {
+  config?: ZeusWidgetWidgetConfig;
+}
+function PopoverZeusWidget({
   config,
   children,
-  open,
-  defaultOpen,
-  onOpenChange,
   ...props
-}: ZeusWidgetPopoverProps) => {
+}: PopoverZeusWidgetProps) {
   return (
-    <Popover open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
-      <PopoverTrigger asChild>{children}</PopoverTrigger>
-
-      <PopoverContent {...props}>
-        <div className="zeus:bg-[#202027] zeus:border zeus:border-solid zeus:border-[#8B8A9E4D] zeus:p-[12px] zeus:pt-0 zeus:w-[408px] zeus:max-w-[calc(100vw_-_32px)] zeus:rounded-[16px] zeus:max-h-[75vh] zeus:overflow-y-auto zeus:[&_.widget-tabs]:pt-[12px]">
-          <ZeusWidget config={config} />
-        </div>
-      </PopoverContent>
+    <Popover {...props}>
+      <ZeusWidgetProviders {...config}>{children}</ZeusWidgetProviders>
     </Popover>
+  );
+}
+
+export type PopoverZeusWidgetContentProps = Omit<
+  PopoverContentProps,
+  "children"
+>;
+
+PopoverZeusWidget.Content = function PopoverZeusWidgetContent({
+  className,
+  ...props
+}: PopoverZeusWidgetContentProps) {
+  return (
+    <PopoverContent {...props}>
+      <div
+        className={cn(
+          "zeus:bg-[#202027] zeus:border zeus:border-solid zeus:border-[#8B8A9E4D] zeus:p-[12px] zeus:pt-0 zeus:w-[408px] zeus:max-w-[calc(100vw_-_32px)] zeus:rounded-[16px] zeus:max-h-[75vh] zeus:overflow-y-auto zeus:[&_.widget-tabs]:pt-[12px]",
+          className,
+        )}
+      >
+        <WalletModalProvider>
+          <ZeusWidgetBase />
+        </WalletModalProvider>
+      </div>
+    </PopoverContent>
   );
 };
 
-export interface ZeusWidgetDialogProps
-  extends Pick<DialogProps, "open" | "defaultOpen" | "onOpenChange">,
-    DialogContentProps {
-  config?: ZeusWidgetWidgetConfig;
-  children: React.ReactElement;
-}
+export type PopoverZeusWidgetTriggerProps = PopoverTriggerProps;
+
+PopoverZeusWidget.Trigger = PopoverTrigger;
+
+ZeusWidget.Popover = PopoverZeusWidget;
 
 // --- DIALOG VARIANT ---
 
-ZeusWidget.Dialog = ({
+export interface DialogZeusWidgetProps extends DialogProps {
+  config?: ZeusWidgetWidgetConfig;
+}
+
+function DialogZeusWidget({
   config,
   children,
-  open,
-  defaultOpen,
-  className,
-  onOpenChange,
   ...props
-}: ZeusWidgetDialogProps) => {
+}: DialogZeusWidgetProps) {
   return (
-    <Dialog open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog {...props}>
+      <ZeusWidgetProviders {...config}>{children}</ZeusWidgetProviders>
+    </Dialog>
+  );
+}
 
+export type DialogZeusWidgetContentProps = Omit<DialogContentProps, "children">;
+
+DialogZeusWidget.Content = function DialogZeusWidgetContent({
+  className,
+  ...props
+}: DialogZeusWidgetContentProps) {
+  return (
+    <>
       <DialogOverlay>
-        <div
-          className={cn(
-            "zeus:fixed zeus:inset-0 zeus:bg-black/50 zeus:opacity-0 zeus:transition-opacity zeus:pointer-events-none"
-          )}
-        />
+        <div className="zeus:fixed zeus:inset-0 zeus:bg-black/50 zeus:opacity-0 zeus:transition-opacity zeus:pointer-events-none" />
       </DialogOverlay>
 
       <DialogContent
         {...props}
         className={cn(
           "zeus:bg-[#202027] zeus:border zeus:border-solid zeus:border-[#8B8A9E4D] zeus:p-[12px] zeus:w-[408px] zeus:rounded-[16px] zeus:max-h-[calc(100vh_-_32px)] zeus:overflow-y-auto",
-          className
+          className,
         )}
       >
-        <DialogTitle hidden />
-        <ZeusWidget config={config} />
+        <WalletModalProvider>
+          <DialogTitle hidden />
+          <ZeusWidgetBase />
+        </WalletModalProvider>
       </DialogContent>
-    </Dialog>
+    </>
   );
 };
 
+export type DialogZeusWidgetTriggerProps = DialogTriggerProps;
+
+DialogZeusWidget.Trigger = DialogTrigger;
+
+ZeusWidget.Dialog = DialogZeusWidget;
+
 export default ZeusWidget;
+
+export { PopoverZeusWidget, DialogZeusWidget };

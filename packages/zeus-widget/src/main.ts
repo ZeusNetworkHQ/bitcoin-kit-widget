@@ -3,7 +3,11 @@ import "./global.css";
 export { BitcoinNetwork, SolanaNetwork } from "@zeus-widget/core";
 
 export type * from "@/features/ZeusWidget";
-export { default as ZeusWidget } from "@/features/ZeusWidget";
+export {
+  default as ZeusWidget,
+  PopoverZeusWidget,
+  DialogZeusWidget,
+} from "@/features/ZeusWidget";
 
 export type * from "@/components/ZeusShadow";
 export { default as ZeusShadow } from "@/components/ZeusShadow";

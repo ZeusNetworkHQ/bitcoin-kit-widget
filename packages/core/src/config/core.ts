@@ -3,7 +3,6 @@ import {
   LiquidityManagementClient,
   TwoWayPegClient,
 } from "@zeus-network/zpl-sdk";
-import BigNumber from "bignumber.js";
 
 import AccountsConfig from "./accounts";
 import { getDefaultConnection } from "./helpers";
@@ -37,7 +36,7 @@ export default class CoreConfig {
     const { twoWayPegProgramId } = await this.accounts.zpl();
     return new TwoWayPegClient(
       this.solanaConnection,
-      new PublicKey(twoWayPegProgramId)
+      new PublicKey(twoWayPegProgramId),
     );
   }
 
@@ -45,7 +44,7 @@ export default class CoreConfig {
     const { liquidityManagementProgramId } = await this.accounts.zpl();
     return new LiquidityManagementClient(
       this.solanaConnection,
-      new PublicKey(liquidityManagementProgramId)
+      new PublicKey(liquidityManagementProgramId),
     );
   }
 }

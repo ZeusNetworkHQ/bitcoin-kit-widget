@@ -8,7 +8,6 @@ import baseEslintConfig from "./base.eslint.config.js";
 
 export default tseslint.config([
   baseEslintConfig,
-  globalIgnores(["dist"]),
   [
     {
       files: ["**/*.{ts,tsx}"],

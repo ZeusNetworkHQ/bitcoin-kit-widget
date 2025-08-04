@@ -40,14 +40,14 @@ function BitcoinWalletSelector({
         {...props}
         className={cn(
           "zeus:bg-[#202027] zeus:border zeus:border-[#8B8A9E33] zeus:border-solid zeus:rounded-[12px] zeus:p-0 zeus:w-[360px]",
-          className
+          className,
         )}
       >
         <DialogTitle className="zeus:p-[20px] zeus:body-body1-semibold zeus:text-[#C7C5D1] zeus:text-start">
           Connect a Bitcoin Wallet
         </DialogTitle>
 
-        <div className="zeus:px-[12px]">
+        <div className="zeus:px-[12px] zeus:pb-[12px]">
           <div className="zeus:bg-[#16161B] zeus:px-[8px] zeus:py-[12px] zeus:rounded-[12px] zeus:border zeus:border-solid zeus:border-[#8B8A9E26]">
             {wallet.connectors.map((connector) => (
               <div
@@ -66,13 +66,6 @@ function BitcoinWalletSelector({
               </div>
             ))}
           </div>
-        </div>
-
-        <div className="zeus:p-[12px] zeus:pt-[8px]">
-          <p className="zeus:p-[6px] zeus:text-[#C7C5D1] zeus:body-body2-medium">
-            To keep your assets safe, avoid storing Runes in your Bitcoin
-            wallet.
-          </p>
         </div>
       </DialogContent>
     </Dialog>

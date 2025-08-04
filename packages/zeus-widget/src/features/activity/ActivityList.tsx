@@ -50,7 +50,7 @@ function ActivityList({ selected }: ActivityListProps) {
               return "zeus:text-[#72F088]";
             case "failed":
               return "zeus:text-[#F44336]";
-            case "initial":
+            case "initiating":
               return "zeus:text-[#AEADB8]";
             case "processing":
             default:
@@ -59,9 +59,13 @@ function ActivityList({ selected }: ActivityListProps) {
         };
 
         const interactionDetails = getInteractionDetails(interaction);
+        const initiating = status === "initiating";
+        const showStatusIcon = initiating || status === "processing";
+
+        const Tag = initiating ? "span" : "a";
 
         return (
-          <a
+          <Tag
             key={interaction.interactionId}
             href={getInteractionLink(interaction.interactionId, {
               bitcoinNetwork,
@@ -69,12 +73,26 @@ function ActivityList({ selected }: ActivityListProps) {
             })}
             target="_blank"
             rel="noopener noreferrer"
-            className="zeus:p-[8px] zeus:pb-0 zeus:bg-[#27272D] zeus:rounded-[12px] zeus:text-[#AEADB8]"
+            className={cn(
+              "zeus:p-[8px] zeus:pb-0 zeus:bg-[#27272D] zeus:rounded-[12px] zeus:text-[#AEADB8]",
+            )}
           >
             <div className="zeus:flex zeus:flex-row zeus:items-center zeus:justify-between zeus:px-[12px] zeus:py-[8px] zeus:body-body2-medium zeus:bg-[#16161BBF] zeus:rounded-[8px]">
               <div>{toRelativeTime(interaction.initiatedAt * 1000)}</div>
-              <div className={cn("zeus:capitalize", getStatusColorClass())}>
+              <div
+                className={cn(
+                  "zeus:flex zeus:flex-row zeus:items-center zeus:gap-[8px] zeus:capitalize",
+                  getStatusColorClass(),
+                )}
+              >
                 {status}
+                {showStatusIcon && (
+                  <Icon
+                    size={14}
+                    variant={initiating ? "initiating" : "loading"}
+                    className="zeus:animate-spin"
+                  />
+                )}
               </div>
             </div>
 
@@ -104,14 +122,14 @@ function ActivityList({ selected }: ActivityListProps) {
                     satoshiToBtc(
                       new BigNumber(interaction.amount)
                         .minus(interaction.minerFee)
-                        .minus(interaction.serviceFee)
+                        .minus(interaction.serviceFee),
                     ).toFormat(),
                     interactionDetails.destination,
                   ].join(" ")}
                 </div>
               </div>
             </div>
-          </a>
+          </Tag>
         );
       })}
     </div>

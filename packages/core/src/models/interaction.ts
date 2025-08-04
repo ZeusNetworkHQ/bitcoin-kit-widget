@@ -4,16 +4,16 @@ import { differenceWith } from "lodash";
 
 import HermesClient, { type Interaction } from "@/clients/hermes";
 import CoreConfig from "@/config/core";
+import { DEPOSIT_SERVICE_FEE_BTC } from "@/constants";
 import Cache from "@/lib/cache";
 import { Chain, InteractionStatus, InteractionType } from "@/types";
-import { DEPOSIT_SERVICE_FEE_BTC } from "@/constants";
 import { btcToSatoshi } from "@/utils";
 
 export default class InteractionModel {
   private readonly core: CoreConfig;
   private readonly hermesClient: HermesClient;
   public readonly cache = new Cache<Record<string, Interaction[]>>(
-    "zeus:interactions"
+    "zeus:interactions",
   );
 
   constructor({
@@ -32,13 +32,13 @@ export default class InteractionModel {
     const initialInteractions = differenceWith(
       cachedInteractions,
       interactions,
-      (a, b) => a.interactionId === b.interactionId
+      (a, b) => a.interactionId === b.interactionId,
     );
 
     if (cachedInteractions.length !== initialInteractions.length) {
       this.cache.set(
         payload.solanaAddress,
-        initialInteractions.length ? initialInteractions : undefined
+        initialInteractions.length ? initialInteractions : undefined,
       );
     }
 

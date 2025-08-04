@@ -20,7 +20,7 @@ function NumberInput({
   max,
   min,
   decimal,
-  defaultValue = 0,
+  defaultValue = value ?? 0,
   onChange,
   onBlur,
   ...props
