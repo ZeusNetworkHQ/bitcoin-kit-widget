@@ -63,7 +63,7 @@ const DialogHeader = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "zeus:flex zeus:flex-col zeus:space-y-1.5 zeus:text-center sm:zeus:text-left",
+      "zeus:flex zeus:flex-col zeus:space-y-1.5 zeus:text-center zeus:sm:text-left",
       className
     )}
     {...props}
@@ -77,7 +77,7 @@ const DialogFooter = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "zeus:flex zeus:flex-col-reverse sm:zeus:flex-row sm:zeus:justify-end sm:zeus:space-x-2",
+      "zeus:flex zeus:flex-col-reverse zeus:sm:flex-row zeus:sm:justify-end zeus:sm:space-x-2",
       className
     )}
     {...props}

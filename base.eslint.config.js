@@ -1,12 +1,13 @@
 import js from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier/flat";
 import importPlugin from "eslint-plugin-import";
+import { globalIgnores } from "eslint/config";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
-export default [
-  tseslint.config({
-    ignores: ["dist"],
+export default tseslint.config([
+  globalIgnores(["dist"]),
+  {
     files: ["**/*.{ts,tsx}"],
     extends: [js.configs.recommended, tseslint.configs.recommended],
     languageOptions: {
@@ -50,6 +51,6 @@ export default [
         },
       ],
     },
-  }),
+  },
   eslintConfigPrettier,
-];
+]);

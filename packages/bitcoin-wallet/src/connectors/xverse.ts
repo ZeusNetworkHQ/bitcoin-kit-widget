@@ -89,7 +89,7 @@ export class XverseConnector extends BaseConnector {
     const addresses = await this.loadAccounts();
     // only response p2tr (Ordinals) address
     const filteredAddresses = addresses.filter(
-      (item) => item.addressType === AddressType.p2tr
+      (item) => item.addressType === AddressType.p2tr,
     );
     return filteredAddresses.map((item) => item.address);
   }
@@ -125,7 +125,7 @@ export class XverseConnector extends BaseConnector {
 
     const walletAddress = await this.loadAccounts();
     const inputAddress = walletAddress.find(
-      (item) => item.addressType == AddressType.p2tr
+      (item) => item.addressType == AddressType.p2tr,
     );
 
     if (!inputAddress) {
@@ -169,14 +169,14 @@ export class XverseConnector extends BaseConnector {
   async signPsbt(
     psbt: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _opt?: Record<string, unknown>
+    _opt?: Record<string, unknown>,
   ): Promise<string> {
     const psbtParsed = bitcoin.Psbt.fromHex(psbt);
 
     const inputLength = psbtParsed.data.inputs.length;
     const walletAddress = await this.loadAccounts();
     const inputAddress = walletAddress.find(
-      (item) => item.addressType == AddressType.p2tr
+      (item) => item.addressType == AddressType.p2tr,
     );
 
     if (!inputAddress) {
@@ -187,7 +187,7 @@ export class XverseConnector extends BaseConnector {
     const signInputs: { [key: string]: number[] } = {};
     signInputs[inputAddress.address] = Array.from(
       { length: inputLength },
-      (_, i) => i
+      (_, i) => i,
     );
 
     const response = await request("signPsbt", {
@@ -202,7 +202,7 @@ export class XverseConnector extends BaseConnector {
     // response psbt is in base64 format need to convert to hex
     return Buffer.from(response.result.psbt, "base64").toString("hex");
   }
-  /* eslint-enable @typescript-eslint/no-unused-vars */
+
   on(event: string, handler: (data?: unknown) => void) {
     return this._event.on(event, handler);
   }
@@ -263,7 +263,7 @@ export class XverseConnector extends BaseConnector {
 
     const walletAddress = await this.loadAccounts();
     const inputAddress = walletAddress.find(
-      (item) => item.addressType == AddressType.p2tr
+      (item) => item.addressType == AddressType.p2tr,
     );
 
     if (!inputAddress) {

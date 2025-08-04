@@ -13,9 +13,9 @@ import ReserveSettingModel from "./reserve-setting";
 
 import HermesClient from "@/clients/hermes";
 import CoreConfig from "@/config/core";
+import { EDRA_CREATE_FEE_SOL } from "@/constants";
 import { type SolanaSigner } from "@/types";
 import { assertsSolanaSigner, lamportsToSol, satoshiToBtc } from "@/utils";
-import { EDRA_CREATE_FEE_SOL } from "@/constants";
 
 dayjs.extend(utc);
 
@@ -48,7 +48,7 @@ export default class EntityDerivedReserveAddressModel {
     try {
       const twoWayPegClient = await this.core.getTwoWayPegClient();
       return await twoWayPegClient.accounts.getEntityDerivedReserveAddressesBySolanaPubkey(
-        payload.solanaPublicKey
+        payload.solanaPublicKey,
       );
     } catch {
       return [];
@@ -65,12 +65,12 @@ export default class EntityDerivedReserveAddressModel {
     const emissionSettingModel = await this.emissionSettingModel.findMany();
 
     const solBalance = lamportsToSol(
-      await this.core.solanaConnection.getBalance(signer.publicKey)
+      await this.core.solanaConnection.getBalance(signer.publicKey),
     );
 
     if (solBalance.lt(EDRA_CREATE_FEE_SOL)) {
       throw new Error(
-        `Insufficient SOL balance. Required: ${EDRA_CREATE_FEE_SOL} SOL, Available: ${solBalance} SOL`
+        `Insufficient SOL balance. Required: ${EDRA_CREATE_FEE_SOL} SOL, Available: ${solBalance} SOL`,
       );
     }
 
@@ -80,8 +80,8 @@ export default class EntityDerivedReserveAddressModel {
           emissionSettingModel.find(
             (emissionSetting) =>
               emissionSetting.guardianCertificate ===
-              reserveSetting.guardianCertificate
-          )?.escrowBalance ?? 0
+              reserveSetting.guardianCertificate,
+          )?.escrowBalance ?? 0,
         );
 
         const maxBtcQuota =
@@ -100,8 +100,8 @@ export default class EntityDerivedReserveAddressModel {
       })
       .filter(({ remainingBtcQuotaPercentage }) =>
         remainingBtcQuotaPercentage.lt(
-          REMAINING_STORE_QUOTA_PERCENTAGE_THRESHOLD
-        )
+          REMAINING_STORE_QUOTA_PERCENTAGE_THRESHOLD,
+        ),
       );
 
     if (reserveSettingsWithQuota.length === 0) {
@@ -115,12 +115,12 @@ export default class EntityDerivedReserveAddressModel {
 
     const edrList = await twoWayPegClient.accounts.getEntityDerivedReserves();
     const edr = edrList.find(
-      (edr) => edr.reserveSetting.toBase58() === selectedReserveSetting.address
+      (edr) => edr.reserveSetting.toBase58() === selectedReserveSetting.address,
     );
 
     if (!edr)
       throw new Error(
-        "Entity Derived Reserve not found for the selected guardian setting"
+        "Entity Derived Reserve not found for the selected guardian setting",
       );
 
     const twoWayPegConfiguration =
@@ -133,7 +133,7 @@ export default class EntityDerivedReserveAddressModel {
         new PublicKey(selectedReserveSetting.guardianCertificate),
         twoWayPegConfiguration.layerFeeCollector,
         edr.publicKey,
-        BitcoinAddressType.P2tr
+        BitcoinAddressType.P2tr,
       );
 
     const { blockhash } = await this.core.solanaConnection.getLatestBlockhash();
@@ -150,7 +150,7 @@ export default class EntityDerivedReserveAddressModel {
 
     const signature = await this.core.solanaConnection.sendRawTransaction(
       signedTx.serialize(),
-      { preflightCommitment: "confirmed" }
+      { preflightCommitment: "confirmed" },
     );
 
     return { signature };

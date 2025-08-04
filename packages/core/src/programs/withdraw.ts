@@ -10,11 +10,11 @@ import type BigNumber from "bignumber.js";
 
 import HermesClient, { type TwoWayPegReserveSetting } from "@/clients/hermes";
 import CoreConfig from "@/config/core";
+import { WITHDRAW_INFRASTRUCTURE_FEE_SOL } from "@/constants";
 import ReserveSettingModel from "@/models/reserve-setting";
 import { type SolanaSigner } from "@/types";
 import { btcToSatoshi, getReceiverXOnlyPubkey, lamportsToSol } from "@/utils";
 import { assertsSolanaSigner } from "@/utils";
-import { WITHDRAW_INFRASTRUCTURE_FEE_SOL } from "@/constants";
 
 interface WithdrawProgramParams {
   coreConfig?: CoreConfig;
@@ -43,18 +43,18 @@ export default class WithdrawProgram {
     payloads: {
       bitcoinAddress: string;
       amount: number | bigint | BigNumber;
-    }
+    },
   ) {
     try {
       assertsSolanaSigner(solanaSigner);
 
       const solBalance = lamportsToSol(
-        await this.core.solanaConnection.getBalance(solanaSigner.publicKey)
+        await this.core.solanaConnection.getBalance(solanaSigner.publicKey),
       );
 
       if (solBalance.lt(WITHDRAW_INFRASTRUCTURE_FEE_SOL)) {
         throw new Error(
-          `Insufficient SOL balance. Required: ${WITHDRAW_INFRASTRUCTURE_FEE_SOL} SOL, Available: ${solBalance} SOL`
+          `Insufficient SOL balance. Required: ${WITHDRAW_INFRASTRUCTURE_FEE_SOL} SOL, Available: ${solBalance} SOL`,
         );
       }
 
@@ -63,20 +63,19 @@ export default class WithdrawProgram {
 
       const reserveSettingsWithQuota = await Promise.all(
         reserveSettings.map(async (reserveSetting) => {
-          const remainingQuota = await this.reserveSettingModel.getQuota(
-            reserveSetting
-          );
+          const remainingQuota =
+            await this.reserveSettingModel.getQuota(reserveSetting);
 
           return { ...reserveSetting, remainingQuota };
-        })
+        }),
       );
 
       const xonlyReceiverPubkey = getReceiverXOnlyPubkey(
-        payloads.bitcoinAddress
+        payloads.bitcoinAddress,
       );
 
       reserveSettingsWithQuota.sort((a, b) =>
-        b.remainingQuota.cmp(a.remainingQuota)
+        b.remainingQuota.cmp(a.remainingQuota),
       ); // Sort by remaining quota in descending order
 
       let remainingAmount = amountBN.clone();
@@ -85,7 +84,7 @@ export default class WithdrawProgram {
       for (const reserveSetting of reserveSettingsWithQuota) {
         const amountToWithdraw = BN.min(
           reserveSetting.remainingQuota,
-          remainingAmount
+          remainingAmount,
         );
 
         ixs.push(
@@ -93,7 +92,7 @@ export default class WithdrawProgram {
             xonlyReceiverPubkey,
             reserveSetting,
             amountToWithdraw,
-          }))
+          })),
         );
         remainingAmount = remainingAmount.sub(amountToWithdraw);
 
@@ -115,7 +114,7 @@ export default class WithdrawProgram {
 
       const signature = await this.core.solanaConnection.sendRawTransaction(
         signedTx.serialize(),
-        { preflightCommitment: "confirmed" }
+        { preflightCommitment: "confirmed" },
       );
 
       return { signature };
@@ -132,7 +131,7 @@ export default class WithdrawProgram {
       xonlyReceiverPubkey: Buffer;
       reserveSetting: TwoWayPegReserveSetting;
       amountToWithdraw: BN;
-    }
+    },
   ) {
     assertsSolanaSigner(solanaSigner);
     const { xonlyReceiverPubkey, reserveSetting, amountToWithdraw } = payloads;
@@ -148,14 +147,14 @@ export default class WithdrawProgram {
       await twoWayPegClient.accounts.getConfiguration();
 
     const vaultAta = liquidityManagementClient.pdas.deriveVaultSettingAddress(
-      new PublicKey(reserveSetting.address)
+      new PublicKey(reserveSetting.address),
     );
 
     const storeIx = liquidityManagementClient.instructions.buildStoreIx(
       amountToWithdraw,
       solanaSigner.publicKey,
       new PublicKey(assetMint),
-      new PublicKey(reserveSetting.address)
+      new PublicKey(reserveSetting.address),
     );
 
     const withdrawalRequestIx =
@@ -171,8 +170,8 @@ export default class WithdrawProgram {
         vaultAta,
         liquidityManagementClient.pdas.derivePositionAddress(
           vaultAta,
-          solanaSigner.publicKey
-        )
+          solanaSigner.publicKey,
+        ),
       );
 
     return [storeIx, withdrawalRequestIx];

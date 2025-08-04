@@ -45,10 +45,11 @@ function ZeusButton({
       {...props}
       className={cn(
         getVariantClass(),
-        "zeus:button zeus:body-body1-semibold zeus:relative zeus:px-[16px] zeus:py-[8px] zeus:flex zeus:flex-row zeus:items-center zeus:justify-center zeus:cursor-pointer",
+        "zeus:transition-all zeus:button zeus:body-body1-semibold zeus:relative zeus:px-[16px] zeus:py-[8px] zeus:flex zeus:flex-row zeus:items-center zeus:justify-center zeus:cursor-pointer",
         disabled && "zeus:cursor-not-allowed",
-        className
+        className,
       )}
+      disabled={disabled}
       type={type || "button"}
       onClick={disabled ? undefined : onClick}
     >
@@ -56,7 +57,7 @@ function ZeusButton({
       <div
         className={cn(
           "zeus:w-full zeus:h-full zeus:absolute zeus:top-0 zeus:left-0 zeus:pointer-events-none zeus:rounded-[inherit]",
-          getAdditionalElementClasses()
+          getAdditionalElementClasses(),
         )}
       />
     </button>

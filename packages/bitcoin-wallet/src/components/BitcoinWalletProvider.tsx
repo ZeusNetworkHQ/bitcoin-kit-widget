@@ -9,7 +9,7 @@ import { BitcoinWalletContext } from "@/contexts/BitcoinWalletContext";
 import { BitcoinNetwork } from "@/types";
 
 export interface BitcoinWalletProviderProps {
-  connectors: BaseConnector[];
+  connectors: (BaseConnector | null)[];
   network?: BitcoinNetwork;
   children: React.ReactNode;
 }
@@ -32,7 +32,9 @@ function BitcoinWalletProvider({
   }, [pubkey, connector, network]);
 
   const availableConnectors = useMemo(() => {
-    return connectors.filter((c) => c.networks.includes(network));
+    return connectors.filter(
+      (c): c is NonNullable<typeof c> => !!c && c.networks.includes(network)
+    );
   }, [connectors, network]);
 
   const connect = useCallback(async (connector: BaseConnector) => {
