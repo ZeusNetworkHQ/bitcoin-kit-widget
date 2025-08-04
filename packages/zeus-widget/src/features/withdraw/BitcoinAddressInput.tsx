@@ -24,6 +24,43 @@ function BitcoinAddressInput({ address, onChange }: BitcoinAddressInputProps) {
     onChangeRef.current?.("");
   };
 
+  const getFieldButton = () => {
+    if (connected)
+      return (
+        <button
+          type="button"
+          className="zeus:p-[9px] zeus:border zeus:border-solid zeus:border-[#8B8A9E33] zeus:rounded-[8px] zeus:text-[#C7C5D1] zeus:hover:text-[#F1F0F3] zeus:bg-[#2C2C36] zeus:hover:bg-[#272730] zeus:shrink-0 zeus:cursor-pointer zeus:transition-colors"
+          onClick={() => disconnectWallet()}
+        >
+          <Icon variant="disconnect" />
+        </button>
+      );
+
+    if (!address?.trim())
+      return (
+        <BitcoinWalletSelector>
+          <BitcoinWalletSelector.Trigger asChild>
+            <button
+              type="button"
+              className="zeus:px-[12px] zeus:py-[6px] zeus:border zeus:border-solid zeus:border-[#8B8A9E33] zeus:rounded-[8px] zeus:text-[#C7C5D1] zeus:hover:text-[#F1F0F3] zeus:bg-[#2C2C36] zeus:hover:bg-[#272730] zeus:shrink-0 zeus:cursor-pointer zeus:shadow-[0px_-4px_4px_0px_#8B8A9E1F_inset] zeus:transition-colors"
+            >
+              Connect
+            </button>
+          </BitcoinWalletSelector.Trigger>
+        </BitcoinWalletSelector>
+      );
+
+    return (
+      <button
+        type="button"
+        onClick={() => onChange?.("")}
+        className="zeus:cursor-pointer zeus:px-[12px]"
+      >
+        <Icon variant="clear" size={12} className="zeus:text-[#8B8A9E]" />
+      </button>
+    );
+  };
+
   useEffect(() => {
     if (!bitcoinWallet?.p2tr) return;
     onChangeRef.current?.(bitcoinWallet.p2tr);
@@ -41,38 +78,7 @@ function BitcoinAddressInput({ address, onChange }: BitcoinAddressInputProps) {
         onChange={(event) => onChange?.(event.target.value)}
       />
 
-      {connected && (
-        <button
-          type="button"
-          className="zeus:p-[9px] zeus:border zeus:border-solid zeus:border-[#8B8A9E33] zeus:rounded-[8px] zeus:text-[#C7C5D1] zeus:hover:text-[#F1F0F3] zeus:bg-[#2C2C36] zeus:hover:bg-[#272730] zeus:shrink-0 zeus:cursor-pointer zeus:transition-colors"
-          onClick={() => disconnectWallet()}
-        >
-          <Icon variant="disconnect" />
-        </button>
-      )}
-
-      {!connected && address === "" && (
-        <BitcoinWalletSelector>
-          <BitcoinWalletSelector.Trigger asChild>
-            <button
-              type="button"
-              className="zeus:px-[12px] zeus:py-[6px] zeus:border zeus:border-solid zeus:border-[#8B8A9E33] zeus:rounded-[8px] zeus:text-[#C7C5D1] zeus:hover:text-[#F1F0F3] zeus:bg-[#2C2C36] zeus:hover:bg-[#272730] zeus:shrink-0 zeus:cursor-pointer zeus:shadow-[0px_-4px_4px_0px_#8B8A9E1F_inset] zeus:transition-colors"
-            >
-              Connect
-            </button>
-          </BitcoinWalletSelector.Trigger>
-        </BitcoinWalletSelector>
-      )}
-
-      {!connected && address !== "" && (
-        <button
-          type="button"
-          onClick={() => onChange?.("")}
-          className="zeus:cursor-pointer zeus:px-[12px]"
-        >
-          <Icon variant="clear" size={12} className="zeus:text-[#8B8A9E]" />
-        </button>
-      )}
+      {getFieldButton()}
     </div>
   );
 }

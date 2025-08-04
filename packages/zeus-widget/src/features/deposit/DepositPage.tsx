@@ -44,7 +44,7 @@ function DepositPage() {
     setReady(false);
   };
 
-  if (!wallet.connected && !wallet.publicKey && ready) {
+  if ((!wallet.connected || !wallet.publicKey) && ready) {
     setReady(false);
   }
 
