@@ -26,7 +26,7 @@ function ClaimTestnetModalContent({ onClose }: { onClose?: () => void }) {
       new Clients.Aegle({
         coreConfig: new CoreConfig({ bitcoinNetwork: BitcoinNetwork.Regtest }),
       }),
-    []
+    [],
   );
 
   const handleClose = () => {
@@ -34,6 +34,12 @@ function ClaimTestnetModalContent({ onClose }: { onClose?: () => void }) {
     if (!bitcoinWallets.connected) {
       bitcoinWallets.disconnect();
     }
+  };
+
+  const handleCloseErrorAlert = () => setError(null);
+
+  const handleCloseCompletedAlert = () => {
+    setCompleted(false);
   };
 
   const claimTestnetBitcoin = async () => {
@@ -64,9 +70,12 @@ function ClaimTestnetModalContent({ onClose }: { onClose?: () => void }) {
     <Modal
       isOpen={completed}
       backdropType="overrideHeader"
-      onClose={() => setCompleted(false)}
+      onClose={handleCloseCompletedAlert}
     >
-      <ModalHeader title="You successfully claimed" />
+      <ModalHeader
+        title="You successfully claimed"
+        onClose={handleCloseCompletedAlert}
+      />
 
       <ModalBody className="pt-[24px]">
         <div className="flex flex-row items-center gap-[8px]">
@@ -82,9 +91,9 @@ function ClaimTestnetModalContent({ onClose }: { onClose?: () => void }) {
     <Modal
       isOpen={!!error}
       backdropType="overrideHeader"
-      onClose={() => setError(null)}
+      onClose={handleCloseErrorAlert}
     >
-      <ModalHeader title="Error" />
+      <ModalHeader title="Error" onClose={handleCloseErrorAlert} />
 
       <ModalBody>
         <p className="body-body2-medium text-sys-color-text-secondary">
@@ -155,7 +164,7 @@ export default function ClaimTestnetModal({
         connectors={bitcoinWallets}
         network={BitcoinNetwork.Regtest}
       >
-        <ClaimTestnetModalContent />
+        <ClaimTestnetModalContent onClose={onClose} />
       </BitcoinWalletProvider>
     </Modal>
   );
