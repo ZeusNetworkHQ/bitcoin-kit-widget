@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, use, useMemo } from "react";
+import { createContext, useContext, useMemo } from "react";
 import { BitcoinNetwork, ZeusWidgetWidgetConfig } from "zeus-widget";
 import { Connectors, useDeriveWalletConnector } from "zeus-widget/bitcoin";
 
@@ -12,7 +12,7 @@ function WidgetConfigProvider({
   ...props
 }: React.PropsWithChildren<ZeusWidgetWidgetConfig>) {
   const derivedWalletConnector = useDeriveWalletConnector(
-    bitcoinNetwork || BitcoinNetwork.Regtest
+    bitcoinNetwork || BitcoinNetwork.Regtest,
   );
 
   const defaultWallets = useMemo(
@@ -24,7 +24,7 @@ function WidgetConfigProvider({
       new Connectors.UniSatConnector(),
       new Connectors.XverseConnector(),
     ],
-    []
+    [],
   );
 
   const bitcoinWallets = useMemo(() => {
@@ -32,7 +32,7 @@ function WidgetConfigProvider({
   }, [derivedWalletConnector, defaultWallets]);
 
   return (
-    <WidgetConfigContext
+    <WidgetConfigContext.Provider
       value={{
         ...props,
         bitcoinNetwork,
@@ -40,14 +40,14 @@ function WidgetConfigProvider({
       }}
     >
       {children}
-    </WidgetConfigContext>
+    </WidgetConfigContext.Provider>
   );
 }
 
 export default WidgetConfigProvider;
 
 export function useWidgetConfig() {
-  const context = use(WidgetConfigContext);
+  const context = useContext(WidgetConfigContext);
   if (!context) {
     throw new Error("useConfig must be used within a ConfigProvider");
   }

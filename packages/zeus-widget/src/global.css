@@ -19,13 +19,21 @@
     #ffd4fd 59.61%,
     #ceabff 97.04%
   );
-  box-shadow: 0px 4px 12px 0px #ffffff80 inset, 0px 4px 4px 0px #ffffff40 inset;
+  box-shadow:
+    0px 4px 12px 0px #ffffff80 inset,
+    0px 4px 4px 0px #ffffff40 inset;
   color: black;
 }
 
 .zeus\:gradient-bg:enabled:hover {
-  box-shadow: inset 0px 4px 4px rgba(255, 255, 255, 0.25),
+  box-shadow:
+    inset 0px 4px 4px rgba(255, 255, 255, 0.25),
     inset 0px 4px 16px rgba(255, 255, 255, 1);
+}
+
+.zeus\:gradient-bg:disabled {
+  color: #8b8a9e;
+  opacity: 0.4;
 }
 
 .zeus\:secondary-bg {
@@ -43,7 +51,8 @@
 .zeus\:tertiary-colors:hover {
   background-color: #16161b;
   color: #f1f0f3;
-  box-shadow: 0px -4px 12px 0px #8b8a9e26 inset,
+  box-shadow:
+    0px -4px 12px 0px #8b8a9e26 inset,
     0px 4px 12px 0px #8b8a9e26 inset;
 }
 
@@ -63,7 +72,8 @@
   width: 100%;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(
+  background:
+    linear-gradient(
       90deg,
       rgba(178, 131, 255, 0.25) 0.28%,
       rgba(253, 131, 255, 0.25) 21.32%,
@@ -83,7 +93,8 @@
   width: calc(100% - 2px);
   height: calc(100% - 2px);
   border-radius: inherit;
-  background: linear-gradient(
+  background:
+    linear-gradient(
       90.83deg,
       rgba(253, 131, 255, 0.08) 0%,
       rgba(178, 131, 255, 0.08) 10%,

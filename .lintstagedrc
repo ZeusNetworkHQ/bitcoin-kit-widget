@@ -1,0 +1,11 @@
+{
+  "*.{js,jsx,ts,tsx}": ["prettier --write"],
+  "*.{json,md,yml,scss}": ["prettier --write"],
+
+  "apps/zeus-widget-demo/*.{js,jsx,ts,tsx}": ["pnpm demo eslint --fix"],
+  "packages/zeus-widget/*.{js,jsx,ts,tsx}": ["pnpm widget eslint --fix"],
+  "packages/core/*.{js,jsx,ts,tsx}": ["pnpm core eslint --fix"],
+  "packages/bitcoin-wallet/*.{js,jsx,ts,tsx}": [
+    "pnpm bitcoin-wallet eslint --fix"
+  ]
+}

@@ -10,9 +10,11 @@ import {
   SolflareWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
-import { BitcoinNetwork, SolanaNetwork } from "zeus-widget";
-import WidgetConfigProvider from "@/providers/WidgetConfigProvider";
 import { useMemo } from "react";
+import { enqueueSnackbar, SnackbarProvider } from "notistack";
+import { BitcoinNetwork, SolanaNetwork } from "zeus-widget";
+
+import WidgetConfigProvider from "@/providers/WidgetConfigProvider";
 
 import "@solana/wallet-adapter-react-ui/styles.css";
 import "./globals.css";
@@ -29,7 +31,7 @@ export default function Provider({
 }>) {
   const wallets = useMemo(
     () => [new PhantomWalletAdapter(), new SolflareWalletAdapter()],
-    []
+    [],
   );
 
   return (
@@ -39,8 +41,17 @@ export default function Provider({
           <WidgetConfigProvider
             solanaNetwork={SOLANA_NETWORK}
             bitcoinNetwork={BITCOIN_NETWORK}
+            onError={(error) =>
+              enqueueSnackbar(error.message, { variant: "error" })
+            }
+            onSuccess={(message) =>
+              enqueueSnackbar(message, { variant: "success" })
+            }
           >
             {children}
+            <SnackbarProvider
+              anchorOrigin={{ horizontal: "right", vertical: "top" }}
+            />
           </WidgetConfigProvider>
         </WalletModalProvider>
       </WalletProvider>

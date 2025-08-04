@@ -72,7 +72,7 @@ function ZeusWidgetBase({ config, className }: ZeusWidgetProps) {
           className={cn(
             "zeus:grow zeus:p-[10px] zeus:flex zeus:flex-row zeus:items-center zeus:justify-center zeus:body-body2-semibold zeus:rounded-[12px] zeus:cursor-pointer zeus:text-[#8B8A9E] zeus:h-[40px] zeus:transition-colors zeus:gap-[8px]",
             selectedTab === tab.value &&
-              "zeus:text-[#FFABFE] zeus:bg-[#FD82FF1A]"
+              "zeus:text-[#FFABFE] zeus:bg-[#FD82FF1A]",
           )}
           onClick={() => setSelectedTab(tab.value)}
         >
@@ -108,7 +108,7 @@ function ZeusWidgetBase({ config, className }: ZeusWidgetProps) {
           {
             variant: "brand.twitter",
             label: "X",
-            href: "https://x.com/ApolloByZeus",
+            href: "https://x.com/ZeusNetworkHQ",
           },
           { variant: "brand.gitbook", label: "GitBook", href: undefined },
         ] as const
@@ -131,7 +131,7 @@ function ZeusWidgetBase({ config, className }: ZeusWidgetProps) {
       <div
         className={cn(
           "zeus:flex zeus:flex-col zeus:transition zeus:pb-[4px]",
-          className
+          className,
         )}
       >
         <div className="widget-tabs zeus:flex zeus:flex-row zeus:gap-[4px] zeus:items-center zeus:w-full zeus:mb-[12px] zeus:pb-[12px] zeus:transition-all zeus:sticky zeus:top-0 zeus:bg-[#202027]">
@@ -166,7 +166,7 @@ function ZeusWidget({
       {...props}
       className={cn(
         "zeus:bg-[#202027] zeus:border zeus:border-solid zeus:border-[#8B8A9E4D] zeus:p-[12px] zeus:pt-0 zeus:w-[408px] zeus:max-w-[calc(100vw_-_32px)] zeus:rounded-[16px] zeus:max-h-[75vh] zeus:overflow-y-auto zeus:[&_.widget-tabs]:pt-[12px]",
-        className
+        className,
       )}
     >
       <ZeusWidgetBase config={config} />
@@ -197,7 +197,7 @@ ZeusWidget.Popover = function PopoverZeusWidget({
       <PopoverContent {...props}>
         <div
           className={cn(
-            "zeus:bg-[#202027] zeus:border zeus:border-solid zeus:border-[#8B8A9E4D] zeus:p-[12px] zeus:pt-0 zeus:w-[408px] zeus:max-w-[calc(100vw_-_32px)] zeus:rounded-[16px] zeus:max-h-[75vh] zeus:overflow-y-auto zeus:[&_.widget-tabs]:pt-[12px]"
+            "zeus:bg-[#202027] zeus:border zeus:border-solid zeus:border-[#8B8A9E4D] zeus:p-[12px] zeus:pt-0 zeus:w-[408px] zeus:max-w-[calc(100vw_-_32px)] zeus:rounded-[16px] zeus:max-h-[75vh] zeus:overflow-y-auto zeus:[&_.widget-tabs]:pt-[12px]",
           )}
         >
           <ZeusWidgetBase config={config} />
@@ -238,7 +238,7 @@ ZeusWidget.Dialog = function DialogZeusWidget({
       {...props}
       className={cn(
         "zeus:bg-[#202027] zeus:border zeus:border-solid zeus:border-[#8B8A9E4D] zeus:p-[12px] zeus:w-[408px] zeus:rounded-[16px] zeus:max-h-[calc(100vh_-_32px)] zeus:overflow-y-auto",
-        className
+        className,
       )}
     >
       <DialogTitle hidden />

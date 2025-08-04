@@ -1,9 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useBitcoinWallet } from "@zeus-widget/bitcoin-wallet";
 
 import BitcoinWalletSelector from "@/components/BitcoinWalletSelector";
 import Icon from "@/components/Icon";
+import { truncateMiddle } from "@/utils";
 
 export interface BitcoinAddressInputProps {
   address?: string;
@@ -12,6 +13,7 @@ export interface BitcoinAddressInputProps {
 
 function BitcoinAddressInput({ address, onChange }: BitcoinAddressInputProps) {
   const bitcoinWallet = useBitcoinWallet();
+  const [inputFocused, setInputFocused] = useState(false);
   const connected = !!bitcoinWallet?.p2tr;
 
   const onChangeRef = useRef(onChange);
@@ -30,9 +32,12 @@ function BitcoinAddressInput({ address, onChange }: BitcoinAddressInputProps) {
   return (
     <div className="zeus:p-[8px] zeus:bg-[#16161B] zeus:border zeus:border-[#8B8A9E26] zeus:border-solid zeus:rounded-[12px] zeus:body-body1-semibold zeus:text-start zeus:wrap-anywhere zeus:gap-[12px] zeus:flex zeus:flex-row zeus:items-center">
       <input
-        value={address}
+        value={inputFocused ? address : truncateMiddle(address || "", 22, 11)}
         disabled={connected}
-        className="zeus:pl-[10px] zeus:py-[6px] zeus:grow zeus:outline-none"
+        className="zeus:pl-[10px] zeus:py-[6px] zeus:grow zeus:outline-none zeus:min-h-[38px]"
+        placeholder="Enter Bitcoin Address"
+        onFocus={() => setInputFocused(true)}
+        onBlur={() => setInputFocused(false)}
         onChange={(event) => onChange?.(event.target.value)}
       />
 
@@ -46,7 +51,7 @@ function BitcoinAddressInput({ address, onChange }: BitcoinAddressInputProps) {
         </button>
       )}
 
-      {!connected && (
+      {!connected && address === "" && (
         <BitcoinWalletSelector>
           <BitcoinWalletSelector.Trigger asChild>
             <button
@@ -57,6 +62,16 @@ function BitcoinAddressInput({ address, onChange }: BitcoinAddressInputProps) {
             </button>
           </BitcoinWalletSelector.Trigger>
         </BitcoinWalletSelector>
+      )}
+
+      {!connected && address !== "" && (
+        <button
+          type="button"
+          onClick={() => onChange?.("")}
+          className="zeus:cursor-pointer zeus:px-[12px]"
+        >
+          <Icon variant="clear" size={12} className="zeus:text-[#8B8A9E]" />
+        </button>
       )}
     </div>
   );

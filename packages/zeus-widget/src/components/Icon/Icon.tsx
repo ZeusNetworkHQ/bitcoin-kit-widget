@@ -3,6 +3,7 @@ import GitbookIcon from "./brands/gitbook.svg?react";
 import TwitterIcon from "./brands/twitter.svg?react";
 import ZBtcIcon from "./brands/zbtc.svg?react";
 import ZeusBWIcon from "./brands/zeus-bw.svg?react";
+import ClearIcon from "./icons/clear.svg?react";
 import ClockIcon from "./icons/clock.svg?react";
 import ConnectIcon from "./icons/connect.svg?react";
 import CopyIcon from "./icons/copy.svg?react";
@@ -20,6 +21,7 @@ export const Variant = {
   clock: ClockIcon,
   wallet: WalletIcon,
   error: ErrorIcon,
+  clear: ClearIcon,
   "wallet-sm": WalletSmIcon,
 
   "brand.btc": BtcIcon,
