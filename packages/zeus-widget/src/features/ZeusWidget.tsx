@@ -110,7 +110,11 @@ function ZeusWidgetBase({ config, className }: ZeusWidgetProps) {
             label: "X",
             href: "https://x.com/ZeusNetworkHQ",
           },
-          { variant: "brand.gitbook", label: "GitBook", href: undefined },
+          {
+            variant: "brand.gitbook",
+            label: "GitBook",
+            href: "https://zeusnetwork.xyz/developers",
+          },
         ] as const
       ).map((item) => (
         <a
