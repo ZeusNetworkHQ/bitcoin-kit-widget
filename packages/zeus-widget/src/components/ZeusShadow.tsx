@@ -1,10 +1,17 @@
-import React, { use, useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { createPortal } from "react-dom";
 
 import css from "@/global.css?inline";
 
-const Context = React.createContext<() => ShadowRoot | null>(() => null);
+const Context = createContext<() => ShadowRoot | null>(() => null);
 
 export interface ZeusShadowProps {
   children: React.ReactNode;
@@ -24,7 +31,7 @@ export interface ZeusShadowProps {
  * @returns A component that renders children within a shadow DOM with isolated styles
  */
 const ZeusShadow = ({ children, portal = false }: ZeusShadowProps) => {
-  const getParentShadowRoot = use(Context);
+  const getParentShadowRoot = useContext(Context);
 
   const hostRef = useRef<HTMLDivElement>(null);
   const parentShadowRoot = getParentShadowRoot();
@@ -53,7 +60,7 @@ const ZeusShadow = ({ children, portal = false }: ZeusShadowProps) => {
   const contentElement = (
     <div ref={hostRef} style={{ display: "contents" }}>
       {shadowRootRef.current && (
-        <Context value={getShadowRoot}>
+        <Context.Provider value={getShadowRoot}>
           {createPortal(
             <>
               <style>{css}</style>
@@ -61,7 +68,7 @@ const ZeusShadow = ({ children, portal = false }: ZeusShadowProps) => {
             </>,
             shadowRootRef.current
           )}
-        </Context>
+        </Context.Provider>
       )}
     </div>
   );
@@ -85,7 +92,7 @@ const ZeusShadow = ({ children, portal = false }: ZeusShadowProps) => {
 };
 
 ZeusShadow.useShadowRoot = () => {
-  const getShadowRoot = use(Context);
+  const getShadowRoot = useContext(Context);
   return getShadowRoot();
 };
 

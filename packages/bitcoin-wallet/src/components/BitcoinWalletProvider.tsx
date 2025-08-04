@@ -89,7 +89,7 @@ function BitcoinWalletProvider({
   }
 
   return (
-    <BitcoinWalletContext
+    <BitcoinWalletContext.Provider
       value={useMemo(
         () => ({
           pubkey,
@@ -115,7 +115,7 @@ function BitcoinWalletProvider({
       )}
     >
       {children}
-    </BitcoinWalletContext>
+    </BitcoinWalletContext.Provider>
   );
 }
 

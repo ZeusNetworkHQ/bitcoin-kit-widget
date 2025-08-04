@@ -29,6 +29,7 @@ export default defineConfig({
       external: [
         "react",
         "react/jsx-runtime",
+        "react/jsx-dev-runtime",
         "react-dom",
         "@solana/wallet-adapter-react",
       ],

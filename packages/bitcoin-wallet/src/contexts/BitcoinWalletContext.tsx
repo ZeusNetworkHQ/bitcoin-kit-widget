@@ -1,4 +1,4 @@
-import { createContext, use } from "react";
+import { createContext, useContext } from "react";
 
 import * as bitcoin from "bitcoinjs-lib";
 
@@ -19,7 +19,7 @@ export interface BitcoinWallet {
 export const BitcoinWalletContext = createContext<BitcoinWallet | null>(null);
 
 export const useBitcoinWallet = () => {
-  const value = use(BitcoinWalletContext);
+  const value = useContext(BitcoinWalletContext);
 
   if (!value) {
     throw new Error(

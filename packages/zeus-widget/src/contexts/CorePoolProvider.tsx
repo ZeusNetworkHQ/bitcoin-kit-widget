@@ -1,4 +1,4 @@
-import { createContext, use, useMemo } from "react";
+import { createContext, useContext, useMemo } from "react";
 
 import { useConnection } from "@solana/wallet-adapter-react";
 import {
@@ -71,13 +71,15 @@ function CorePoolProvider({
     };
   }, [connection, bitcoinNetwork, solanaNetwork]);
 
-  return <CorePoolContext value={pool}>{children}</CorePoolContext>;
+  return (
+    <CorePoolContext.Provider value={pool}>{children}</CorePoolContext.Provider>
+  );
 }
 
 export default CorePoolProvider;
 
 const useCorePool = () => {
-  const pool = use(CorePoolContext);
+  const pool = useContext(CorePoolContext);
   if (!pool) {
     throw new Error("useCorePool must be used within a CorePoolProvider");
   }

@@ -1,4 +1,4 @@
-import { createContext, use, useMemo, useRef } from "react";
+import { createContext, useContext, useMemo, useRef } from "react";
 
 interface ContextValue {
   onError: (error: Error) => void;
@@ -20,7 +20,7 @@ export default function ContextProvider({
   handlersRef.current = { onError, onSuccess };
 
   return (
-    <Context
+    <Context.Provider
       value={useMemo(
         () => ({
           onError: (...args) => handlersRef.current.onError?.(...args),
@@ -30,12 +30,12 @@ export default function ContextProvider({
       )}
     >
       {children}
-    </Context>
+    </Context.Provider>
   );
 }
 
 export const useErrorHandler = () => {
-  const context = use(Context);
+  const context = useContext(Context);
   if (!context) {
     throw new Error("useErrorHandler must be used within a ContextProvider");
   }
@@ -43,7 +43,7 @@ export const useErrorHandler = () => {
 };
 
 export const useSuccessHandler = () => {
-  const context = use(Context);
+  const context = useContext(Context);
   if (!context) {
     throw new Error("useSuccessHandler must be used within a ContextProvider");
   }
