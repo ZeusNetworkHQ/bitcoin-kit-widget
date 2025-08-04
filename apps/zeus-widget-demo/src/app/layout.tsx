@@ -3,7 +3,10 @@ import { Rethink_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Provider from "./provider";
+import AppProvider from "./components/AppProvider";
+
+import "@solana/wallet-adapter-react-ui/styles.css";
+import "./globals.css";
 
 const rethinkSans = Rethink_Sans({
   variable: "--font-sans",
@@ -38,11 +41,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${rethinkSans.variable} antialiased`}>
         <div className="wrapper flex flex-col gap-y-64 lg:gap-y-64">
-          <Provider>
+          <AppProvider>
             <Header />
             {children}
             <Footer />
-          </Provider>
+          </AppProvider>
         </div>
       </body>
     </html>

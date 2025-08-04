@@ -16,9 +16,6 @@ import { BitcoinNetwork, SolanaNetwork } from "zeus-widget";
 
 import WidgetConfigProvider from "@/providers/WidgetConfigProvider";
 
-import "@solana/wallet-adapter-react-ui/styles.css";
-import "./globals.css";
-
 const SOLANA_NETWORK = SolanaNetwork.Devnet;
 const BITCOIN_NETWORK = BitcoinNetwork.Regtest;
 const ENDPOINT =
