@@ -1,69 +1,86 @@
-# React + TypeScript + Vite
+# @zeus-widget/bitcoin-wallet
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Bitcoin wallet provider and connector utilities for Zeus Widget. This package handles Bitcoin wallet integrations, providing connectors for popular Bitcoin wallets and a derive wallet functionality.
 
-Currently, two official plugins are available:
+## Development Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Prerequisites
 
-## Expanding the ESLint configuration
+- Node.js 18+
+- pnpm (workspace package manager)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Getting Started
 
-```js
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+1. Install dependencies from the workspace root:
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```bash
+pnpm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Start development server:
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
-
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```bash
+pnpm dev
 ```
+
+3. Run tests:
+
+```bash
+pnpm test
+```
+
+### Development Commands
+
+| Command                         | Description                              |
+| ------------------------------- | ---------------------------------------- |
+| `pnpm dev`                      | Start development server with hot reload |
+| `pnpm bitcoin-wallet build`     | Build the bitcoin-wallet package         |
+| `pnpm bitcoin-wallet build:dev` | Build with development configuration     |
+| `pnpm bitcoin-wallet lint`      | Run ESLint                               |
+
+### Package Structure
+
+```
+src/
+├── components/          # React components for wallet functionality
+├── connectors/         # Wallet connector implementations
+├── contexts/           # React contexts for wallet state
+├── hooks/              # Custom hooks for wallet operations
+├── types/              # TypeScript type definitions
+├── assets/             # Wallet icons and assets
+└── main.ts             # Main entry point
+```
+
+### Supported Wallets
+
+- **UniSat**: Desktop and mobile Bitcoin wallet
+- **OKX**: Multi-chain wallet with Bitcoin support
+- **Phantom**: Multi-chain wallet with Bitcoin support
+- **Xverse**: Bitcoin and Stacks wallet
+- **Muses**: Bitcoin-focused wallet
+- **Derive Wallet**: Development wallet derived from Solana wallet
+
+### Key Components
+
+- **BitcoinWalletProvider**: Main provider for wallet context
+- **BitcoinWalletSelector**: UI component for wallet selection
+- **Connectors**: Individual wallet connector implementations
+- **useDeriveWalletConnector**: Hook for derive wallet functionality
+
+### Adding New Wallet Connectors
+
+1. Create a new connector in `src/connectors/`
+2. Extend the `BaseConnector` class
+3. Implement required methods (`connect`, `disconnect`, `signTransaction`, etc.)
+4. Add wallet assets (like icons) to `src/assets/`
+5. Export the connector in `src/connectors/index.ts`
+
+### Contributing
+
+1. Make your changes in the `src/` directory
+2. Add tests for new wallet connectors
+3. Ensure all tests pass: `pnpm test`
+4. Verify build works: `pnpm bitcoin-wallet build`
+5. Submit a pull request
+
+For detailed usage documentation, see the [main README](../../README.md).

@@ -1,69 +1,71 @@
-# React + TypeScript + Vite
+# @zeus-widget/zeus-widget
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The main Zeus Widget package containing React components for Bitcoin tokenization. This package provides the primary widget components that developers use to integrate Zeus functionality into their applications.
 
-Currently, two official plugins are available:
+## Development Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Prerequisites
 
-## Expanding the ESLint configuration
+- Node.js 18+
+- pnpm (workspace package manager)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Getting Started
 
-```js
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+1. Install dependencies from the workspace root:
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```bash
+pnpm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Start development server:
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
-
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```bash
+pnpm dev
 ```
+
+3. Run tests:
+
+```bash
+pnpm test
+```
+
+### Development Commands
+
+| Command                 | Description                              |
+| ----------------------- | ---------------------------------------- |
+| `pnpm dev`              | Start development server with hot reload |
+| `pnpm widget build`     | Build the widget package                 |
+| `pnpm widget build:dev` | Build with development configuration     |
+| `pnpm widget lint`      | Run ESLint                               |
+
+### Package Structure
+
+```
+src/
+├── components/         # Reusable UI components
+├── contexts/           # React contexts for state management
+├── features/           # Feature-specific components
+├── hooks/              # Custom React hooks
+├── types/              # TypeScript type definitions
+├── utils/              # Utility functions
+├── assets/             # Static assets
+├── main.ts             # Main entry point
+└── global.css          # Global styles
+```
+
+### Key Components
+
+- **ZeusWidget**: Main widget component
+- **ZeusWidget.Popover**: Popover variant
+- **ZeusWidget.Dialog**: Modal variant
+- **ZeusShadow**: Style isolation wrapper
+- **ZeusButton**: Branded button component
+
+### Contributing
+
+1. Make your changes in the `src/` directory
+2. Ensure all tests pass: `pnpm test`
+3. Verify build works: `pnpm widget build`
+4. Submit a pull request
+
+For detailed usage documentation, see the [main README](../../README.md).
