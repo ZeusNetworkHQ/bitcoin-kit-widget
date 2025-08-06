@@ -9,16 +9,16 @@
 			"path": "../apps/zeus-widget-demo"
 		},
 		{
-			"name": "🧩 zeus-widget",
-			"path": "../packages/zeus-widget"
+			"name": "🧩 zeus-stack-widget",
+			"path": "../packages/zeus-stack-widget"
 		},
 		{
-			"name": "📦 bitcoin-wallet",
-			"path": "../packages/bitcoin-wallet"
+			"name": "📦 bitcoin-wallet-adapter",
+			"path": "../packages/bitcoin-wallet-adapter"
 		},
 		{
-			"name": "📦 core",
-			"path": "../packages/core"
+			"name": "📦 client",
+			"path": "../packages/client"
 		}
 	],
 	"settings": {}

@@ -1,13 +1,11 @@
 "use client";
 
 import { anticipate, motion } from "motion/react";
-import { DialogZeusWidget } from "zeus-widget";
+import { Widget } from "@zeus-network/zeus-stack-widget";
 
 import BadgeButton from "../BadgeButton";
 
 import { useWidgetConfig } from "@/providers/WidgetConfigProvider";
-
-import "zeus-widget/assets/style.css";
 
 export default function ModalTab() {
   const widgetConfig = useWidgetConfig();
@@ -56,13 +54,13 @@ export default function ModalTab() {
         ></img>
       </div>
 
-      <DialogZeusWidget config={widgetConfig}>
-        <DialogZeusWidget.Trigger asChild>
+      <Widget.Dialog config={widgetConfig}>
+        <Widget.Dialog.Trigger asChild>
           <BadgeButton label="Open Demo Modal" icon="ArrowTopRight" />
-        </DialogZeusWidget.Trigger>
+        </Widget.Dialog.Trigger>
 
-        <DialogZeusWidget.Content />
-      </DialogZeusWidget>
+        <Widget.Dialog.Content />
+      </Widget.Dialog>
     </div>
   );
 }

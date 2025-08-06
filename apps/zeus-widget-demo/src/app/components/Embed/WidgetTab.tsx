@@ -2,7 +2,7 @@
 
 import { anticipate, motion } from "motion/react";
 import { useState } from "react";
-import { ZeusWidget } from "zeus-widget";
+import { Widget } from "@zeus-network/zeus-stack-widget";
 
 import BadgeButton from "../BadgeButton";
 import Icon from "../Icon/Icon";
@@ -51,12 +51,12 @@ export default function WidgetTab() {
         ></motion.div>
       </div>
 
-      <ZeusWidget.Popover
+      <Widget.Popover
         config={widgetConfig}
         open={isOpened}
         onOpenChange={setIsOpened}
       >
-        <ZeusWidget.Popover.Trigger asChild>
+        <Widget.Popover.Trigger asChild>
           <motion.button
             key={isHighlighted ? "highlight" : "normal"}
             initial={{ opacity: 0 }}
@@ -68,10 +68,10 @@ export default function WidgetTab() {
             {!isOpened && <img src="branding/logo-glyph.svg"></img>}
             {isOpened && <Icon name="ChevronDown" size={18} />}
           </motion.button>
-        </ZeusWidget.Popover.Trigger>
+        </Widget.Popover.Trigger>
 
-        <ZeusWidget.Popover.Content side="top" align="end" />
-      </ZeusWidget.Popover>
+        <Widget.Popover.Content side="top" align="end" />
+      </Widget.Popover>
 
       <div className="dashed-border"></div>
       <div className="absolute flex flex-col gap-y-8 right-16 bottom-16 items-end">

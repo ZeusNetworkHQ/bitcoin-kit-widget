@@ -6,6 +6,8 @@ import Footer from "./components/Footer";
 import AppProvider from "./components/AppProvider";
 
 import "@solana/wallet-adapter-react-ui/styles.css";
+import "@zeus-network/zeus-stack-widget/assets/style.css";
+
 import "./globals.css";
 
 const rethinkSans = Rethink_Sans({

@@ -1,16 +1,22 @@
 "use client";
 
 import { createContext, useContext, useMemo } from "react";
-import { BitcoinNetwork, ZeusWidgetWidgetConfig } from "zeus-widget";
-import { Connectors, useDeriveWalletConnector } from "zeus-widget/bitcoin";
+import {
+  BitcoinNetwork,
+  WidgetWidgetConfig,
+} from "@zeus-network/zeus-stack-widget";
+import {
+  Connectors,
+  useDeriveWalletConnector,
+} from "@zeus-network/zeus-stack-widget/bitcoin-wallet-adapter";
 
-const WidgetConfigContext = createContext<ZeusWidgetWidgetConfig | null>(null);
+const WidgetConfigContext = createContext<WidgetWidgetConfig | null>(null);
 
 function WidgetConfigProvider({
   children,
   bitcoinNetwork,
   ...props
-}: React.PropsWithChildren<ZeusWidgetWidgetConfig>) {
+}: React.PropsWithChildren<WidgetWidgetConfig>) {
   const derivedWalletConnector = useDeriveWalletConnector(
     bitcoinNetwork || BitcoinNetwork.Regtest,
   );
