@@ -6,10 +6,10 @@
     "build:cloudflare": "turbo run build:cloudflare",
     "lint": "turbo run lint",
     "prepare": "husky",
-    "widget": "pnpm --filter zeus-widget",
-    "demo": "pnpm --filter @zeus-widget/zeus-widget-demo",
-    "bitcoin-wallet": "pnpm --filter @zeus-widget/bitcoin-wallet",
-    "core": "pnpm --filter @zeus-widget/core"
+    "widget": "pnpm --filter @zeus-network/zeus-stack-widget",
+    "demo": "pnpm --filter @zeus-network/zeus-widget-demo",
+    "bitcoin": "pnpm --filter @zeus-network/bitcoin-wallet-adapter",
+    "client": "pnpm --filter @zeus-network/client"
   },
   "license": "ISC",
   "packageManager": "pnpm@10.12.4",

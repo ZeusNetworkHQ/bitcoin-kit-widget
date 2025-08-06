@@ -12,7 +12,7 @@ import {
 import { clusterApiUrl } from "@solana/web3.js";
 import { useMemo } from "react";
 import { enqueueSnackbar, SnackbarProvider } from "notistack";
-import { BitcoinNetwork, SolanaNetwork } from "zeus-widget";
+import { BitcoinNetwork, SolanaNetwork } from "@zeus-network/zeus-stack-widget";
 
 import WidgetConfigProvider from "@/providers/WidgetConfigProvider";
 
@@ -38,12 +38,13 @@ export default function Provider({
           <WidgetConfigProvider
             solanaNetwork={SOLANA_NETWORK}
             bitcoinNetwork={BITCOIN_NETWORK}
-            onError={(error) =>
-              enqueueSnackbar(error.message, { variant: "error" })
-            }
-            onSuccess={(message) =>
-              enqueueSnackbar(message, { variant: "success" })
-            }
+            onError={(error) => {
+              console.log({ error });
+              enqueueSnackbar(error.message, { variant: "error" });
+            }}
+            onSuccess={(message) => {
+              enqueueSnackbar(message, { variant: "success" });
+            }}
           >
             {children}
             <SnackbarProvider

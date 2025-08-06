@@ -1,7 +1,7 @@
 "use client";
 
 import { useWidgetConfig } from "@/providers/WidgetConfigProvider";
-import { ZeusWidget } from "zeus-widget";
+import { ZeusWidget } from "@zeus-network/zeus-stack-widget";
 
 export default function IntegratedTab() {
   const config = useWidgetConfig();

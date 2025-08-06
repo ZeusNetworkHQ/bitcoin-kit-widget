@@ -1,11 +1,11 @@
-import { Clients, CoreConfig } from "@zeus-widget/core";
-import { useMemo, useState } from "react";
-import { BitcoinNetwork } from "zeus-widget";
+import { AegleApi } from "@zeus-network/client";
+import { BitcoinNetwork } from "@zeus-network/zeus-stack-widget";
 import {
   BitcoinWalletProvider,
   BitcoinWalletSelector,
   useBitcoinWallet,
-} from "zeus-widget/bitcoin";
+} from "@zeus-network/zeus-stack-widget/bitcoin-wallet-adapter";
+import { useMemo, useState } from "react";
 
 import Button from "../Button";
 import Icon from "../Icon/Icon";
@@ -21,11 +21,8 @@ function ClaimTestnetModalContent({ onClose }: { onClose?: () => void }) {
   const [completed, setCompleted] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const aegleClient = useMemo(
-    () =>
-      new Clients.Aegle({
-        coreConfig: new CoreConfig({ bitcoinNetwork: BitcoinNetwork.Regtest }),
-      }),
+  const aegleApi = useMemo(
+    () => new AegleApi({ core: { bitcoinNetwork: BitcoinNetwork.Regtest } }),
     [],
   );
 
@@ -52,7 +49,7 @@ function ClaimTestnetModalContent({ onClose }: { onClose?: () => void }) {
 
     try {
       setLoading(true);
-      await aegleClient.claimTestnetBitcoin({
+      await aegleApi.claimTestnetBitcoin({
         bitcoinP2trAddress: bitcoinWallets.p2tr,
       });
       setCompleted(true);
