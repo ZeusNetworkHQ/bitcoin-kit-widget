@@ -7,7 +7,7 @@
   "scripts": {
     "build": "rm -rf dist && vite build",
     "build:dev": "NODE_ENV=development TSX_COMPILE_ON_ERROR=true ESLINT_NO_DEV_ERRORS=true vite build",
-    "lint": "eslint ."
+    "lint": "eslint"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
@@ -38,7 +38,7 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.34.1",
     "vite": "^7.0.0",
-    "vite-plugin-dts": "~4.2.4"
+    "vite-plugin-dts": "5.0.0-beta.6"
   },
   "dependencies": {
     "@bitcoinerlab/secp256k1": "^1.1.1",
