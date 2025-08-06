@@ -35,6 +35,13 @@ function DepositPage() {
     }
   };
 
+  const waitForEdraCreation = async () => {
+    while (true) {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      if (await refreshEdra()) break;
+    }
+  };
+
   const reset = () => {
     setReady(false);
     setAmount(new BigNumber(0));
@@ -58,7 +65,7 @@ function DepositPage() {
     );
 
   if (ready && !edra)
-    return <CreateApolloAccount onComplete={() => refreshEdra()} />;
+    return <CreateApolloAccount onComplete={() => waitForEdraCreation()} />;
 
   return (
     <div className="zeus:w-full zeus:flex zeus:flex-col zeus:items-center zeus:px-[4px] zeus:gap-[8px]">

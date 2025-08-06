@@ -19,7 +19,12 @@ export default defineConfig({
       tsconfigPath: path.resolve(__dirname, "tsconfig.json"),
       insertTypesEntry: true,
       ...(process.env.NODE_ENV === "production" && {
-        rollupTypes: true,
+        bundleTypes: {
+          bundledPackages: [
+            "@zeus-network/client",
+            "@zeus-network/bitcoin-wallet-adapter",
+          ],
+        },
         compilerOptions: {
           paths: {
             ...tsconfig.compilerOptions.paths,
