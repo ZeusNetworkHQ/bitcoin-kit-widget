@@ -1,0 +1,32 @@
+name: Release Webhook
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Convert Markdown
+        uses: LoveToKnow/slackify-markdown-action@v1.0.0
+        id: slackify # Important: add an id to reference it
+        with:
+          text: ${{ github.event.release.body }}
+      - name: Send GitHub Action data to a Slack workflow
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            blocks:
+              - type: "header"
+                text:
+                  type: "plain_text"
+                  text: "🚀 Zeus Stack Widget ${{ github.event.release.tag_name }} Published"
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: "${{ steps.slackify.outputs.text }}"

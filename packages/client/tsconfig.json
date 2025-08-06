@@ -15,7 +15,6 @@
     "outDir": "./dist",
     "declaration": true,
     "declarationMap": true,
-    "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
@@ -23,8 +22,7 @@
 
     /* Linting */
     "strict": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noFallthroughCasesInSwitch": true
   },
   "include": ["src", "vite.config.ts", "tailwind.config.ts"]
 }

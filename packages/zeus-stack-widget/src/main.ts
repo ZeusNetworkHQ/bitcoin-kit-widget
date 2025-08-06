@@ -2,6 +2,8 @@ import "./global.css";
 
 export { BitcoinNetwork, SolanaNetwork } from "@zeus-network/client";
 
+export * from "@zeus-network/client/errors";
+
 export type * from "@/features/widget";
 export {
   default as Widget,

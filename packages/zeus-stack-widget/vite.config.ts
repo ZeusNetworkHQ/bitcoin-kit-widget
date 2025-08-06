@@ -7,6 +7,8 @@ import dts from "vite-plugin-dts";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 import svgr from "vite-plugin-svgr";
 
+import tsconfig from "./tsconfig.json";
+
 export default defineConfig({
   plugins: [
     react(),
@@ -15,8 +17,22 @@ export default defineConfig({
     svgr(),
     dts({
       tsconfigPath: path.resolve(__dirname, "tsconfig.json"),
-      rollupTypes: process.env.NODE_ENV === "production",
       insertTypesEntry: true,
+      ...(process.env.NODE_ENV === "production" && {
+        rollupTypes: true,
+        compilerOptions: {
+          paths: {
+            ...tsconfig.compilerOptions.paths,
+
+            // [NOTE] vite will not resolve internal packages, so we need resolve them manually
+            "@zeus-network/client": ["../../client/dist/main"],
+            "@zeus-network/client/errors": ["../../client/dist/errors"],
+            "@zeus-network/bitcoin-wallet-adapter": [
+              "../../bitcoin-wallet-adapter/dist/main",
+            ],
+          },
+        },
+      }),
     }),
     {
       name: "vite-plugin-use-client",

@@ -2,15 +2,15 @@
   "name": "@zeus-network/client",
   "type": "module",
   "private": false,
-  "types": "./dist/src/main.d.ts",
+  "types": "./dist/main.d.ts",
   "module": "./dist/main.js",
   "exports": {
     ".": {
-      "types": "./dist/src/main.d.ts",
+      "types": "./dist/main.d.ts",
       "import": "./dist/main.js"
     },
     "./errors": {
-      "types": "./dist/src/errors/index.d.ts",
+      "types": "./dist/errors/index.d.ts",
       "import": "./dist/errors.js"
     }
   },
@@ -33,7 +33,7 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.34.1",
     "vite": "^7.0.0",
-    "vite-plugin-dts": "^4.5.4"
+    "vite-plugin-dts": "~4.2.4"
   },
   "dependencies": {
     "@bitcoinerlab/secp256k1": "^1.1.1",

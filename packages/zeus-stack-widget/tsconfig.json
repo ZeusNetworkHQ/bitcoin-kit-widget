@@ -7,10 +7,8 @@
     "module": "ESNext",
     "skipLibCheck": true,
 
-    /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
     "declaration": true,
     "declarationMap": true,
     "moduleDetection": "force",
@@ -22,10 +20,8 @@
       "@/*": ["src/*"]
     },
 
-    /* Linting */
     "strict": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": false
+    "noFallthroughCasesInSwitch": true
   },
   "include": ["src", "lib", "vite.config.ts", "tailwind.config.ts"]
 }
