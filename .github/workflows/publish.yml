@@ -34,14 +34,13 @@ jobs:
       - name: Copy README
         run: cp README.md packages/zeus-stack-widget/README.md
 
-      - name: Move to widget directory
-        run: cd packages/zeus-stack-widget
-
       - name: Create .npmrc file
         run: |
           echo "@zeus-network:registry=https://registry.npmjs.org/" > .npmrc
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
           echo "access=public" >> .npmrc
+        working-directory: packages/zeus-stack-widget
 
       - name: Publish to NPM
         run: pnpm publish --no-git-checks
+        working-directory: packages/zeus-stack-widget
