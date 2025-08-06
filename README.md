@@ -1,7 +1,7 @@
-# Zeus Widget
+# Zeus Stack Widget
 
 <div align="center">
-  <img src="./apps/zeus-widget-demo/public/branding/logo-primary.svg" alt="Zeus Widget" width="300">
+  <img src="./apps/zeus-widget-demo/public/branding/logo-primary.svg" alt="Zeus Stack Widget" width="300">
   
   <p>Instantly add tokenized Bitcoin flows to any website or app—no code, no friction.</p>
 
@@ -12,7 +12,7 @@
 
 </div>
 
-The Zeus Widget is a JavaScript/React component library that provides a fully featured and customizable Bitcoin tokenization experience for web and mobile applications. The widget enables users to seamlessly deposit Bitcoin to receive zBTC (tokenized Bitcoin) and withdraw zBTC back to Bitcoin, all through an intuitive, embeddable interface.
+The Zeus Stack Widget is a JavaScript/React component library that provides a fully featured and customizable Bitcoin tokenization experience for web and mobile applications. The widget enables users to seamlessly deposit Bitcoin to receive zBTC (tokenized Bitcoin) and withdraw zBTC back to Bitcoin, all through an intuitive, embeddable interface.
 
 The widget can be embedded directly into your organization's web or mobile applications for a seamless user experience, or used in a popup/modal format for minimal integration effort.
 
@@ -20,486 +20,408 @@ See the [Usage Guide](#usage-guide) for more information on how to get started u
 
 ## Table of Contents
 
-- [Key Features](#key-features)
-- [Sample Applications](#sample-applications)
-- [Usage Guide](#usage-guide)
-  - [Prerequisites](#prerequisites)
-  - [NPM Installation](#npm-installation)
-  - [React Integration](#react-integration)
-  - [Integration Modes](#integration-modes)
-  - [Derive Wallet Integration](#derive-wallet-integration)
-  - [Troubleshooting](#troubleshooting)
-- [API Reference](#api-reference)
+- [Quick Start](#quick-start)
+- [Evaluation & Testing](#evaluation--testing)
+- [Integration Modes](#integration-modes)
+- [Wallet Setup](#wallet-setup)
+  - [Derive Wallet](#derive-wallet)
 - [Configuration](#configuration)
-- [CSS Framework Compatibility](#css-framework-compatibility)
 - [Development](#development)
-- [Documentation](#documentation)
-- [Contributing](#contributing)
-- [License](#license)
-- [Support](#support)
+- [Supported Bitcoin Wallets](#supported-bitcoin-wallets)
 
-## Key Features
-
-- **🔗 Multiple Integration Modes**: Embed as a popup, modal, or integrated component
-- **🚀 Derive Wallet**: Develop without Bitcoin extensions - uses your Solana wallet
-- **🪙 Bitcoin Wallet Support**: Compatible with popular Bitcoin wallets (UniSat, OKX, Phantom, Xverse)
-- **⚡ Solana Integration**: Built on Solana for fast, low-cost transactions
-- **🛡️ Type Safe**: Full TypeScript support
-- **📱 Mobile Ready**: Responsive design for all devices
-- **🎯 Zero Config**: Works out of the box with sensible defaults
-
-## Sample Applications
-
-Complete sample applications demonstrate usage of the Zeus Widget in embedded scenarios:
-
-- [Next.js Demo App](./apps/zeus-widget-demo) - Complete implementation with all features
-- [Live Demo](https://playground.zeusstack.dev) - Interactive playground
-
-## Usage Guide
-
-### Prerequisites
-
-Before integrating Zeus Widget, ensure your application meets these requirements:
-
-- **React 18+** - Zeus Widget is built for React applications
-- **Solana Wallet Providers** - Required for Solana blockchain integration
-
-Zeus Widget uses your application's Solana wallet context and cannot function without proper wallet provider setup.
-
-### Integration Approaches
-
-There are two primary ways to use the Zeus Widget:
-
-- **NPM Module** - Install and bundle the widget into your application (recommended)
-- **Local Development** - Clone and build the widget locally for development
-
-### NPM Installation
-
-Using our npm module is the recommended way to integrate Zeus Widget into your application. This approach gives you:
-
-- Full TypeScript support and type safety
-- Tree-shaking and optimized bundle sizes
-- Integration with your existing build process
-- Access to all widget features and customization options
-
-#### Install Zeus Widget
+## Quick Start
 
 ```bash
 # npm
-npm install zeus-widget
+npm install @zeus-network/zeus-stack-widget
 
 # yarn
-yarn add zeus-widget
+yarn add @zeus-network/zeus-stack-widget
 
 # pnpm
-pnpm add zeus-widget
+pnpm add @zeus-network/zeus-stack-widget
 ```
 
-### React Integration
+```tsx
+import {
+  ZeusWidget,
+  BitcoinNetwork,
+  SolanaNetwork,
+} from "@zeus-network/zeus-stack-widget";
+import "@zeus-network/zeus-stack-widget/assets/style.css";
 
-Zeus Widget is built as a React component library with full TypeScript support. **Important: The widget requires Solana wallet providers to be set up in your application.**
+<ZeusWidget.Popover
+  config={{
+    bitcoinNetwork: BitcoinNetwork.Regtest,
+    solanaNetwork: SolanaNetwork.Devnet,
+  }}
+>
+  <ZeusWidget.Popover.Trigger asChild>
+    <button>Open Widget</button>
+  </ZeusWidget.Popover.Trigger>
+  <ZeusWidget.Popover.Content />
+</ZeusWidget.Popover>;
+```
 
-#### Step 1: Set Up Solana Wallet Providers
+**Requirements**: React 18+ with Solana wallet providers ([setup guide](#wallet-setup))
 
-First, wrap your application with the required Solana wallet providers:
+## Evaluation & Testing
+
+Try the widget without Bitcoin wallet extensions:
 
 ```tsx
-import React, { useMemo } from "react";
+import { useDeriveWalletConnector } from "@zeus-network/zeus-stack-widget/bitcoin-wallet-adapter";
+
+const deriveWallet = useDeriveWalletConnector(BitcoinNetwork.Regtest);
+
+<ZeusWidget.Popover
+  config={{
+    bitcoinNetwork: BitcoinNetwork.Regtest,
+    solanaNetwork: SolanaNetwork.Devnet,
+    bitcoinWallets: [deriveWallet], // Uses your Solana wallet
+  }}
+>
+  {/* ... */}
+</ZeusWidget.Popover>;
+```
+
+**Live Demo**: [playground.zeusstack.dev](https://playground.zeusstack.dev)
+
+## Integration Modes
+
+The widget supports three integration patterns to fit different use cases:
+
+**Popover** (Recommended)
+
+Displays the widget as a floating popover attached to a trigger element. Best for maintaining existing UI flow.
+
+```tsx
+<ZeusWidget.Popover config={config}>
+  <ZeusWidget.Popover.Trigger asChild>
+    <button>Open</button>
+  </ZeusWidget.Popover.Trigger>
+  <ZeusWidget.Popover.Content />
+</ZeusWidget.Popover>
+```
+
+**Modal**
+
+Shows the widget in a modal dialog overlay. Ideal for focused user interactions.
+
+```tsx
+<ZeusWidget.Dialog config={config}>
+  <ZeusWidget.Dialog.Trigger asChild>
+    <button>Open</button>
+  </ZeusWidget.Dialog.Trigger>
+  <ZeusWidget.Dialog.Content />
+</ZeusWidget.Dialog>
+```
+
+**Embedded**
+
+Renders the widget directly inline with your content. Perfect for dedicated pages or sections.
+
+```tsx
+<ZeusWidget config={config} />
+```
+
+## Wallet Setup
+
+The widget requires Solana wallet providers to function. Set up the wallet context at your application root:
+
+```tsx
 import {
   ConnectionProvider,
   WalletProvider,
 } from "@solana/wallet-adapter-react";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import { PhantomWalletAdapter } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
-import {
-  PhantomWalletAdapter,
-  SolflareWalletAdapter,
-} from "@solana/wallet-adapter-wallets";
-
 import "@solana/wallet-adapter-react-ui/styles.css";
 
+const wallets = [new PhantomWalletAdapter()];
+const endpoint = clusterApiUrl("devnet");
+
 function App() {
-  const network = WalletAdapterNetwork.Mainnet;
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
-
-  const wallets = useMemo(
-    () => [new PhantomWalletAdapter(), new SolflareWalletAdapter()],
-    [],
-  );
-
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
-        {/* Your app components go here */}
-        <YourAppContent />
+        {/* Your app with ZeusWidget */}
       </WalletProvider>
     </ConnectionProvider>
   );
 }
 ```
 
-#### Step 2: Use Zeus Widget
+### Bitcoin Wallet Connectors
 
-Now you can use the Zeus Widget anywhere within your wallet provider tree:
+The widget supports multiple Bitcoin wallets through connector classes. You can customize which wallets are available to users by providing a `bitcoinWallets` array in the config.
+
+#### Custom Wallet Selection
+
+Specify which wallets to support for your use case:
 
 ```tsx
-import { ZeusWidget, BitcoinNetwork, SolanaNetwork } from "zeus-widget";
-import "zeus-widget/assets/style.css";
+import {
+  UniSatConnector,
+  XverseConnector,
+  PhantomConnector,
+  useDeriveWalletConnector,
+} from "@zeus-network/zeus-stack-widget/bitcoin-wallet-adapter";
 
-function YourAppContent() {
+function MyComponent() {
+  const deriveWallet = useDeriveWalletConnector(BitcoinNetwork.Testnet);
+
+  const bitcoinWallets = [
+    new UniSatConnector(),
+    new XverseConnector(),
+    new PhantomConnector(),
+    ...(deriveWallet ? [deriveWallet] : []), // Add derive wallet if available
+  ];
+
   return (
     <ZeusWidget.Popover
       config={{
-        bitcoinNetwork: BitcoinNetwork.Mainnet,
-        solanaNetwork: SolanaNetwork.Mainnet,
-        onSuccess: (message) => console.log("Success:", message),
-        onError: (error) => console.error("Error:", error),
+        bitcoinNetwork: BitcoinNetwork.Testnet,
+        solanaNetwork: SolanaNetwork.Devnet,
+        bitcoinWallets, // Custom wallet list
       }}
     >
-      <ZeusWidget.Popover.Trigger asChild>
-        <button>Open Zeus Widget</button>
-      </ZeusWidget.Popover.Trigger>
-      <ZeusWidget.Popover.Content side="top" />
+      {/* ... */}
     </ZeusWidget.Popover>
   );
 }
 ```
 
-> ⚠️ **Important**: Zeus Widget must be used within Solana wallet providers. The widget uses your application's wallet provider context to connect to Solana wallets.
-
-> 💡 **New to Zeus Widget?** Start with our [Derive Wallet Integration](#derive-wallet-integration) for the easiest setup - no Bitcoin wallet extensions required!
-
-### Integration Modes
-
-**1. Popover Widget (Recommended)**
+#### Available Connectors
 
 ```tsx
-<ZeusWidget.Popover config={config}>
-  <ZeusWidget.Popover.Trigger asChild>
-    <button>Open Widget</button>
-  </ZeusWidget.Popover.Trigger>
-  <ZeusWidget.Popover.Content side="top" />
-</ZeusWidget.Popover>
+import {
+  // Production wallets
+  PhantomConnector, // Mainnet only
+  UniSatConnector, // Mainnet/Testnet
+  OKXConnector, // Mainnet/Testnet
+  XverseConnector, // Mainnet/Testnet/Regtest
+
+  // Development wallets
+  MusesConnector, // Regtest only
+  useDeriveWalletConnector, // Hook for derive wallet
+} from "@zeus-network/zeus-stack-widget/bitcoin-wallet-adapter";
 ```
 
-**2. Modal Widget**
+#### Network-Specific Wallet Setup
+
+Different wallets support different networks. Here are recommended configurations:
+
+**Mainnet Configuration:**
 
 ```tsx
-<ZeusWidget.Dialog config={config}>
-  <ZeusWidget.Dialog.Trigger asChild>
-    <button>Open Widget</button>
-  </ZeusWidget.Dialog.Trigger>
-  <ZeusWidget.Dialog.Content />
-</ZeusWidget.Dialog>
+const bitcoinWallets = [
+  new PhantomConnector(),
+  new UniSatConnector(),
+  new OKXConnector(),
+  new XverseConnector(),
+];
+
+const config = {
+  bitcoinNetwork: BitcoinNetwork.Mainnet,
+  solanaNetwork: SolanaNetwork.Mainnet,
+  bitcoinWallets,
+};
 ```
 
-**3. Integrated Widget**
+**Development Configuration:**
 
 ```tsx
-<ZeusWidget config={config} />
-```
-
-### Derive Wallet Integration
-
-**The easiest way to get started!** Use the Derive Wallet to test Zeus Widget without installing Bitcoin wallet extensions. It creates a Bitcoin wallet derived from your connected Solana wallet.
-
-> ⚠️ **Prerequisites**: Ensure you have [set up Solana wallet providers](#react-integration) in your application before using any Zeus Widget features.
-
-#### Quick Start with Derive Wallet
-
-```tsx
-import { ZeusWidget, BitcoinNetwork, SolanaNetwork } from "zeus-widget";
-import { useDeriveWalletConnector } from "zeus-widget/bitcoin";
-import "zeus-widget/assets/style.css";
-
-function YourAppContent() {
+function DevelopmentSetup() {
   const deriveWallet = useDeriveWalletConnector(BitcoinNetwork.Regtest);
+
+  const bitcoinWallets = [
+    new XverseConnector(), // Supports Regtest
+    new MusesConnector(), // Development-focused
+    ...(deriveWallet ? [deriveWallet] : []),
+  ];
 
   return (
     <ZeusWidget.Popover
       config={{
         bitcoinNetwork: BitcoinNetwork.Regtest,
         solanaNetwork: SolanaNetwork.Devnet,
-        bitcoinWallets: [deriveWallet], // No Bitcoin extensions needed!
+        bitcoinWallets,
       }}
     >
-      <ZeusWidget.Popover.Trigger asChild>
-        <button>Test Zeus Widget</button>
-      </ZeusWidget.Popover.Trigger>
-      <ZeusWidget.Popover.Content side="top" />
+      {/* ... */}
     </ZeusWidget.Popover>
   );
 }
 ```
 
-#### Why Use Derive Wallet?
+#### Wallet Detection
 
-- ✅ **No Bitcoin wallet installation required**
-- ✅ **Perfect for development and testing**
-- ✅ **Uses your existing Solana wallet**
-- ✅ **Simplified setup and onboarding**
-
-### Troubleshooting
-
-#### Common Setup Issues
-
-**Error: "Cannot read properties of undefined (reading 'publicKey')"**
-
-- Ensure Zeus Widget is used within Solana wallet providers
-- Verify that `@solana/wallet-adapter-react` is properly installed and configured
-
-**Error: "Module not found: @solana/wallet-adapter-react"**
-
-- Install the required peer dependencies listed in the [NPM Installation](#npm-installation) section
-
-**Styling Issues**
-
-- Import the required CSS files: `zeus-widget/assets/style.css` and `@solana/wallet-adapter-react-ui/styles.css`
-- For non-Tailwind projects, wrap components with `ZeusShadow`
-
-**Network Mismatch**
-
-- Ensure your Solana wallet provider network matches the `solanaNetwork` config in Zeus Widget
-
-## API Reference
-
-### ZeusWidget
-
-The main Zeus Widget component for direct embedding in your React application.
+The widget automatically detects which wallets are installed and ready:
 
 ```tsx
-import { ZeusWidget, BitcoinNetwork, SolanaNetwork } from "zeus-widget";
-import "zeus-widget/assets/style.css";
+import { UniSatConnector } from "@zeus-network/zeus-stack-widget/bitcoin-wallet-adapter";
 
-function App() {
+const unisatWallet = new UniSatConnector();
+
+// Check if wallet is available
+if (unisatWallet.isReady()) {
+  console.log("UniSat wallet is installed and ready");
+} else {
+  console.log("UniSat wallet not found - user will see install prompt");
+}
+```
+
+### Derive Wallet
+
+The Derive Wallet is a unique feature that creates a Bitcoin wallet derived from your connected Solana wallet. This eliminates the need to install Bitcoin wallet extensions during development and testing.
+
+#### How It Works
+
+1. **Derives Bitcoin Private Key**: Uses your Solana wallet's signature to deterministically generate a Bitcoin private key
+2. **Creates Bitcoin Addresses**: Generates P2PKH, P2WPKH, and P2TR (Taproot) addresses from the derived key
+3. **Signs Transactions**: Can sign PSBTs (Partially Signed Bitcoin Transactions) for Zeus Widget operations
+4. **Development Focus**: Only works on Testnet and Regtest networks for security
+
+#### Key Benefits
+
+- ✅ **No Installation Required**: Uses your existing Solana wallet
+- ✅ **Deterministic**: Same Solana wallet always generates the same Bitcoin wallet
+- ✅ **Full Integration**: Works seamlessly with all Zeus Widget features
+- ✅ **Development Friendly**: Perfect for testing and prototyping
+- ✅ **Secure**: Private keys are derived locally and never transmitted
+
+#### Usage
+
+```tsx
+import { useDeriveWalletConnector } from "@zeus-network/zeus-stack-widget/bitcoin-wallet-adapter";
+
+function MyComponent() {
+  const deriveWallet = useDeriveWalletConnector(BitcoinNetwork.Regtest);
+
+  // deriveWallet will be null if Solana wallet is not connected
+  if (!deriveWallet) {
+    return <div>Please connect your Solana wallet first</div>;
+  }
+
   return (
-    <ZeusWidget
+    <ZeusWidget.Popover
       config={{
-        bitcoinNetwork: BitcoinNetwork.Mainnet,
-        solanaNetwork: SolanaNetwork.Mainnet,
-        onSuccess: (message) => console.log("Success:", message),
-        onError: (error) => console.error("Error:", error),
+        bitcoinNetwork: BitcoinNetwork.Regtest,
+        solanaNetwork: SolanaNetwork.Devnet,
+        bitcoinWallets: [deriveWallet],
       }}
-    />
+    >
+      <ZeusWidget.Popover.Trigger asChild>
+        <button>Open Widget with Derive Wallet</button>
+      </ZeusWidget.Popover.Trigger>
+      <ZeusWidget.Popover.Content />
+    </ZeusWidget.Popover>
   );
 }
 ```
 
-### ZeusWidget.Popover
+#### Technical Details
 
-Renders the widget as a popover component. Recommended for most use cases.
+- **Supported Networks**: Regtest only (not Mainnet for security)
+- **Address Types**: Primarily uses P2TR (Taproot) addresses
+- **Signing**: Supports PSBT signing with tweaked keys
+- **Apollo Integration**: Compatible with [playground.zeusstack.dev](https://playground.zeusstack.dev) and [btc.apollodex.io/claim](https://btc.apollodex.io/claim) for claiming test funds
 
-```tsx
-<ZeusWidget.Popover config={config}>
-  <ZeusWidget.Popover.Trigger asChild>
-    <button>Open Widget</button>
-  </ZeusWidget.Popover.Trigger>
-  <ZeusWidget.Popover.Content side="top" />
-</ZeusWidget.Popover>
-```
+#### Limitations
 
-### ZeusWidget.Dialog
-
-Renders the widget as a modal dialog.
-
-```tsx
-<ZeusWidget.Dialog config={config}>
-  <ZeusWidget.Dialog.Trigger asChild>
-    <button>Open Widget</button>
-  </ZeusWidget.Dialog.Trigger>
-  <ZeusWidget.Dialog.Content />
-</ZeusWidget.Dialog>
-```
-
-### ZeusShadow
-
-Provides style isolation for non-Tailwind projects to prevent CSS conflicts.
-
-```tsx
-import { ZeusShadow, ZeusWidget } from "zeus-widget";
-
-<ZeusShadow>
-  <ZeusWidget config={config} />
-</ZeusShadow>
-
-// or
-
-<ZeusWidget.Dialog config={config}>
-  <ZeusWidget.Dialog.Trigger asChild>
-    <button>Open Widget</button>
-  </ZeusWidget.Dialog.Trigger>
-  <ZeusShadow>
-    <ZeusWidget.Dialog.Content />
-  </ZeusShadow>
-</ZeusWidget.Dialog>
-```
+- **Development Only**: Not available on Bitcoin Mainnet, only for development purpose
+- **Solana Dependency**: Requires active Solana wallet connection
+- **Network Restrictions**: Cannot switch Bitcoin networks dynamically
 
 ## Configuration
 
-### Basic Config Options
+### Basic Options
 
-All embedded widgets should set these basic options: `bitcoinNetwork`, `solanaNetwork`.
-
-#### bitcoinNetwork
-
-The Bitcoin network to use for transactions. Can be:
-
-- `BitcoinNetwork.Mainnet` - Bitcoin mainnet
-- `BitcoinNetwork.Regtest` - Bitcoin regtest (recommended for development)
-- `BitcoinNetwork.Testnet` - Bitcoin testnet
-
-#### solanaNetwork
-
-The Solana network to use for transactions. Can be:
-
-- `SolanaNetwork.Mainnet` - Solana mainnet
-- `SolanaNetwork.Devnet` - Solana devnet (recommended for development)
-- `SolanaNetwork.Testnet` - Solana testnet
-
-#### bitcoinWallets
-
-Array of Bitcoin wallet connectors to support.
+Core configuration options for all widget instances:
 
 ```tsx
-import { useDeriveWalletConnector, UnisatConnector } from "zeus-widget/bitcoin";
-
-const deriveWallet = useDeriveWalletConnector(BitcoinNetwork.Regtest);
-const unisatWallet = new UnisatConnector();
-
-const config = {
-  bitcoinNetwork: BitcoinNetwork.Regtest,
-  solanaNetwork: SolanaNetwork.Devnet,
-  bitcoinWallets: [deriveWallet, unisatWallet],
-};
+{
+  bitcoinNetwork: BitcoinNetwork.Mainnet | BitcoinNetwork.Testnet | BitcoinNetwork.Regtest,
+  solanaNetwork: SolanaNetwork.Mainnet | SolanaNetwork.Devnet | SolanaNetwork.Testnet,
+  bitcoinWallets?: WalletConnector[], // Optional: custom wallet adapters list
+  onSuccess?: (message: string) => void,
+  onError?: (error: Error) => void,
+}
 ```
 
-#### onSuccess
+For detailed configuration options, see [`docs/configuration.md`](./docs/configuration.md).
 
-Callback function called when a transaction is successful.
-
-```tsx
-const config = {
-  onSuccess: (message: string) => {
-    console.log("Transaction successful:", message);
-  },
-};
-```
-
-#### onError
-
-Callback function called when an error occurs.
-
-```tsx
-const config = {
-  onError: (error: Error) => {
-    console.error("Transaction failed:", error.message);
-  },
-};
-```
-
-#### ZeusShadow (Style Isolation)
+### Style Isolation
 
 For projects not using Tailwind CSS, wrap the widget with `ZeusShadow` to prevent style conflicts:
 
 ```tsx
-import { ZeusShadow, ZeusWidget } from "zeus-widget";
+import { ZeusShadow } from "@zeus-network/zeus-stack-widget";
 
 <ZeusShadow>
   <ZeusWidget config={config} />
 </ZeusShadow>;
+
+// or
+
+<ZeusWidget.Popover config={config}>
+  <ZeusWidget.Popover.Trigger>
+    <button className="my-app-button" />
+  </ZeusWidget.Popover.Trigger>
+
+  <ZeusShadow>
+    <ZeusWidget.Popover.Content />
+  </ZeusShadow>
+</ZeusWidget.Popover>;
 ```
-
-**Why use ZeusShadow?**
-
-- **Style Isolation**: Prevents Zeus Widget styles from affecting your app
-- **CSS Conflicts**: Avoids conflicts with your existing CSS frameworks
-- **Clean Integration**: Ensures the widget looks consistent regardless of your project's styling
-
-## CSS Framework Compatibility
-
-Zeus Widget works seamlessly with popular CSS frameworks:
-
-| Framework             | Support            | Integration Method |
-| --------------------- | ------------------ | ------------------ |
-| **Tailwind CSS**      | ✅ Native          | Direct import      |
-| **Bootstrap**         | ✅ With ZeusShadow | Style isolation    |
-| **Material-UI**       | ✅ With ZeusShadow | Style isolation    |
-| **Styled-Components** | ✅ With ZeusShadow | Style isolation    |
-| **Ant Design**        | ✅ With ZeusShadow | Style isolation    |
-| **Others**            | ✅ With ZeusShadow | Style isolation    |
 
 ## Development
 
-### Prerequisites
+### Local Setup
 
-- Node.js 18+
-- pnpm (recommended package manager)
-
-### Building the Widget
-
-We use pnpm as our node package manager. To install pnpm, check out their [install documentation](https://pnpm.io/installation).
-
-1. Clone this repo and navigate to the new `zeus-widget` folder.
+Clone and set up the development environment:
 
 ```bash
-git clone https://github.com/ZeusNetworkHQ/zeus-widget.git
-cd zeus-widget
-```
-
-2. Install our Node dependencies.
-
-```bash
+git clone https://github.com/ZeusNetworkHQ/zeus-stack-widget.git
+cd zeus-stack-widget
 pnpm install
 ```
 
-3. Create a configuration file in your application with your desired configuration:
-
-```tsx
-import { BitcoinNetwork, SolanaNetwork } from "zeus-widget";
-
-const config = {
-  bitcoinNetwork: BitcoinNetwork.Regtest,
-  solanaNetwork: SolanaNetwork.Devnet,
-  // Add other configuration options
-};
-```
-
-4. Start the development server and launch a browser window with the widget running.
+### Available Commands
 
 ```bash
-pnpm dev
+pnpm dev        # Start development servers
+pnpm build      # Build all packages
+pnpm lint       # Run linting
+pnpm test       # Run tests
+pnpm demo dev   # Start demo app
 ```
-
-### Build and Test Commands
-
-| Command         | Description                                |
-| --------------- | ------------------------------------------ |
-| `pnpm dev`      | Start development servers for all packages |
-| `pnpm build`    | Build all packages for production          |
-| `pnpm lint`     | Run ESLint and type checking               |
-| `pnpm test`     | Run unit tests across all packages         |
-| `pnpm demo dev` | Start the demo application                 |
 
 ### Project Structure
 
 ```
-zeus-widget/
-├── apps/
-│   └── zeus-widget-demo/    # Demo Next.js application
-├── packages/
-│   ├── zeus-widget/         # Main widget library
-│   ├── core/                # Core functionalities
-│   └── bitcoin-wallet/      # Bitcoin wallet utilities
-├── package.json             # Root package configuration
-├── turbo.json               # Turborepo configuration
-└── pnpm-workspace.yaml      # PNPM workspace configuration
+zeus-stack-widget/
+├── apps/zeus-widget-demo/           # Demo Next.js app
+└── packages/
+    ├── zeus-stack-widget/           # Main widget library
+    ├── bitcoin-wallet-adapter/      # Bitcoin wallet connectors
+    └── client/                      # API client utilities / Program interaction procedures
 ```
 
-## Documentation
+## Supported Bitcoin Wallets
 
-- [Widget API Reference](./packages/zeus-widget/README.md)
-- [Configuration Options](./docs/configuration.md)
-- [Bitcoin Wallet Integration](./packages/bitcoin-wallet/README.md)
+### Production Wallets (Mainnet/Testnet)
+
+- **Phantom**: Multi-chain wallet (Mainnet only)
+- **UniSat**: Desktop/mobile Bitcoin wallet
+- **OKX**: Multi-chain wallet
+- **Xverse**: Bitcoin and Stacks wallet
+
+### Development Wallets (Regtest)
+
+- **Derive Wallet**: Derived from Solana wallet (no installation needed)
+- **Muses**: Bitcoin-focused development wallet
 
 ## Contributing
 
@@ -520,9 +442,10 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 
 ## Support
 
-- 📖 [Documentation](https://docs.zeusnetwork.xyz)
-- 💬 [Discord](https://discord.gg/zeusnetwork)
-- 🐦 [X](https://twitter.com/ZeusNetworkHQ)
+- 🌐 [Zeus Stack](https://zeusnetwork.xyz/zeus-stack) - Official website
+- 📖 [Documentation](https://zeusnetwork.xyz/zeus-stack) - Developer docs
+- 💬 [Discord](https://discord.gg/zeusnetwork) - Community support
+- 🔗 [X](https://x.com/ZeusStackDev) - Updates and news
 
 ## Built With
 
@@ -537,11 +460,4 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 
 ---
 
-<div align="center">
-  <p>Made with ❤️ by the Zeus Network team</p>
-  <p>
-    <a href="https://zeusnetwork.xyz">Website</a> •
-    <a href="https://twitter.com/ZeusNetworkHQ">X</a> •
-    <a href="https://discord.gg/zeusnetwork">Discord</a>
-  </p>
-</div>
+**Links**: [Demo](https://playground.zeusstack.dev) • [Zeus Stack](https://zeusnetwork.xyz/zeus-stack) • [Docs](https://zeusnetwork.xyz/zeus-stack) • [Discord](https://discord.gg/zeusnetwork)

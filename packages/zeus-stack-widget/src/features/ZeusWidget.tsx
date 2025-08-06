@@ -112,7 +112,7 @@ function ZeusWidgetBase({ className }: ZeusWidgetProps) {
           {
             variant: "brand.twitter",
             label: "X",
-            href: "https://x.com/ZeusNetworkHQ",
+            href: "https://x.com/ZeusStackDev",
           },
           {
             variant: "brand.gitbook",
