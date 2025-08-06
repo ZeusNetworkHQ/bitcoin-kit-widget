@@ -1,36 +1,36 @@
-export class ZeusWidgetError extends Error {
+export class WidgetError extends Error {
   public originalError?: Error;
 
   constructor(message: string, originalError?: Error | string) {
     super(message);
-    this.name = "ZeusWidgetError";
+    this.name = "WidgetError";
     this.originalError =
       originalError instanceof Error ? originalError : new Error(originalError);
   }
 }
 
-export class DepositError extends ZeusWidgetError {
+export class DepositError extends WidgetError {
   constructor(originalError?: string | Error) {
     super("Deposit failed. Please try again.", originalError);
     this.name = "DepositError";
   }
 }
 
-export class WithdrawError extends ZeusWidgetError {
+export class WithdrawError extends WidgetError {
   constructor(originalError?: string | Error) {
     super("Withdrawal failed. Please try again.", originalError);
     this.name = "WithdrawError";
   }
 }
 
-export class ApolloAccountCreationError extends ZeusWidgetError {
+export class ApolloAccountCreationError extends WidgetError {
   constructor(originalError?: string | Error) {
     super("Failed to create Apollo account. Please try again.", originalError);
     this.name = "ApolloAccountCreationError";
   }
 }
 
-export class WalletConnectionError extends ZeusWidgetError {
+export class WalletConnectionError extends WidgetError {
   constructor(originalError?: string | Error) {
     super(
       "Failed to connect to wallet. Please check your wallet connection.",
@@ -40,7 +40,7 @@ export class WalletConnectionError extends ZeusWidgetError {
   }
 }
 
-export class ClientRequestError extends ZeusWidgetError {
+export class ClientRequestError extends WidgetError {
   constructor(
     public readonly client: string,
     originalError?: string | Error,

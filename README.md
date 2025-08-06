@@ -1,7 +1,7 @@
 # Zeus Stack Widget
 
 <div align="center">
-  <img src="./apps/zeus-widget-demo/public/branding/logo-primary.svg" alt="Zeus Stack Widget" width="300">
+  <img src="./apps/zeus-widget-demo/public/branding/zeus-stack.webp" alt="Zeus Stack Widget">
   
   <p>Instantly add tokenized Bitcoin flows to any website or app—no code, no friction.</p>
 
@@ -44,23 +44,23 @@ pnpm add @zeus-network/zeus-stack-widget
 
 ```tsx
 import {
-  ZeusWidget,
+  Widget,
   BitcoinNetwork,
   SolanaNetwork,
 } from "@zeus-network/zeus-stack-widget";
 import "@zeus-network/zeus-stack-widget/assets/style.css";
 
-<ZeusWidget.Popover
+<Widget.Popover
   config={{
     bitcoinNetwork: BitcoinNetwork.Regtest,
     solanaNetwork: SolanaNetwork.Devnet,
   }}
 >
-  <ZeusWidget.Popover.Trigger asChild>
+  <Widget.Popover.Trigger asChild>
     <button>Open Widget</button>
-  </ZeusWidget.Popover.Trigger>
-  <ZeusWidget.Popover.Content />
-</ZeusWidget.Popover>;
+  </Widget.Popover.Trigger>
+  <Widget.Popover.Content />
+</Widget.Popover>;
 ```
 
 **Requirements**: React 18+ with Solana wallet providers ([setup guide](#wallet-setup))
@@ -74,7 +74,7 @@ import { useDeriveWalletConnector } from "@zeus-network/zeus-stack-widget/bitcoi
 
 const deriveWallet = useDeriveWalletConnector(BitcoinNetwork.Regtest);
 
-<ZeusWidget.Popover
+<Widget.Popover
   config={{
     bitcoinNetwork: BitcoinNetwork.Regtest,
     solanaNetwork: SolanaNetwork.Devnet,
@@ -82,7 +82,7 @@ const deriveWallet = useDeriveWalletConnector(BitcoinNetwork.Regtest);
   }}
 >
   {/* ... */}
-</ZeusWidget.Popover>;
+</Widget.Popover>;
 ```
 
 **Live Demo**: [playground.zeusstack.dev](https://playground.zeusstack.dev)
@@ -96,12 +96,12 @@ The widget supports three integration patterns to fit different use cases:
 Displays the widget as a floating popover attached to a trigger element. Best for maintaining existing UI flow.
 
 ```tsx
-<ZeusWidget.Popover config={config}>
-  <ZeusWidget.Popover.Trigger asChild>
+<Widget.Popover config={config}>
+  <Widget.Popover.Trigger asChild>
     <button>Open</button>
-  </ZeusWidget.Popover.Trigger>
-  <ZeusWidget.Popover.Content />
-</ZeusWidget.Popover>
+  </Widget.Popover.Trigger>
+  <Widget.Popover.Content />
+</Widget.Popover>
 ```
 
 **Modal**
@@ -109,12 +109,12 @@ Displays the widget as a floating popover attached to a trigger element. Best fo
 Shows the widget in a modal dialog overlay. Ideal for focused user interactions.
 
 ```tsx
-<ZeusWidget.Dialog config={config}>
-  <ZeusWidget.Dialog.Trigger asChild>
+<Widget.Dialog config={config}>
+  <Widget.Dialog.Trigger asChild>
     <button>Open</button>
-  </ZeusWidget.Dialog.Trigger>
-  <ZeusWidget.Dialog.Content />
-</ZeusWidget.Dialog>
+  </Widget.Dialog.Trigger>
+  <Widget.Dialog.Content />
+</Widget.Dialog>
 ```
 
 **Embedded**
@@ -122,7 +122,7 @@ Shows the widget in a modal dialog overlay. Ideal for focused user interactions.
 Renders the widget directly inline with your content. Perfect for dedicated pages or sections.
 
 ```tsx
-<ZeusWidget config={config} />
+<Widget config={config} />
 ```
 
 ## Wallet Setup
@@ -145,7 +145,7 @@ function App() {
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
-        {/* Your app with ZeusWidget */}
+        {/* Your app with Widget */}
       </WalletProvider>
     </ConnectionProvider>
   );
@@ -179,7 +179,7 @@ function MyComponent() {
   ];
 
   return (
-    <ZeusWidget.Popover
+    <Widget.Popover
       config={{
         bitcoinNetwork: BitcoinNetwork.Testnet,
         solanaNetwork: SolanaNetwork.Devnet,
@@ -187,7 +187,7 @@ function MyComponent() {
       }}
     >
       {/* ... */}
-    </ZeusWidget.Popover>
+    </Widget.Popover>
   );
 }
 ```
@@ -242,7 +242,7 @@ function DevelopmentSetup() {
   ];
 
   return (
-    <ZeusWidget.Popover
+    <Widget.Popover
       config={{
         bitcoinNetwork: BitcoinNetwork.Regtest,
         solanaNetwork: SolanaNetwork.Devnet,
@@ -250,7 +250,7 @@ function DevelopmentSetup() {
       }}
     >
       {/* ... */}
-    </ZeusWidget.Popover>
+    </Widget.Popover>
   );
 }
 ```
@@ -305,18 +305,18 @@ function MyComponent() {
   }
 
   return (
-    <ZeusWidget.Popover
+    <Widget.Popover
       config={{
         bitcoinNetwork: BitcoinNetwork.Regtest,
         solanaNetwork: SolanaNetwork.Devnet,
         bitcoinWallets: [deriveWallet],
       }}
     >
-      <ZeusWidget.Popover.Trigger asChild>
+      <Widget.Popover.Trigger asChild>
         <button>Open Widget with Derive Wallet</button>
-      </ZeusWidget.Popover.Trigger>
-      <ZeusWidget.Popover.Content />
-    </ZeusWidget.Popover>
+      </Widget.Popover.Trigger>
+      <Widget.Popover.Content />
+    </Widget.Popover>
   );
 }
 ```
@@ -326,7 +326,7 @@ function MyComponent() {
 - **Supported Networks**: Regtest only (not Mainnet for security)
 - **Address Types**: Primarily uses P2TR (Taproot) addresses
 - **Signing**: Supports PSBT signing with tweaked keys
-- **Apollo Integration**: Compatible with [playground.zeusstack.dev](https://playground.zeusstack.dev) and [btc.apollodex.io/claim](https://btc.apollodex.io/claim) for claiming test funds
+- **Apollo Integration**: Compatible with [playground.zeusstack.dev](https://playground.zeusstack.dev) and [https://app.apolloportal.io/claim](https://https://app.apolloportal.io/claim) for claiming test funds
 
 #### Limitations
 
@@ -360,20 +360,20 @@ For projects not using Tailwind CSS, wrap the widget with `ZeusShadow` to preven
 import { ZeusShadow } from "@zeus-network/zeus-stack-widget";
 
 <ZeusShadow>
-  <ZeusWidget config={config} />
+  <Widget config={config} />
 </ZeusShadow>;
 
 // or
 
-<ZeusWidget.Popover config={config}>
-  <ZeusWidget.Popover.Trigger>
+<Widget.Popover config={config}>
+  <Widget.Popover.Trigger>
     <button className="my-app-button" />
-  </ZeusWidget.Popover.Trigger>
+  </Widget.Popover.Trigger>
 
   <ZeusShadow>
-    <ZeusWidget.Popover.Content />
+    <Widget.Popover.Content />
   </ZeusShadow>
-</ZeusWidget.Popover>;
+</Widget.Popover>;
 ```
 
 ## Development

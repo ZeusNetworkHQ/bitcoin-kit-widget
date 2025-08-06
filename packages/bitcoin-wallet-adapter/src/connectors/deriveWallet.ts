@@ -17,7 +17,7 @@ bitcoin.initEccLib(ecc);
  * DeriveWalletConnector allows users to derive a Bitcoin wallet from their Solana wallet.
  * This connector only works with on Testnet and Regtest networks for development purposes.
  * The bitcoin is only recognized by the Zeus Widget and Apollo and not by any other Bitcoin wallet.
- * You can claim the Bitcoin by https://btc.apollodex.io/claim.
+ * You can claim the Bitcoin by https://playground.zeusstack.dev or https://app.apolloportal.io/claim.
  */
 export class DeriveWalletConnector extends BaseConnector {
   readonly networks = [BitcoinNetwork.Testnet, BitcoinNetwork.Regtest];
