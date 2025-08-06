@@ -12,7 +12,7 @@ import { ConfigProvider } from "@/contexts/ConfigContext";
 
 const DEFAULT_BITCOIN_WALLETS: Connectors.BaseConnector[] = [];
 
-export interface ZeusWidgetProvidersProps {
+export interface WidgetProvidersProps {
   children: React.ReactNode;
   bitcoinNetwork?: BitcoinNetwork;
   solanaNetwork?: SolanaNetwork;
@@ -21,14 +21,14 @@ export interface ZeusWidgetProvidersProps {
   onSuccess?: (message: string) => void;
 }
 
-function ZeusWidgetProviders({
+function WidgetProviders({
   children,
   bitcoinNetwork = BitcoinNetwork.Regtest,
   solanaNetwork = SolanaNetwork.Devnet,
   bitcoinWallets = DEFAULT_BITCOIN_WALLETS,
   onError,
   onSuccess,
-}: ZeusWidgetProvidersProps) {
+}: WidgetProvidersProps) {
   const connectors = useMemo(
     () =>
       bitcoinWallets.filter(
@@ -54,4 +54,4 @@ function ZeusWidgetProviders({
   );
 }
 
-export default ZeusWidgetProviders;
+export default WidgetProviders;

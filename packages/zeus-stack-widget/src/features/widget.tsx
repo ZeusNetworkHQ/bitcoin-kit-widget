@@ -2,10 +2,8 @@ import { useState } from "react";
 
 import ActivityPage from "./activity";
 import DepositPage from "./deposit";
+import WidgetProviders, { type WidgetProvidersProps } from "./provider";
 import WithdrawPage from "./withdraw";
-import ZeusWidgetProviders, {
-  type ZeusWidgetProvidersProps,
-} from "./ZeusWidgetProviders";
 
 import type {
   DialogContentProps,
@@ -32,38 +30,36 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import WalletModalProvider from "@/components/WalletModalProvider";
-import { ZeusWidgetTab } from "@/types";
+import { WidgetTab } from "@/types";
 import { cn } from "@/utils/misc";
 
-export type ZeusWidgetWidgetConfig = Omit<ZeusWidgetProvidersProps, "children">;
+export type WidgetWidgetConfig = Omit<WidgetProvidersProps, "children">;
 
-interface ZeusWidgetProps {
+interface WidgetProps {
   className?: string;
 }
 
-function ZeusWidgetBase({ className }: ZeusWidgetProps) {
-  const [selectedTab, setSelectedTab] = useState(ZeusWidgetTab.DEPOSIT);
+function WidgetBase({ className }: WidgetProps) {
+  const [selectedTab, setSelectedTab] = useState(WidgetTab.DEPOSIT);
 
   const tabConfigs = [
     {
       title: "Deposit",
-      value: ZeusWidgetTab.DEPOSIT,
+      value: WidgetTab.DEPOSIT,
       icon: "connect" as const,
       content: <DepositPage />,
     },
     {
       title: "Withdraw",
-      value: ZeusWidgetTab.WITHDRAW,
+      value: WidgetTab.WITHDRAW,
       icon: "withdraw" as const,
       content: <WithdrawPage />,
     },
     {
       title: "Activity",
-      value: ZeusWidgetTab.ACTIVITY,
+      value: WidgetTab.ACTIVITY,
       icon: "clock" as const,
-      content: (
-        <ActivityPage selected={selectedTab === ZeusWidgetTab.ACTIVITY} />
-      ),
+      content: <ActivityPage selected={selectedTab === WidgetTab.ACTIVITY} />,
     },
   ];
 
@@ -112,7 +108,7 @@ function ZeusWidgetBase({ className }: ZeusWidgetProps) {
           {
             variant: "brand.twitter",
             label: "X",
-            href: "https://x.com/ZeusNetworkHQ",
+            href: "https://x.com/ZeusStackDev",
           },
           {
             variant: "brand.gitbook",
@@ -157,16 +153,12 @@ function ZeusWidgetBase({ className }: ZeusWidgetProps) {
 
 // --- INTEGRATED VARIANT ---
 
-export interface IntegratedZeusWidgetProps
+export interface IntegratedWidgetProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  config?: ZeusWidgetWidgetConfig;
+  config?: WidgetWidgetConfig;
 }
 
-function ZeusWidget({
-  config,
-  className,
-  ...props
-}: IntegratedZeusWidgetProps) {
+function Widget({ config, className, ...props }: IntegratedWidgetProps) {
   return (
     <div
       {...props}
@@ -175,41 +167,34 @@ function ZeusWidget({
         className,
       )}
     >
-      <ZeusWidgetProviders {...config}>
+      <WidgetProviders {...config}>
         <WalletModalProvider>
-          <ZeusWidgetBase />
+          <WidgetBase />
         </WalletModalProvider>
-      </ZeusWidgetProviders>
+      </WidgetProviders>
     </div>
   );
 }
 
 // --- POPOVER VARIANT ---
 
-export interface PopoverZeusWidgetProps extends PopoverProps {
-  config?: ZeusWidgetWidgetConfig;
+export interface PopoverWidgetProps extends PopoverProps {
+  config?: WidgetWidgetConfig;
 }
-function PopoverZeusWidget({
-  config,
-  children,
-  ...props
-}: PopoverZeusWidgetProps) {
+function PopoverWidget({ config, children, ...props }: PopoverWidgetProps) {
   return (
     <Popover {...props}>
-      <ZeusWidgetProviders {...config}>{children}</ZeusWidgetProviders>
+      <WidgetProviders {...config}>{children}</WidgetProviders>
     </Popover>
   );
 }
 
-export type PopoverZeusWidgetContentProps = Omit<
-  PopoverContentProps,
-  "children"
->;
+export type PopoverWidgetContentProps = Omit<PopoverContentProps, "children">;
 
-PopoverZeusWidget.Content = function PopoverZeusWidgetContent({
+PopoverWidget.Content = function PopoverWidgetContent({
   className,
   ...props
-}: PopoverZeusWidgetContentProps) {
+}: PopoverWidgetContentProps) {
   return (
     <PopoverContent {...props}>
       <div
@@ -219,43 +204,39 @@ PopoverZeusWidget.Content = function PopoverZeusWidgetContent({
         )}
       >
         <WalletModalProvider>
-          <ZeusWidgetBase />
+          <WidgetBase />
         </WalletModalProvider>
       </div>
     </PopoverContent>
   );
 };
 
-export type PopoverZeusWidgetTriggerProps = PopoverTriggerProps;
+export type PopoverWidgetTriggerProps = PopoverTriggerProps;
 
-PopoverZeusWidget.Trigger = PopoverTrigger;
+PopoverWidget.Trigger = PopoverTrigger;
 
-ZeusWidget.Popover = PopoverZeusWidget;
+Widget.Popover = PopoverWidget;
 
 // --- DIALOG VARIANT ---
 
-export interface DialogZeusWidgetProps extends DialogProps {
-  config?: ZeusWidgetWidgetConfig;
+export interface DialogWidgetProps extends DialogProps {
+  config?: WidgetWidgetConfig;
 }
 
-function DialogZeusWidget({
-  config,
-  children,
-  ...props
-}: DialogZeusWidgetProps) {
+function DialogWidget({ config, children, ...props }: DialogWidgetProps) {
   return (
     <Dialog {...props}>
-      <ZeusWidgetProviders {...config}>{children}</ZeusWidgetProviders>
+      <WidgetProviders {...config}>{children}</WidgetProviders>
     </Dialog>
   );
 }
 
-export type DialogZeusWidgetContentProps = Omit<DialogContentProps, "children">;
+export type DialogWidgetContentProps = Omit<DialogContentProps, "children">;
 
-DialogZeusWidget.Content = function DialogZeusWidgetContent({
+DialogWidget.Content = function DialogWidgetContent({
   className,
   ...props
-}: DialogZeusWidgetContentProps) {
+}: DialogWidgetContentProps) {
   return (
     <>
       <DialogOverlay>
@@ -271,19 +252,19 @@ DialogZeusWidget.Content = function DialogZeusWidgetContent({
       >
         <WalletModalProvider>
           <DialogTitle hidden />
-          <ZeusWidgetBase />
+          <WidgetBase />
         </WalletModalProvider>
       </DialogContent>
     </>
   );
 };
 
-export type DialogZeusWidgetTriggerProps = DialogTriggerProps;
+export type DialogWidgetTriggerProps = DialogTriggerProps;
 
-DialogZeusWidget.Trigger = DialogTrigger;
+DialogWidget.Trigger = DialogTrigger;
 
-ZeusWidget.Dialog = DialogZeusWidget;
+Widget.Dialog = DialogWidget;
 
-export default ZeusWidget;
+export default Widget;
 
-export { PopoverZeusWidget, DialogZeusWidget };
+export { PopoverWidget, DialogWidget };

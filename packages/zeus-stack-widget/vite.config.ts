@@ -49,7 +49,6 @@ export default defineConfig({
         "react/jsx-dev-runtime",
         "react-dom",
         "@solana/wallet-adapter-react",
-        "@solana/wallet-adapter-react-ui",
       ],
       output: {
         globals: {
