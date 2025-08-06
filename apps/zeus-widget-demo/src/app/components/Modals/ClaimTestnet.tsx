@@ -53,7 +53,6 @@ function ClaimTestnetModalContent({ onClose }: { onClose?: () => void }) {
         bitcoinP2trAddress: bitcoinWallets.p2tr,
       });
       setCompleted(true);
-      handleClose?.();
     } catch (error) {
       if (error instanceof Error) {
         setError(error);

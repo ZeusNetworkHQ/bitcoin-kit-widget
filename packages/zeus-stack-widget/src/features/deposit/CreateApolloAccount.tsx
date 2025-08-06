@@ -29,7 +29,6 @@ function CreateApolloAccount({ onComplete }: CreateApolloAccountProps) {
     try {
       setLoading(true);
       await edraModel.create(wallet);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       await handleComplete().catch(() => {});
     } catch (error) {
       if (error instanceof Error) {
