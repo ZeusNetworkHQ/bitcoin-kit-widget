@@ -42,5 +42,5 @@ jobs:
         working-directory: packages/zeus-stack-widget
 
       - name: Publish to NPM
-        run: pnpm publish --no-git-checks
+        run: npm publish --no-git-checks
         working-directory: packages/zeus-stack-widget
