@@ -1,0 +1,54 @@
+{
+  "name": "@zeus-network/client",
+  "type": "module",
+  "private": false,
+  "types": "./dist/src/main.d.ts",
+  "module": "./dist/main.js",
+  "exports": {
+    ".": {
+      "types": "./dist/src/main.d.ts",
+      "import": "./dist/main.js"
+    },
+    "./errors": {
+      "types": "./dist/src/errors/index.d.ts",
+      "import": "./dist/errors.js"
+    }
+  },
+  "scripts": {
+    "build": "rm -rf dist && vite build",
+    "build:dev": "NODE_ENV=development TSX_COMPILE_ON_ERROR=true ESLINT_NO_DEV_ERRORS=true vite build",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "@types/bn.js": "^5.2.0",
+    "@types/lodash": "^4.17.20",
+    "@types/node": "^24.0.10",
+    "@vitejs/plugin-react": "^4.5.2",
+    "eslint": "^9.29.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-import": "^2.32.0",
+    "globals": "^16.2.0",
+    "path": "^0.12.7",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.34.1",
+    "vite": "^7.0.0",
+    "vite-plugin-dts": "^4.5.4"
+  },
+  "dependencies": {
+    "@bitcoinerlab/secp256k1": "^1.1.1",
+    "@coral-xyz/borsh": "^0.30.1",
+    "@solana/spl-token": "^0.4.13",
+    "@solana/web3.js": "^1.91.8",
+    "@zeus-network/zpl-sdk": "^0.11.5",
+    "axios": "^1.10.0",
+    "bignumber.js": "^9.1.2",
+    "bitcoin-address-validation": "3.0.0",
+    "bitcoinjs-lib": "^6.1.5",
+    "bn.js": "^5.2.2",
+    "dayjs": "^1.11.13",
+    "lodash": "^4.17.21",
+    "vite-plugin-node-polyfills": "^0.24.0",
+    "zod": "^3.25.76"
+  }
+}

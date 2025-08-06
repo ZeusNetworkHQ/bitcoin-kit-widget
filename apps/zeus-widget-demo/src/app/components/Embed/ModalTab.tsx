@@ -1,13 +1,11 @@
 "use client";
 
 import { anticipate, motion } from "motion/react";
-import { DialogZeusWidget } from "zeus-widget";
+import { DialogZeusWidget } from "@zeus-network/zeus-stack-widget";
 
 import BadgeButton from "../BadgeButton";
 
 import { useWidgetConfig } from "@/providers/WidgetConfigProvider";
-
-import "zeus-widget/assets/style.css";
 
 export default function ModalTab() {
   const widgetConfig = useWidgetConfig();
