@@ -8,6 +8,8 @@ export default defineConfig({
   plugins: [
     nodePolyfills(),
     dts({
+      insertTypesEntry: true,
+      entryRoot: path.resolve(__dirname, "src"),
       tsconfigPath: path.resolve(__dirname, "tsconfig.json"),
     }),
   ],

@@ -10,6 +10,8 @@ export default defineConfig({
     react(),
     nodePolyfills(),
     dts({
+      insertTypesEntry: true,
+      entryRoot: path.resolve(__dirname, "src"),
       tsconfigPath: path.resolve(__dirname, "tsconfig.json"),
     }),
   ],
