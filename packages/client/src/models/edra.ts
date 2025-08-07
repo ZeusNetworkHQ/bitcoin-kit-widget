@@ -5,7 +5,9 @@ import {
 } from "@solana/web3.js";
 import {
   BitcoinAddressType,
+  type EntityDerivedReserve,
   type EntityDerivedReserveAddress,
+  type HotReserveBucket,
 } from "@zeus-network/zpl-sdk/two-way-peg/types";
 import BigNumber from "bignumber.js";
 import * as bitcoin from "bitcoinjs-lib";
@@ -13,8 +15,10 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
 import EmissionSettingModel from "./emission-setting";
+import HotReserveBucketModel from "./hot-reserve-bucket";
 import ReserveSettingModel from "./reserve-setting";
 
+import { AegleApi } from "@/apis";
 import { EDRA_CREATE_FEE_SOL } from "@/constants";
 import ZeusService, { type CreateZeusServiceParams } from "@/lib/service";
 import ZplProgram from "@/programs/zpl";
@@ -31,13 +35,17 @@ export type { EntityDerivedReserveAddress };
 export default class EntityDerivedReserveAddressModel extends ZeusService {
   private readonly reserveSettingModel: ReserveSettingModel;
   private readonly emissionSettingModel: EmissionSettingModel;
+  private readonly hrbModel: HotReserveBucketModel;
   private readonly zplProgram: ZplProgram;
+  private readonly aegleApi: AegleApi;
 
   constructor(params: CreateZeusServiceParams) {
     super(params);
     this.zplProgram = this.core.getOrInstall(ZplProgram);
     this.reserveSettingModel = this.core.getOrInstall(ReserveSettingModel);
     this.emissionSettingModel = this.core.getOrInstall(EmissionSettingModel);
+    this.hrbModel = this.core.getOrInstall(HotReserveBucketModel);
+    this.aegleApi = this.core.getOrInstall(AegleApi);
   }
 
   public async findMany(payload: { solanaPublicKey: PublicKey }) {
@@ -54,10 +62,19 @@ export default class EntityDerivedReserveAddressModel extends ZeusService {
   public async create(signer: SolanaSigner) {
     assertsSolanaSigner(signer);
 
+    // [NOTE] v1 to v2 migration:
+    // If the user has a Hot Reserve Bucket, we migrate it to an Entity Derived Reserve Address
+    const hrbList = await this.hrbModel.findMany({
+      solanaPublicKey: signer.publicKey,
+    });
+    if (hrbList.length > 0) {
+      const hrb = hrbList[0];
+      await this.migrateFromHotReserveBucket(signer, { hotReserveBucket: hrb });
+      return;
+    }
+
     const twoWayPegClient = await this.zplProgram.twoWayPegClient();
-
     const twoWayPegReserveSettings = await this.reserveSettingModel.findMany();
-
     const emissionSettingModel = await this.emissionSettingModel.findMany();
 
     const solBalance = lamportsToSol(
@@ -149,6 +166,7 @@ export default class EntityDerivedReserveAddressModel extends ZeusService {
       { preflightCommitment: "confirmed" },
     );
 
+    await this.announceCreation({ solanaPublicKey: signer.publicKey, edr });
     return { signature };
   }
 
@@ -159,5 +177,76 @@ export default class EntityDerivedReserveAddressModel extends ZeusService {
     })?.address;
 
     return reserveAddress || null;
+  }
+
+  // --- INTERNAL ---
+
+  private async migrateFromHotReserveBucket(
+    signer: SolanaSigner,
+    payload: {
+      hotReserveBucket: HotReserveBucket;
+    },
+  ) {
+    assertsSolanaSigner(signer);
+    const { hotReserveBucket } = payload;
+    const twoWayPegClient = await this.zplProgram.twoWayPegClient();
+    const edrList = await twoWayPegClient.accounts.getEntityDerivedReserves();
+
+    const edr = edrList.find(
+      ({ reserveSetting }) =>
+        reserveSetting.toBase58() ===
+        hotReserveBucket.reserveSetting.toBase58(),
+    );
+
+    if (!edr)
+      throw Error(
+        "Entity Derived Reserve not found for the selected reserve setting",
+      );
+
+    const ix =
+      twoWayPegClient.instructions.buildMigrateHotReserveBucketToEntityDerivedReserveAddressIx(
+        signer.publicKey,
+        hotReserveBucket.publicKey,
+        edr.publicKey,
+      );
+
+    const { blockhash } = await this.core.solanaConnection.getLatestBlockhash();
+
+    const msg = new TransactionMessage({
+      payerKey: signer.publicKey,
+      recentBlockhash: blockhash,
+      instructions: [ix],
+    }).compileToV0Message();
+
+    const tx = new VersionedTransaction(msg);
+
+    const signedTx = await signer.signTransaction(tx);
+
+    const signature = await this.core.solanaConnection.sendRawTransaction(
+      signedTx.serialize(),
+      { preflightCommitment: "confirmed" },
+    );
+
+    await this.announceCreation({ solanaPublicKey: signer.publicKey, edr });
+    return { signature };
+  }
+
+  private async announceCreation(payload: {
+    solanaPublicKey: PublicKey;
+    edr: EntityDerivedReserve;
+  }) {
+    const twoWayPegClient = await this.zplProgram.twoWayPegClient();
+    const entityDerivedReserveAddressPda = twoWayPegClient.pdas
+      .deriveEntityDerivedReserveAddress(
+        payload.solanaPublicKey,
+        payload.edr.publicKey,
+        BitcoinAddressType.P2tr,
+      )
+      .toBase58();
+
+    await this.aegleApi.postCoboAddress({
+      type: "entityDerivedReserveAddress",
+      entityDerivedReserveAddressPda,
+    });
   }
 }
