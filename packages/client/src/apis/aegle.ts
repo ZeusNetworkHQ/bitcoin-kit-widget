@@ -26,6 +26,20 @@ export default class AegleApi extends ZeusService {
     );
   }
 
+  public async postCoboAddress(payload: {
+    type: string;
+    entityDerivedReserveAddressPda: string;
+  }) {
+    return this.post(
+      "/api/v1/cobo-address",
+      {
+        type: payload.type,
+        entityDerivedReserveAddressPda: payload.entityDerivedReserveAddressPda,
+      },
+      z.unknown(),
+    );
+  }
+
   // --- INTERNAL ---
 
   private getInitializedApi() {
