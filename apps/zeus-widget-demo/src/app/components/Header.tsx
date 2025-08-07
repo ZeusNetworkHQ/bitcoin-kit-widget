@@ -49,12 +49,6 @@ export default function Header() {
             >
               <Icon name="X" size={16 as 18}></Icon>
             </a>
-            {/* <a
-              href={process.env.NEXT_PUBLIC_DISCORD_LINK}
-              className="transition hover:text-sys-color-text-primary"
-            >
-              <Icon name="Discord" size={16 as 18}></Icon>
-            </a> */}
           </div>
         </div>
         <div className="flex items-center gap-x-40">
@@ -63,7 +57,7 @@ export default function Header() {
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm font-medium text-sys-color-text-secondary hover:text-sys-color-text-primary transition"
-              href={process.env.NEXT_PUBLIC_DOCS_LINK}
+              href={process.env.NEXT_PUBLIC_WIDGET_GITHUB_LINK}
             >
               View Docs
             </a>
