@@ -1,6 +1,10 @@
+/* eslint-disable @eslint-react/hooks-extra/no-direct-set-state-in-use-effect */
+
 import React, { useContext, useEffect, useRef, useState } from "react";
 
 import { createPortal } from "react-dom";
+
+import IconProvider from "./Icon/IconProvider";
 
 import css from "@/global.css?inline";
 
@@ -69,6 +73,7 @@ const ZeusShadow = ({ children }: ZeusShadowProps) => {
           createPortal(
             <>
               <style>{css}</style>
+              <IconProvider portal={false} />
               {children}
             </>,
             shadowRoot,
