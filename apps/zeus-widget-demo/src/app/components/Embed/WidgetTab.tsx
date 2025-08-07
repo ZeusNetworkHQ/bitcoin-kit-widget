@@ -70,7 +70,9 @@ export default function WidgetTab() {
           </motion.button>
         </Widget.Popover.Trigger>
 
-        <Widget.Popover.Content side="top" align="end" />
+        <Widget.Portal>
+          <Widget.Popover.Content side="top" align="end" />
+        </Widget.Portal>
       </Widget.Popover>
 
       <div className="dashed-border"></div>

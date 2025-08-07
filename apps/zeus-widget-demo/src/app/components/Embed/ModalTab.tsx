@@ -59,7 +59,9 @@ export default function ModalTab() {
           <BadgeButton label="Open Demo Modal" icon="ArrowTopRight" />
         </Widget.Dialog.Trigger>
 
-        <Widget.Dialog.Content />
+        <Widget.Portal>
+          <Widget.Dialog.Content />
+        </Widget.Portal>
       </Widget.Dialog>
     </div>
   );

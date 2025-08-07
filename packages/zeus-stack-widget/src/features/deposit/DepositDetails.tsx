@@ -89,6 +89,9 @@ function DepositDetails({
                 Switch Wallet
               </ZeusButton>
             </BitcoinWalletSelector.Trigger>
+            <BitcoinWalletSelector.Portal>
+              <BitcoinWalletSelector.Content />
+            </BitcoinWalletSelector.Portal>
           </BitcoinWalletSelector>
         </div>
       );
@@ -218,6 +221,9 @@ function DepositDetails({
                 Connect Bitcoin Wallet
               </ZeusButton>
             </BitcoinWalletSelector.Trigger>
+            <BitcoinWalletSelector.Portal>
+              <BitcoinWalletSelector.Content />
+            </BitcoinWalletSelector.Portal>
           </BitcoinWalletSelector>
         </>
       )}
