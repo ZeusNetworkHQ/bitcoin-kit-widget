@@ -3,6 +3,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 
 import { createPortal } from "react-dom";
+import { useIsClient } from "usehooks-ts";
 
 import IconProvider from "./Icon/IconProvider";
 
@@ -32,7 +33,7 @@ const ZeusShadow = ({ children }: ZeusShadowProps) => {
     null,
   );
 
-  const [ready, setReady] = useState(false);
+  const isClient = useIsClient();
   const [shadowRoot, setShadowRoot] = useState<ShadowRoot | null>(null);
 
   const attachShadowRoot = () => {
@@ -50,7 +51,7 @@ const ZeusShadow = ({ children }: ZeusShadowProps) => {
   };
 
   useEffect(() => {
-    if (!ready) return setReady(true);
+    if (!isClient) return;
 
     function findParentShadowRoot(element: Element | null): ShadowRoot | null {
       if (!element || element === globalThis.document?.body) return null;
@@ -62,7 +63,7 @@ const ZeusShadow = ({ children }: ZeusShadowProps) => {
     setParentShadowRoot(parentShadowRoot);
 
     if (!parentShadowRoot) setShadowRoot(attachShadowRoot());
-  }, [ready]);
+  }, [isClient]);
 
   return (
     <IsApplyShadowContext.Provider value={true}>
