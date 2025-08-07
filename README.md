@@ -5,10 +5,10 @@
   
   <p>Instantly add tokenized Bitcoin flows to any website or app—no code, no friction.</p>
 
-[![npm version](https://badge.fury.io/js/zeus-widget.svg)](https://badge.fury.io/js/zeus-widget)
+[![npm version](https://badge.fury.io/js/@zeus-network%2Fzeus-stack-widget.svg)](https://www.npmjs.com/package/@zeus-network/zeus-stack-widget)
+[![GitHub branch check runs](https://img.shields.io/github/check-runs/ZeusNetworkHQ/zeus-stack-widget/main)](https://github.com/ZeusNetworkHQ/zeus-stack-widget/actions)
+[![Downloads](https://img.shields.io/npm/dm/%40zeus-network%2Fzeus-stack-widget)](https://www.npmjs.com/package/@zeus-network/zeus-stack-widget)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/ZeusNetworkHQ/zeus-widget/ci.yml?branch=main)](https://github.com/ZeusNetworkHQ/zeus-widget/actions)
-[![Downloads](https://img.shields.io/npm/dm/zeus-widget)](https://www.npmjs.com/package/zeus-widget)
 
 </div>
 
