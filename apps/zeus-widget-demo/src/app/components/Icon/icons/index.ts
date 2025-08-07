@@ -14,11 +14,13 @@ import { OkxIcon } from "./Okx";
 import { XverseIcon } from "./Xverse";
 import { UnisatIcon } from "./Unisat";
 import { TBtc } from "./TBtc";
+import { GithubIcon } from "./Github";
 
 export const IconComponents = {
   Discord: DiscordIcon,
   GitBook: Gitbook,
   X: XIcon,
+  Github: GithubIcon,
   ArrowTopRight: ArrowTopRight,
   ChevronDown: ChevronDown,
   ModalIcon: ModalIcon,

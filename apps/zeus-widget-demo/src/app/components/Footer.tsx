@@ -12,6 +12,12 @@ export default function Footer() {
         <Icon name="X" size={16 as 18}></Icon>
       </a>
       <a
+        href={process.env.NEXT_PUBLIC_GITHUB_LINK}
+        className="transition hover:text-sys-color-text-primary"
+      >
+        <Icon name="Github" size={16 as 18}></Icon>
+      </a>
+      <a
         href={process.env.NEXT_PUBLIC_DISCORD_LINK}
         className="transition hover:text-sys-color-text-primary"
       >
