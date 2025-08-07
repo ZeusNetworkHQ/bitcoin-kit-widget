@@ -200,7 +200,7 @@ export default class EntityDerivedReserveAddressModel extends ZeusService {
 
     if (!edr)
       throw Error(
-        "Entity Derived Reserve not found for the selected guardian setting",
+        "Entity Derived Reserve not found for the selected reserve setting",
       );
 
     const ix =
