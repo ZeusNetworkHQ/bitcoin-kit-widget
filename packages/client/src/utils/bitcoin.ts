@@ -36,7 +36,7 @@ export function getP2trAddress(
   return address;
 }
 
-export function getReceiverXOnlyPubkey(
+export function bitcoinAddressToBytes(
   bitcoinAddress: string,
   addressType: AddressType = getAddressInfo(bitcoinAddress)?.type,
 ): Buffer {

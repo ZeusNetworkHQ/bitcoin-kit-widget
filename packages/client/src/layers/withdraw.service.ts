@@ -19,7 +19,7 @@ import { type SolanaSigner } from "@/types";
 import {
   addressTypeToBitcoinAddressType,
   btcToSatoshi,
-  getReceiverXOnlyPubkey,
+  bitcoinAddressToBytes,
   lamportsToSol,
 } from "@/utils";
 import { assertsSolanaSigner } from "@/utils";
@@ -129,7 +129,7 @@ export default class WithdrawService extends ZeusService {
     const { bitcoinAddress, reserveSetting, amountToWithdraw } = payloads;
 
     const bitcoinAddressInfo = getAddressInfo(bitcoinAddress);
-    const xonlyReceiverPubkey = getReceiverXOnlyPubkey(
+    const receiverBitcoinAddressBytes = bitcoinAddressToBytes(
       bitcoinAddress,
       bitcoinAddressInfo.type,
     );
@@ -159,7 +159,7 @@ export default class WithdrawService extends ZeusService {
       twoWayPegClient.instructions.buildAddWithdrawalRequestWithAddressTypeIx(
         amountToWithdraw,
         new BN(Date.now() / 1000),
-        xonlyReceiverPubkey,
+        receiverBitcoinAddressBytes,
         addressTypeToBitcoinAddressType(bitcoinAddressInfo.type),
         solanaSigner.publicKey,
         twoWayPegConfiguration.layerFeeCollector,
