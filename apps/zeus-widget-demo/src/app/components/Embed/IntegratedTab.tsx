@@ -9,7 +9,9 @@ export default function IntegratedTab() {
   return (
     <div className="h-auto relative flex flex-col items-center justify-center p-16">
       <div className="dashed-border"></div>
-      <Widget className="z-[41]" config={config} />
+      <div className="z-[41]">
+        <Widget config={config} />
+      </div>
     </div>
   );
 }

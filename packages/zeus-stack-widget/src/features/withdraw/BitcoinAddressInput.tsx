@@ -47,6 +47,9 @@ function BitcoinAddressInput({ address, onChange }: BitcoinAddressInputProps) {
               Connect
             </button>
           </BitcoinWalletSelector.Trigger>
+          <BitcoinWalletSelector.Portal>
+            <BitcoinWalletSelector.Content />
+          </BitcoinWalletSelector.Portal>
         </BitcoinWalletSelector>
       );
 

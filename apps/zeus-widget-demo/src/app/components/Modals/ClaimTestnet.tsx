@@ -130,6 +130,9 @@ function ClaimTestnetModalContent({ onClose }: { onClose?: () => void }) {
                 className="w-full"
               />
             </BitcoinWalletSelector.Trigger>
+            <BitcoinWalletSelector.Portal>
+              <BitcoinWalletSelector.Content />
+            </BitcoinWalletSelector.Portal>
           </BitcoinWalletSelector>
         )}
       </ModalActions>

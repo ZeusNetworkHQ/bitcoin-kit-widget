@@ -1,3 +1,5 @@
+import { createContext, useContext, useMemo } from "react";
+
 import {
   Connectors,
   useBitcoinWallet,
@@ -13,31 +15,63 @@ import {
 
 import type { DialogContentProps } from "@radix-ui/react-dialog";
 
+import PortalHub from "@/contexts/PortalHub";
 import { cn } from "@/utils/misc";
 
-export interface BitcoinWalletSelectorProps extends DialogContentProps {
-  children: React.ReactNode;
+export interface BitcoinWalletSelectorContextValue {
   onConnected?: (connector: Connectors.BaseConnector) => void;
+  onError?: (error: Error) => void;
 }
+
+const BitcoinWalletSelectorContext =
+  createContext<BitcoinWalletSelectorContextValue>({});
 
 function BitcoinWalletSelector({
   children,
-  className,
   onConnected,
+  onError,
+}: React.PropsWithChildren<BitcoinWalletSelectorContextValue>) {
+  return (
+    <Dialog>
+      <BitcoinWalletSelectorContext.Provider
+        value={useMemo(
+          () => ({ onConnected, onError }),
+          [onConnected, onError],
+        )}
+      >
+        {children}
+      </BitcoinWalletSelectorContext.Provider>
+    </Dialog>
+  );
+}
+
+export type BitcoinWalletSelectorContentProps = Omit<
+  DialogContentProps,
+  "children"
+>;
+
+BitcoinWalletSelector.Content = function BitcoinWalletSelectorContent({
+  className,
   ...props
-}: BitcoinWalletSelectorProps) {
+}: BitcoinWalletSelectorContentProps) {
+  const { onConnected, onError } = useContext(BitcoinWalletSelectorContext);
+
   const wallet = useBitcoinWallet();
 
   const connect = async (connector: Connectors.BaseConnector) => {
-    await wallet.connect(connector);
-    onConnected?.(connector);
+    try {
+      await wallet.connect(connector);
+      onConnected?.(connector);
+    } catch (error) {
+      if (error instanceof Error) {
+        onError?.(error);
+      }
+    }
   };
 
   return (
-    <Dialog>
-      {children}
-
-      <DialogOverlay className="zeus:w-[150vw] zeus:h-[150vh] zeus:left-[-50vw] zeus:top-[-50vh] zeus:bg-[#0F0F1280] zeus:backdrop-blur-[8px]" />
+    <>
+      <DialogOverlay className="zeus:w-screen zeus:h-screen zeus:left-0 zeus:top-0 zeus:bg-[#0F0F1280] zeus:backdrop-blur-[8px]" />
 
       <DialogContent
         {...props}
@@ -71,10 +105,12 @@ function BitcoinWalletSelector({
           </div>
         </div>
       </DialogContent>
-    </Dialog>
+    </>
   );
-}
+};
 
 BitcoinWalletSelector.Trigger = DialogTrigger;
+
+BitcoinWalletSelector.Portal = PortalHub.Portal;
 
 export default BitcoinWalletSelector;
