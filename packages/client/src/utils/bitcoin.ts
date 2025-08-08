@@ -1,3 +1,4 @@
+import { BitcoinAddressType } from "@zeus-network/zpl-sdk/two-way-peg/types";
 import BigNumber from "bignumber.js";
 import { AddressType, getAddressInfo } from "bitcoin-address-validation";
 import * as bitcoin from "bitcoinjs-lib";
@@ -35,9 +36,10 @@ export function getP2trAddress(
   return address;
 }
 
-export function getReceiverXOnlyPubkey(bitcoinAddress: string): Buffer {
-  const addressType = getAddressInfo(bitcoinAddress)?.type;
-
+export function getReceiverXOnlyPubkey(
+  bitcoinAddress: string,
+  addressType: AddressType = getAddressInfo(bitcoinAddress)?.type,
+): Buffer {
   switch (addressType) {
     case AddressType.p2tr: {
       const { data: tweakedXOnlyPublicKey } =
@@ -59,6 +61,21 @@ export function getReceiverXOnlyPubkey(bitcoinAddress: string): Buffer {
       return Buffer.from(receiverAddress);
     }
 
+    default:
+      throw new Error(`Unsupported address type: ${addressType}`);
+  }
+}
+
+export function addressTypeToBitcoinAddressType(
+  addressType: AddressType,
+): BitcoinAddressType {
+  switch (addressType) {
+    case AddressType.p2tr:
+      return BitcoinAddressType.P2tr;
+    case AddressType.p2wpkh:
+      return BitcoinAddressType.P2wpkh;
+    case AddressType.p2pkh:
+      return BitcoinAddressType.P2pkh;
     default:
       throw new Error(`Unsupported address type: ${addressType}`);
   }

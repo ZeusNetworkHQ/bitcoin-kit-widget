@@ -40,7 +40,7 @@
     "@coral-xyz/borsh": "^0.30.1",
     "@solana/spl-token": "^0.4.13",
     "@solana/web3.js": "^1.91.8",
-    "@zeus-network/zpl-sdk": "^0.11.5",
+    "@zeus-network/zpl-sdk": "^0.11.6",
     "axios": "^1.10.0",
     "bignumber.js": "^9.1.2",
     "bitcoin-address-validation": "3.0.0",
