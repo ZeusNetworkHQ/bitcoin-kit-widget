@@ -4,6 +4,7 @@ import {
   TransactionMessage,
   VersionedTransaction,
 } from "@solana/web3.js";
+import { getAddressInfo } from "bitcoin-address-validation";
 import BN from "bn.js";
 
 import type BigNumber from "bignumber.js";
@@ -15,7 +16,12 @@ import ZeusService, { type CreateZeusServiceParams } from "@/lib/service";
 import ReserveSettingModel from "@/models/reserve-setting";
 import ZplApi from "@/programs/zpl";
 import { type SolanaSigner } from "@/types";
-import { btcToSatoshi, getReceiverXOnlyPubkey, lamportsToSol } from "@/utils";
+import {
+  addressTypeToBitcoinAddressType,
+  btcToSatoshi,
+  bitcoinAddressToBytes,
+  lamportsToSol,
+} from "@/utils";
 import { assertsSolanaSigner } from "@/utils";
 
 export default class WithdrawService extends ZeusService {
@@ -60,10 +66,6 @@ export default class WithdrawService extends ZeusService {
         }),
       );
 
-      const xonlyReceiverPubkey = getReceiverXOnlyPubkey(
-        payloads.bitcoinAddress,
-      );
-
       reserveSettingsWithQuota.sort((a, b) =>
         b.remainingQuota.cmp(a.remainingQuota),
       ); // Sort by remaining quota in descending order
@@ -79,7 +81,7 @@ export default class WithdrawService extends ZeusService {
 
         ixs.push(
           ...(await this.createWithdrawInstructions(solanaSigner, {
-            xonlyReceiverPubkey,
+            bitcoinAddress: payloads.bitcoinAddress,
             reserveSetting,
             amountToWithdraw,
           })),
@@ -118,13 +120,19 @@ export default class WithdrawService extends ZeusService {
   private async createWithdrawInstructions(
     solanaSigner: Required<SolanaSigner>,
     payloads: {
-      xonlyReceiverPubkey: Buffer;
+      bitcoinAddress: string;
       reserveSetting: TwoWayPegReserveSetting;
       amountToWithdraw: BN;
     },
   ) {
     assertsSolanaSigner(solanaSigner);
-    const { xonlyReceiverPubkey, reserveSetting, amountToWithdraw } = payloads;
+    const { bitcoinAddress, reserveSetting, amountToWithdraw } = payloads;
+
+    const bitcoinAddressInfo = getAddressInfo(bitcoinAddress);
+    const receiverBitcoinAddressBytes = bitcoinAddressToBytes(
+      bitcoinAddress,
+      bitcoinAddressInfo.type,
+    );
 
     const { assetMint } = await this.zplApi.reserveSetting();
     const { liquidityManagementProgramId } = await this.zplApi.accounts();
@@ -148,10 +156,11 @@ export default class WithdrawService extends ZeusService {
     );
 
     const withdrawalRequestIx =
-      twoWayPegClient.instructions.buildAddWithdrawalRequestIx(
+      twoWayPegClient.instructions.buildAddWithdrawalRequestWithAddressTypeIx(
         amountToWithdraw,
         new BN(Date.now() / 1000),
-        xonlyReceiverPubkey,
+        receiverBitcoinAddressBytes,
+        addressTypeToBitcoinAddressType(bitcoinAddressInfo.type),
         solanaSigner.publicKey,
         twoWayPegConfiguration.layerFeeCollector,
         new PublicKey(reserveSetting.address),
