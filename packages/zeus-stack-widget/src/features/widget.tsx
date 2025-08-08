@@ -1,5 +1,11 @@
 import { useState } from "react";
 
+import {
+  type PopoverContentProps,
+  type PopoverProps,
+  type PopoverTriggerProps,
+} from "@radix-ui/react-popover";
+
 import ActivityPage from "./activity";
 import DepositPage from "./deposit";
 import WidgetProviders, { type WidgetProvidersProps } from "./provider";
@@ -10,11 +16,6 @@ import type {
   DialogProps,
   DialogTriggerProps,
 } from "@radix-ui/react-dialog";
-import type {
-  PopoverContentProps,
-  PopoverProps,
-  PopoverTriggerProps,
-} from "@radix-ui/react-popover";
 
 import Icon from "@/components/Icon";
 import {
@@ -30,6 +31,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import WalletModalProvider from "@/components/WalletModalProvider";
+import PortalHub from "@/contexts/PortalHub";
 import { WidgetTab } from "@/types";
 import { cn } from "@/utils/misc";
 
@@ -240,7 +242,7 @@ DialogWidget.Content = function DialogWidgetContent({
   return (
     <>
       <DialogOverlay>
-        <div className="zeus:fixed zeus:inset-0 zeus:bg-black/50 zeus:opacity-0 zeus:transition-opacity zeus:pointer-events-none" />
+        <div className="zeus:w-screen zeus:h-screen zeus:left-0 zeus:top-0 zeus:bg-[#0F0F1280] zeus:backdrop-blur-[8px]" />
       </DialogOverlay>
 
       <DialogContent
@@ -264,6 +266,8 @@ export type DialogWidgetTriggerProps = DialogTriggerProps;
 DialogWidget.Trigger = DialogTrigger;
 
 Widget.Dialog = DialogWidget;
+
+Widget.Portal = PortalHub.Portal;
 
 export default Widget;
 

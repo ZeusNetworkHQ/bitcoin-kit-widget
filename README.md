@@ -59,7 +59,10 @@ import "@zeus-network/zeus-stack-widget/assets/style.css";
   <Widget.Popover.Trigger asChild>
     <button>Open Widget</button>
   </Widget.Popover.Trigger>
-  <Widget.Popover.Content />
+
+  <Widget.Portal>
+    <Widget.Popover.Content />
+  </Widget.Portal>
 </Widget.Popover>;
 ```
 
@@ -100,7 +103,10 @@ Displays the widget as a floating popover attached to a trigger element. Best fo
   <Widget.Popover.Trigger asChild>
     <button>Open</button>
   </Widget.Popover.Trigger>
-  <Widget.Popover.Content />
+
+  <Widget.Portal>
+    <Widget.Popover.Content />
+  </Widget.Portal>
 </Widget.Popover>
 ```
 
@@ -113,7 +119,10 @@ Shows the widget in a modal dialog overlay. Ideal for focused user interactions.
   <Widget.Dialog.Trigger asChild>
     <button>Open</button>
   </Widget.Dialog.Trigger>
-  <Widget.Dialog.Content />
+
+  <Widget.Portal>
+    <Widget.Dialog.Content />
+  </Widget.Portal>
 </Widget.Dialog>
 ```
 
@@ -315,7 +324,10 @@ function MyComponent() {
       <Widget.Popover.Trigger asChild>
         <button>Open Widget with Derive Wallet</button>
       </Widget.Popover.Trigger>
-      <Widget.Popover.Content />
+
+      <Widget.Portal>
+        <Widget.Popover.Content />
+      </Widget.Portal>
     </Widget.Popover>
   );
 }
@@ -370,9 +382,11 @@ import { ZeusShadow } from "@zeus-network/zeus-stack-widget";
     <button className="my-app-button" />
   </Widget.Popover.Trigger>
 
-  <ZeusShadow>
-    <Widget.Popover.Content />
-  </ZeusShadow>
+  <Widget.Portal>
+    <ZeusShadow>
+      <Widget.Popover.Content />
+    </ZeusShadow>
+  </Widget.Portal>
 </Widget.Popover>;
 ```
 
@@ -443,7 +457,7 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 ## Support
 
 - 🌐 [Zeus Stack](https://zeusnetwork.xyz/zeus-stack) - Official website
-- 📖 [Documentation](https://zeusnetwork.xyz/zeus-stack) - Developer docs
+- 📖 [Documentation](https://zeusnetwork.xyz/developers) - Developer docs
 - 💬 [Discord](https://discord.gg/zeusnetwork) - Community support
 - 🔗 [X](https://x.com/ZeusStackDev) - Updates and news
 
@@ -460,4 +474,4 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 
 ---
 
-**Links**: [Demo](https://playground.zeusstack.dev) • [Zeus Stack](https://zeusnetwork.xyz/zeus-stack) • [Docs](https://zeusnetwork.xyz/zeus-stack) • [Discord](https://discord.gg/zeusnetwork)
+**Links**: [Demo](https://playground.zeusstack.dev) • [Zeus Stack](https://zeusnetwork.xyz/zeus-stack) • [Docs](https://zeusnetwork.xyz/developers) • [Discord](https://discord.gg/zeusnetwork)

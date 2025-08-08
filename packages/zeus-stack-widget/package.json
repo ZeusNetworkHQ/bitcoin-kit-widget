@@ -1,8 +1,14 @@
 {
   "name": "@zeus-network/zeus-stack-widget",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "",
-  "author": "",
+  "keywords": [
+    "react",
+    "typescript",
+    "bitcoin",
+    "solana"
+  ],
+  "author": "Zeus Network",
   "license": "MIT",
   "repository": {
     "type": "git",
