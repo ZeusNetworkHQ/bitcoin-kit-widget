@@ -1,6 +1,12 @@
 /* eslint-disable @eslint-react/hooks-extra/no-direct-set-state-in-use-effect */
 
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { createPortal } from "react-dom";
 import { useIsClient } from "usehooks-ts";
@@ -9,10 +15,23 @@ import IconProvider from "./Icon/IconProvider";
 
 import css from "@/global.css?inline";
 
-const IsApplyShadowContext = React.createContext(false);
+const IsApplyShadowContext = createContext(false);
+
+function findParentShadowRoot(element: Element | null): ShadowRoot | null {
+  if (!element || element === globalThis.document?.body) return null;
+  if (element.shadowRoot) return element.shadowRoot;
+  return findParentShadowRoot(element.parentElement);
+}
+
+function initialErrorHandler() {
+  console.error(
+    "Failed to create shadow root, your browser may not support it.",
+  );
+}
 
 export interface ZeusShadowProps {
   children: React.ReactNode;
+  onError?: (error: Error) => void;
 }
 
 /**
@@ -25,49 +44,40 @@ export interface ZeusShadowProps {
  * Use this component when you need style isolation to prevent conflicts with host page styles.
  *
  * @param children - The React components to render within the shadow DOM
+ * @param onError - Optional error handler for shadow root creation errors
  * @returns A component that renders children within a shadow DOM with isolated styles
  */
-const ZeusShadow = ({ children }: ZeusShadowProps) => {
+const ZeusShadow = ({ children, onError }: ZeusShadowProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [parentShadowRoot, setParentShadowRoot] = useState<ShadowRoot | null>(
     null,
   );
+  const handleErrorRef = useRef(onError || initialErrorHandler);
 
   const isClient = useIsClient();
   const [shadowRoot, setShadowRoot] = useState<ShadowRoot | null>(null);
 
-  const attachShadowRoot = () => {
-    const host = ref.current;
-    if (!host) return null;
-
-    try {
-      return host.attachShadow({ mode: "open" });
-    } catch {
-      console.error(
-        "Failed to create shadow root, your browser may not support it.",
-      );
-      return null;
-    }
-  };
-
   useEffect(() => {
-    if (!isClient) return;
-
-    function findParentShadowRoot(element: Element | null): ShadowRoot | null {
-      if (!element || element === globalThis.document?.body) return null;
-      if (element.shadowRoot) return element.shadowRoot;
-      return findParentShadowRoot(element.parentElement);
+    function attachShadowRoot(hostElement: HTMLElement) {
+      try {
+        if (!hostElement) return null;
+        if (hostElement.shadowRoot) return hostElement.shadowRoot;
+        return hostElement.attachShadow({ mode: "open" });
+      } catch (error) {
+        handleErrorRef.current(error as Error);
+      }
     }
+
+    if (!isClient || !ref.current) return;
 
     const parentShadowRoot = findParentShadowRoot(ref.current);
     setParentShadowRoot(parentShadowRoot);
-
-    if (!parentShadowRoot) setShadowRoot(attachShadowRoot());
+    if (!parentShadowRoot) setShadowRoot(attachShadowRoot(ref.current) || null);
   }, [isClient]);
 
   return (
     <IsApplyShadowContext.Provider value={true}>
-      <div className="zeus:contents" ref={ref}>
+      <div ref={ref}>
         {parentShadowRoot && children}
         {!parentShadowRoot &&
           shadowRoot &&

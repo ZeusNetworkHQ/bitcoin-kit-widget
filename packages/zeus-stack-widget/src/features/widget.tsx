@@ -198,20 +198,18 @@ PopoverWidget.Content = function PopoverWidgetContent({
   ...props
 }: PopoverWidgetContentProps) {
   return (
-    <>
-      <PopoverContent {...props}>
-        <div
-          className={cn(
-            "zeus:bg-[#202027] zeus:border zeus:border-solid zeus:border-[#8B8A9E4D] zeus:p-[12px] zeus:pt-0 zeus:w-[408px] zeus:max-w-[calc(100vw_-_32px)] zeus:rounded-[16px] zeus:max-h-[75vh] zeus:overflow-y-auto zeus:[&_.widget-tabs]:pt-[12px]",
-            className,
-          )}
-        >
-          <WalletModalProvider>
-            <WidgetBase />
-          </WalletModalProvider>
-        </div>
-      </PopoverContent>
-    </>
+    <PopoverContent {...props}>
+      <div
+        className={cn(
+          "zeus:bg-[#202027] zeus:border zeus:border-solid zeus:border-[#8B8A9E4D] zeus:p-[12px] zeus:pt-0 zeus:w-[408px] zeus:max-w-[calc(100vw_-_32px)] zeus:rounded-[16px] zeus:max-h-[75vh] zeus:overflow-y-auto zeus:[&_.widget-tabs]:pt-[12px]",
+          className,
+        )}
+      >
+        <WalletModalProvider>
+          <WidgetBase />
+        </WalletModalProvider>
+      </div>
+    </PopoverContent>
   );
 };
 

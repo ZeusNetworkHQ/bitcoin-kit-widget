@@ -15,6 +15,8 @@ import { Variant } from "./Icon";
  *
  * By pre-rendering all icons in a hidden container, we guarantee that SVG definitions
  * are available throughout the application lifecycle.
+ *
+ * @param portal - If true, the icons will be prepended to the body in a dedicated container. Defaults to `true`.
  */
 
 function IconProvider({ portal = true } = {}) {
@@ -22,42 +24,30 @@ function IconProvider({ portal = true } = {}) {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!isClient || !portal) return;
+    if (!isClient || !portal || !globalThis.document) return;
 
-    const existingContainer = globalThis.document?.getElementById(
-      "zeus-icons-provider",
-    ) as HTMLDivElement | undefined;
+    const existingContainer = document.getElementById("zeus-icons-provider");
     if (existingContainer) {
-      setContainer(existingContainer);
-      return;
+      return setContainer(existingContainer as HTMLDivElement);
     }
 
     const div = document.createElement("div");
     div.id = "zeus-icons-provider";
-    div.style.height = "0";
-    div.style.width = "0";
-    div.style.overflow = "clip";
-    div.style.position = "fixed";
-    document.body.prepend(div);
+    document.body.prepend(div); // Ensure that the container is adding at the top
     setContainer(div);
   }, [isClient, portal]);
 
   const iconsElement = (
-    <>
+    <div style={{ height: 0, width: 0, overflow: "clip", position: "fixed" }}>
       {Object.entries(Variant).map(([key, Icon]) => (
         <Icon key={key} />
       ))}
-    </>
+    </div>
   );
 
-  if (!portal)
-    return (
-      <div style={{ height: 0, width: 0, overflow: "clip", position: "fixed" }}>
-        {iconsElement}
-      </div>
-    );
-  if (!isClient || !container) return null;
-  return createPortal(iconsElement, container);
+  if (!portal) return iconsElement;
+
+  return container && createPortal(iconsElement, container);
 }
 
 export default IconProvider;
