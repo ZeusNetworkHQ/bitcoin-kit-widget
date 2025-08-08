@@ -34,6 +34,9 @@ jobs:
       - name: Copy README
         run: cp README.md packages/zeus-stack-widget/README.md
 
+      - name: Copy LICENSE
+        run: cp LICENSE packages/zeus-stack-widget/LICENSE
+
       - name: Create .npmrc file
         run: |
           echo "@zeus-network:registry=https://registry.npmjs.org/" > .npmrc
