@@ -101,7 +101,10 @@ function DepositDetails({
         <ZeusButton
           variant="tertiary"
           className="zeus:w-full zeus:transition-all"
-          onClick={() => bitcoinWallet.disconnect()}
+          onClick={async () => {
+            bitcoinWallet.disconnect();
+            onRequestToChangeAmount?.();
+          }}
         >
           Cancel
         </ZeusButton>
