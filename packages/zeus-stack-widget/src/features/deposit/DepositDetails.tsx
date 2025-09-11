@@ -22,6 +22,7 @@ import {
 import useReserveAddress from "@/hooks/useReserveAddress";
 import useSatoshiBalance from "@/hooks/useSatoshiBalance";
 import { cn, truncateMiddle } from "@/utils";
+import { GtmEvent, GtmEventType } from "@/utils/gtm";
 
 function DepositDetails({
   amount,
@@ -78,6 +79,8 @@ function DepositDetails({
           <ZeusButton
             variant="tertiary"
             className="zeus:w-full zeus:transition-all"
+            data-gtm-type={GtmEventType.Click}
+            data-gtm-event={GtmEvent.ClickChangeAmount}
             onClick={onRequestToChangeAmount}
           >
             Change Amount
@@ -85,7 +88,12 @@ function DepositDetails({
 
           <BitcoinWalletSelector>
             <BitcoinWalletSelector.Trigger asChild>
-              <ZeusButton variant="primary" className="zeus:w-full">
+              <ZeusButton
+                variant="primary"
+                className="zeus:w-full"
+                data-gtm-type={GtmEventType.Click}
+                data-gtm-event={GtmEvent.ClickSwitchWallet}
+              >
                 Switch Wallet
               </ZeusButton>
             </BitcoinWalletSelector.Trigger>
@@ -101,6 +109,8 @@ function DepositDetails({
         <ZeusButton
           variant="tertiary"
           className="zeus:w-full zeus:transition-all"
+          data-gtm-type={GtmEventType.Click}
+          data-gtm-event={GtmEvent.ClickDepositCancel}
           onClick={async () => {
             bitcoinWallet.disconnect();
             onRequestToChangeAmount?.();
@@ -111,6 +121,8 @@ function DepositDetails({
         <ZeusButton
           variant="primary"
           className="zeus:w-full"
+          data-gtm-type={GtmEventType.Click}
+          data-gtm-event={GtmEvent.ClickDepositConfirm}
           onClick={runDeposit}
         >
           Confirm
@@ -192,6 +204,8 @@ function DepositDetails({
               <button
                 type="button"
                 className="zeus:h-[30px] zeus:w-[30px] zeus:border zeus:border-solid zeus:border-[#8B8A9E33] zeus:rounded-[8px] zeus:text-[#C7C5D1] zeus:hover:text-[#F1F0F3] zeus:bg-[#2C2C36] zeus:hover:bg-[#272730] zeus:shrink-0 zeus:cursor-pointer zeus:flex zeus:justify-center zeus:items-center zeus:transition-colors"
+                data-gtm-type={GtmEventType.Click}
+                data-gtm-event={GtmEvent.ClickCopyAddress}
                 onClick={() => copyToClipboard(reserveAddress || "")}
               >
                 <Icon variant="copy" className="zeus:text-[#C7C5D1]" />
@@ -218,6 +232,8 @@ function DepositDetails({
           <BitcoinWalletSelector>
             <BitcoinWalletSelector.Trigger asChild>
               <ZeusButton
+                data-gtm-type={GtmEventType.Click}
+                data-gtm-event={GtmEvent.ClickDepositBitcoinWallet}
                 variant="primary"
                 className="zeus:w-full zeus:mt-[16px]"
               >

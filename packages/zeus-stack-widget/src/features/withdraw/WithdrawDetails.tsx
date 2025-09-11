@@ -20,6 +20,7 @@ import {
   useSuccessHandler,
   useZeusService,
 } from "@/contexts/ConfigContext";
+import { GtmEvent, GtmEventType } from "@/utils/gtm";
 
 function WithdrawDetails({
   amount,
@@ -127,6 +128,8 @@ function WithdrawDetails({
         <ZeusButton
           variant="tertiary"
           className="zeus:w-full"
+          data-gtm-type={GtmEventType.Click}
+          data-gtm-event={GtmEvent.ClickWithdrawCancel}
           onClick={() => onCancel?.()}
         >
           Cancel
@@ -135,6 +138,8 @@ function WithdrawDetails({
           variant="primary"
           className="zeus:w-full"
           disabled={!address}
+          data-gtm-type={GtmEventType.Click}
+          data-gtm-event={GtmEvent.ClickWithdrawConfirm}
           onClick={runWithdraw}
         >
           Confirm

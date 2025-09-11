@@ -7,6 +7,7 @@ import {
 } from "@zeus-network/bitcoin-wallet-adapter";
 import { BitcoinNetwork, SolanaNetwork } from "@zeus-network/client";
 
+import GTMTracker from "@/components/GTMTracker";
 import IconProvider from "@/components/Icon/IconProvider";
 import { ConfigProvider } from "@/contexts/ConfigContext";
 
@@ -47,7 +48,7 @@ function WidgetProviders({
           onError={onError}
           onSuccess={onSuccess}
         >
-          {children}
+          <GTMTracker>{children}</GTMTracker>
         </ConfigProvider>
       </BitcoinWalletProvider>
     </WalletModalProvider>

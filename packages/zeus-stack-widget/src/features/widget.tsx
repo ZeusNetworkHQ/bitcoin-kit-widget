@@ -33,6 +33,7 @@ import {
 import WalletModalProvider from "@/components/WalletModalProvider";
 import PortalHub from "@/contexts/PortalHub";
 import { WidgetTab } from "@/types";
+import { GtmEvent, GtmEventType } from "@/utils/gtm";
 import { cn } from "@/utils/misc";
 
 export type WidgetWidgetConfig = Omit<WidgetProvidersProps, "children">;
@@ -49,18 +50,21 @@ function WidgetBase({ className }: WidgetProps) {
       title: "Deposit",
       value: WidgetTab.DEPOSIT,
       icon: "connect" as const,
+      gtmEvent: GtmEvent.ClickTabDeposit,
       content: <DepositPage />,
     },
     {
       title: "Withdraw",
       value: WidgetTab.WITHDRAW,
       icon: "withdraw" as const,
+      gtmEvent: GtmEvent.ClickTabWithdraw,
       content: <WithdrawPage />,
     },
     {
       title: "Activity",
       value: WidgetTab.ACTIVITY,
       icon: "clock" as const,
+      gtmEvent: GtmEvent.ClickTabActivity,
       content: <ActivityPage selected={selectedTab === WidgetTab.ACTIVITY} />,
     },
   ];
@@ -76,6 +80,8 @@ function WidgetBase({ className }: WidgetProps) {
             selectedTab === tab.value &&
               "zeus:text-[#FFABFE] zeus:bg-[#FD82FF1A]",
           )}
+          data-gtm-event={tab.gtmEvent}
+          data-gtm-type={GtmEventType.Click}
           onClick={() => setSelectedTab(tab.value)}
         >
           <Icon variant={tab.icon} />
