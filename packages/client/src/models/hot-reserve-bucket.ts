@@ -1,5 +1,5 @@
 import { PublicKey } from "@solana/web3.js";
-import { type HotReserveBucket } from "@zeus-network/zpl-sdk/two-way-peg/types";
+import { type HotReserveBucket } from "@zeus-network/zeus-stack-sdk/two-way-peg/types";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 

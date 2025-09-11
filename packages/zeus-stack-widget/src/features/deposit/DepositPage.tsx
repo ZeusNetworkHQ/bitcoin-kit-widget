@@ -12,6 +12,7 @@ import Icon from "@/components/Icon";
 import ZeusButton from "@/components/ZeusButton";
 import useConnectWallet from "@/hooks/useConnectWallet";
 import useEdra from "@/hooks/useEdra";
+import { GtmEvent, GtmEventType } from "@/utils/gtm";
 
 function DepositPage() {
   const wallet = useWallet();
@@ -86,6 +87,8 @@ function DepositPage() {
         <ZeusButton
           variant="primary"
           className="zeus:w-full"
+          data-gtm-type={GtmEventType.Click}
+          data-gtm-event={GtmEvent.ClickConnectWallet}
           onClick={() => connectSolanaWallet()}
         >
           <Icon variant="wallet" />
@@ -98,6 +101,8 @@ function DepositPage() {
           disabled={amount.lt(MINIMUM_DEPOSIT_AMOUNT_BTC) || isLoading}
           variant="primary"
           className="zeus:w-full"
+          data-gtm-type={GtmEventType.Click}
+          data-gtm-event={GtmEvent.ClickDeposit}
           onClick={startToDeposit}
         >
           Deposit

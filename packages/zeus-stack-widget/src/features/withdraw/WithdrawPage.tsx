@@ -11,6 +11,7 @@ import ZeusButton from "@/components/ZeusButton";
 import useConnectWallet from "@/hooks/useConnectWallet";
 import useZBtcBalance from "@/hooks/useZBtcBalance";
 import { cn } from "@/utils";
+import { GtmEvent, GtmEventType } from "@/utils/gtm";
 
 function WithdrawPage() {
   const wallet = useWallet();
@@ -78,6 +79,8 @@ function WithdrawPage() {
         <ZeusButton
           variant="primary"
           className="zeus:w-full"
+          data-gtm-type={GtmEventType.Click}
+          data-gtm-event={GtmEvent.ClickConnectWallet}
           onClick={() => connectSolanaWallet().catch(() => {})}
         >
           <Icon variant="wallet" />
@@ -90,6 +93,8 @@ function WithdrawPage() {
           disabled={amount.lt("0.0001")}
           variant="primary"
           className="zeus:w-full"
+          data-gtm-type={GtmEventType.Click}
+          data-gtm-event={GtmEvent.ClickWithdraw}
           onClick={() => setReady(true)}
         >
           Withdraw

@@ -3,7 +3,7 @@ import { PublicKey } from "@solana/web3.js";
 import {
   LiquidityManagementClient,
   TwoWayPegClient,
-} from "@zeus-network/zpl-sdk";
+} from "@zeus-network/zeus-stack-sdk";
 
 import { ClientRequestError } from "@/errors";
 import ZeusService, { type CreateZeusServiceParams } from "@/lib/service";

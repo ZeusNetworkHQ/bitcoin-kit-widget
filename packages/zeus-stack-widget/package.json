@@ -1,6 +1,6 @@
 {
   "name": "@zeus-network/zeus-stack-widget",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "",
   "keywords": [
     "react",
@@ -75,6 +75,7 @@
     "@types/node": "^24.0.10",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-gtm-module": "^2.0.4",
     "@vitejs/plugin-react": "^4.5.2",
     "@zeus-network/bitcoin-wallet-adapter": "workspace:*",
     "@zeus-network/client": "workspace:*",
@@ -99,6 +100,7 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "lodash": "^4.17.21",
+    "react-gtm-module": "^2.0.11",
     "swr": "^2.3.4",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.11",
