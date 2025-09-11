@@ -229,9 +229,9 @@ importers:
       '@solana/web3.js':
         specifier: ^1.91.8
         version: 1.98.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)
-      '@zeus-network/zpl-sdk':
-        specifier: ^0.11.6
-        version: 0.11.6(@solana/spl-token@0.4.13(@solana/web3.js@1.98.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))
+      '@zeus-network/zeus-stack-sdk':
+        specifier: ^0.11.9
+        version: 0.11.9(@solana/spl-token@0.4.13(@solana/web3.js@1.98.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))
       axios:
         specifier: ^1.10.0
         version: 1.11.0
@@ -3011,8 +3011,8 @@ packages:
   '@xrplf/secret-numbers@2.0.0':
     resolution: {integrity: sha512-z3AOibRTE9E8MbjgzxqMpG1RNaBhQ1jnfhNCa1cGf2reZUJzPMYs4TggQTc7j8+0WyV3cr7y/U8Oz99SXIkN5Q==}
 
-  '@zeus-network/zpl-sdk@0.11.6':
-    resolution: {integrity: sha512-gdeWPsTM8/VlU3k7M3DdyGWEhgCaWuHbgTDjivYe8cH54EMbbIp7PBY4EhLiw9G0gAdV0NoDADtg/FtWGf/zRg==}
+  '@zeus-network/zeus-stack-sdk@0.11.9':
+    resolution: {integrity: sha512-l+3bUWOdlB5EugMMK9aARm7nGF21jGZ1WhRaVZQu6VfCy85WTvO5YSro4D42e4WMAdXDKiFC6IWP0MPOBEtDlg==}
     peerDependencies:
       '@solana/spl-token': ^0.4.13
       '@solana/web3.js': ^1.98.2
@@ -10088,7 +10088,7 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@zeus-network/zpl-sdk@0.11.6(@solana/spl-token@0.4.13(@solana/web3.js@1.98.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))':
+  '@zeus-network/zeus-stack-sdk@0.11.9(@solana/spl-token@0.4.13(@solana/web3.js@1.98.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))(@solana/web3.js@1.98.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))':
     dependencies:
       '@bitcoinerlab/secp256k1': 1.2.0
       '@coral-xyz/borsh': 0.31.1(@solana/web3.js@1.98.4(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10))

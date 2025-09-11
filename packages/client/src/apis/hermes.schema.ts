@@ -52,15 +52,19 @@ export const interactionSchema = z.object({
 export type Interaction = z.infer<typeof interactionSchema>;
 
 export const twoWayPegReserveSettingSchema = z.object({
+  accumulatedWithdrawalAmount: z.string(),
   address: z.string(),
   seed: z.number(),
   guardianCertificate: z.string(),
+  maxReserveWithdrawalQuota: z.string(),
   assetMint: z.string(),
   tokenProgramId: z.string(),
   splTokenMintAuthority: z.string(),
   splTokenBurnAuthority: z.string(),
   totalAmountLocked: z.string(),
   totalAmountPegged: z.string(),
+  withdrawalWindow: z.string(),
+  withdrawalWindowStartedAt: z.string(),
 });
 
 export type TwoWayPegReserveSetting = z.infer<

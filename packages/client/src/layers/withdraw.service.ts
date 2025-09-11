@@ -57,7 +57,7 @@ export default class WithdrawService extends ZeusService {
       const amountBN = new BN(btcToSatoshi(payloads.amount).toString());
       const reserveSettings = await this.reserveSettingModel.findMany();
 
-      const reserveSettingsWithQuota = await Promise.all(
+      let reserveSettingsWithQuota = await Promise.all(
         reserveSettings.map(async (reserveSetting) => {
           const remainingQuota =
             await this.reserveSettingModel.getQuota(reserveSetting);
@@ -69,6 +69,10 @@ export default class WithdrawService extends ZeusService {
       reserveSettingsWithQuota.sort((a, b) =>
         b.remainingQuota.cmp(a.remainingQuota),
       ); // Sort by remaining quota in descending order
+
+      reserveSettingsWithQuota = reserveSettingsWithQuota.filter((setting) =>
+        setting.remainingQuota.gt(new BN(0)),
+      );
 
       let remainingAmount = amountBN.clone();
       const ixs: TransactionInstruction[] = [];
