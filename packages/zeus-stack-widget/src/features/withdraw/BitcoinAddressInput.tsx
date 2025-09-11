@@ -5,6 +5,7 @@ import { useBitcoinWallet } from "@zeus-network/bitcoin-wallet-adapter";
 import BitcoinWalletSelector from "@/components/BitcoinWalletSelector";
 import Icon from "@/components/Icon";
 import { truncateMiddle } from "@/utils";
+import { GtmEvent, GtmEventType } from "@/utils/gtm";
 
 export interface BitcoinAddressInputProps {
   address?: string;
@@ -42,6 +43,8 @@ function BitcoinAddressInput({ address, onChange }: BitcoinAddressInputProps) {
           <BitcoinWalletSelector.Trigger asChild>
             <button
               type="button"
+              data-gtm-type={GtmEventType.Click}
+              data-gtm-event={GtmEvent.ClickWithdrawBitcoinWallet}
               className="zeus:px-[12px] zeus:py-[6px] zeus:border zeus:border-solid zeus:border-[#8B8A9E33] zeus:rounded-[8px] zeus:text-[#C7C5D1] zeus:hover:text-[#F1F0F3] zeus:bg-[#2C2C36] zeus:hover:bg-[#272730] zeus:shrink-0 zeus:cursor-pointer zeus:shadow-[0px_-4px_4px_0px_#8B8A9E1F_inset] zeus:transition-colors"
             >
               Connect

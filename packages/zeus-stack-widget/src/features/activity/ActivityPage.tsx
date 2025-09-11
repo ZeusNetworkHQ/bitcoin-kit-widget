@@ -5,6 +5,7 @@ import ActivityList from "./ActivityList";
 import Icon from "@/components/Icon";
 import ZeusButton from "@/components/ZeusButton";
 import useConnectWallet from "@/hooks/useConnectWallet";
+import { GtmEvent, GtmEventType } from "@/utils/gtm";
 
 interface ActivityPageProps {
   selected?: boolean;
@@ -28,6 +29,8 @@ function ActivityPage({ selected }: ActivityPageProps) {
       <ZeusButton
         variant="primary"
         className="zeus:w-full"
+        data-gtm-type={GtmEventType.Click}
+        data-gtm-event={GtmEvent.ClickConnectWallet}
         onClick={() => connectWallet()}
       >
         <Icon variant="wallet" />

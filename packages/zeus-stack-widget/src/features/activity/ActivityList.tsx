@@ -13,6 +13,7 @@ import {
 import Icon from "@/components/Icon";
 import { useConfig } from "@/contexts/ConfigContext";
 import useInteractions from "@/hooks/useInteractions";
+import { GtmEvent, GtmEventType } from "@/utils/gtm";
 import { cn } from "@/utils/misc";
 import { toRelativeTime } from "@/utils/time";
 
@@ -73,6 +74,8 @@ function ActivityList({ selected }: ActivityListProps) {
             })}
             target="_blank"
             rel="noopener noreferrer"
+            data-gtm-type={GtmEventType.Click}
+            data-gtm-event={GtmEvent.ClickInteraction}
             className={cn(
               "zeus:p-[8px] zeus:pb-0 zeus:bg-[#27272D] zeus:rounded-[12px] zeus:text-[#AEADB8]",
             )}
