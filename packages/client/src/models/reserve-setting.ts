@@ -1,11 +1,13 @@
 import { getAccount, getAssociatedTokenAddressSync } from "@solana/spl-token";
 import { PublicKey } from "@solana/web3.js";
 import BN from "bn.js";
+import dayjs from "dayjs";
 
 import HermesApi, { type TwoWayPegReserveSetting } from "@/apis/hermes";
 import ZeusService, { type CreateZeusServiceParams } from "@/lib/service";
 import ZplProgram from "@/programs/zpl";
 import { SolanaNetwork } from "@/types";
+import { btcToSatoshi } from "@/utils";
 
 export default class ReserveSettingModel extends ZeusService {
   private readonly hermesApi: HermesApi;
@@ -58,8 +60,44 @@ export default class ReserveSettingModel extends ZeusService {
         this.core.solanaConnection,
         vaultAta,
       );
-      return totalSplTokenMinted.sub(
+      let remainingStoreQuota = totalSplTokenMinted.sub(
         new BN(tokenAccountData.amount.toString()),
+      );
+
+      // [NOTE]: If guardian is zeus-foundation, subtract 80 btc from remainingStoreQuota because it has 80 btc in external reserve, and we can't withdraw from external reserve
+      if (
+        reserveSetting.address ===
+        "B8eCvQSjAtDCXc59fWZo4aL6w9KfSKwr9KXkotSkDDSg"
+      ) {
+        remainingStoreQuota = remainingStoreQuota.sub(
+          new BN(btcToSatoshi(80).toNumber()),
+        );
+      }
+
+      const withdrawalWindow = new BN(
+        reserveSetting.withdrawalWindow,
+      ).toNumber();
+
+      const windowStartedAt = new BN(
+        reserveSetting.withdrawalWindowStartedAt,
+      ).toNumber();
+
+      const accumulatedWithdrawal = new BN(
+        reserveSetting.accumulatedWithdrawalAmount,
+      );
+      const maxReserveWithdrawalQuota = new BN(
+        reserveSetting.maxReserveWithdrawalQuota,
+      );
+
+      const windowEndTime = dayjs
+        .unix(windowStartedAt)
+        .add(withdrawalWindow, "seconds");
+
+      return BN.min(
+        remainingStoreQuota,
+        dayjs().isBefore(windowEndTime)
+          ? maxReserveWithdrawalQuota.sub(accumulatedWithdrawal)
+          : maxReserveWithdrawalQuota,
       );
     } catch (error) {
       console.error(

@@ -1,4 +1,4 @@
-import { BitcoinAddressType } from "@zeus-network/zpl-sdk/two-way-peg/types";
+import { BitcoinAddressType } from "@zeus-network/zeus-stack-sdk/two-way-peg/types";
 import BigNumber from "bignumber.js";
 import { AddressType, getAddressInfo } from "bitcoin-address-validation";
 import * as bitcoin from "bitcoinjs-lib";

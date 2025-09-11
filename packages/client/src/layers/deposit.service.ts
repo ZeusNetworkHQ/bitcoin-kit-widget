@@ -2,7 +2,7 @@ import { PublicKey } from "@solana/web3.js";
 import {
   buildDepositTransaction,
   type UTXO,
-} from "@zeus-network/zpl-sdk/bitcoin";
+} from "@zeus-network/zeus-stack-sdk/bitcoin";
 import * as bitcoin from "bitcoinjs-lib";
 
 import AresApi, { type AresUtxo } from "@/apis/ares";

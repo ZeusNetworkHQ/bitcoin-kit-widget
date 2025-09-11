@@ -8,7 +8,7 @@ import {
   type EntityDerivedReserve,
   type EntityDerivedReserveAddress,
   type HotReserveBucket,
-} from "@zeus-network/zpl-sdk/two-way-peg/types";
+} from "@zeus-network/zeus-stack-sdk/two-way-peg/types";
 import BigNumber from "bignumber.js";
 import * as bitcoin from "bitcoinjs-lib";
 import dayjs from "dayjs";
