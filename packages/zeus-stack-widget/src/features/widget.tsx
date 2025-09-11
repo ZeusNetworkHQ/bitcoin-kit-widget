@@ -50,7 +50,7 @@ function WidgetBase({ className }: WidgetProps) {
       title: "Deposit",
       value: WidgetTab.DEPOSIT,
       icon: "connect" as const,
-      gtmEvent: GtmEvent.ClickTabWithdraw,
+      gtmEvent: GtmEvent.ClickTabDeposit,
       content: <DepositPage />,
     },
     {
