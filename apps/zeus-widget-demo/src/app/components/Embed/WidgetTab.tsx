@@ -2,7 +2,7 @@
 
 import { anticipate, motion } from "motion/react";
 import { useState } from "react";
-import { Widget } from "@zeus-network/zeus-stack-widget";
+import { Widget } from "@zeus-network/bitcoin-kit-widget";
 
 import BadgeButton from "../BadgeButton";
 import Icon from "../Icon/Icon";

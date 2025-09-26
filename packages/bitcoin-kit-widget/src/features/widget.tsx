@@ -116,7 +116,7 @@ function WidgetBase({ className }: WidgetProps) {
           {
             variant: "brand.twitter",
             label: "X",
-            href: "https://x.com/ZeusStackDev",
+            href: "https://x.com/BitcoinKitDev",
           },
           {
             variant: "brand.gitbook",

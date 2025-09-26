@@ -32,18 +32,18 @@ jobs:
         run: pnpm run build:widget
 
       - name: Copy README
-        run: cp README.md packages/zeus-stack-widget/README.md
+        run: cp README.md packages/bitcoin-kit-widget/README.md
 
       - name: Copy LICENSE
-        run: cp LICENSE packages/zeus-stack-widget/LICENSE
+        run: cp LICENSE packages/bitcoin-kit-widget/LICENSE
 
       - name: Create .npmrc file
         run: |
           echo "@zeus-network:registry=https://registry.npmjs.org/" > .npmrc
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
           echo "access=public" >> .npmrc
-        working-directory: packages/zeus-stack-widget
+        working-directory: packages/bitcoin-kit-widget
 
       - name: Publish to NPM
         run: npm publish --no-git-checks
-        working-directory: packages/zeus-stack-widget
+        working-directory: packages/bitcoin-kit-widget
