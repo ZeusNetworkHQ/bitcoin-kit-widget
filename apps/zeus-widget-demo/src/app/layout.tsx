@@ -6,7 +6,7 @@ import Footer from "./components/Footer";
 import AppProvider from "./components/AppProvider";
 
 import "@solana/wallet-adapter-react-ui/styles.css";
-import "@zeus-network/zeus-stack-widget/assets/style.css";
+import "@zeus-network/bitcoin-kit-widget/assets/style.css";
 
 import "./globals.css";
 
@@ -16,14 +16,14 @@ const rethinkSans = Rethink_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "ZeusStack Playground",
+  title: "BitcoinKit Playground",
   description:
     "Instantly add tokenized Bitcoin flows to any website or app—no code, no friction.",
   openGraph: {
-    siteName: "ZeusStack Playground",
+    siteName: "BitcoinKit Playground",
     type: "website",
-    url: "https://zeusnetwork.xyz/zeus-stack/playground",
-    title: "Embed BTC Utility with ZeusStack",
+    url: "https://playground.bitcoin-kit.dev",
+    title: "Embed BTC Utility with BitcoinKit",
     description:
       "Instantly add tokenized Bitcoin flows to any website or app—no code, no friction.",
     images: [

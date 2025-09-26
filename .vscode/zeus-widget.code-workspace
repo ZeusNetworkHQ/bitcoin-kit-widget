@@ -9,8 +9,8 @@
 			"path": "../apps/zeus-widget-demo"
 		},
 		{
-			"name": "🧩 zeus-stack-widget",
-			"path": "../packages/zeus-stack-widget"
+			"name": "🧩 bitcoin-kit-widget",
+			"path": "../packages/bitcoin-kit-widget"
 		},
 		{
 			"name": "📦 bitcoin-wallet-adapter",

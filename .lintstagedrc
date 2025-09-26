@@ -3,7 +3,9 @@
   "*.{json,md,yml,scss}": ["prettier --write"],
 
   "apps/zeus-widget-demo/**/*.{js,jsx,ts,tsx}": ["pnpm demo lint --fix"],
-  "packages/zeus-stack-widget/**/*.{js,jsx,ts,tsx}": ["pnpm widget lint --fix"],
+  "packages/bitcoin-kit-widget/**/*.{js,jsx,ts,tsx}": [
+    "pnpm widget lint --fix"
+  ],
   "packages/client/**/*.{js,jsx,ts,tsx}": ["pnpm client lint --fix"],
   "packages/bitcoin-wallet-adapter/**/*.{js,jsx,ts,tsx}": [
     "pnpm bitcoin lint --fix"

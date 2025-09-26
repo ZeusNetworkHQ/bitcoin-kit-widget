@@ -175,7 +175,7 @@ body {
 }
 
 .zeus-stack-title::before {
-  @apply content-["ZeusStack"] blur-lg opacity-30 absolute bg-clip-text text-transparent;
+  @apply content-["BitcoinKit"] blur-lg opacity-30 absolute bg-clip-text text-transparent;
   background-size: 200% 100% !important;
   background-image: linear-gradient(
     90deg,

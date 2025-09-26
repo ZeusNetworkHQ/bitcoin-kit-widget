@@ -1,7 +1,7 @@
 "use client";
 
 import { anticipate, motion } from "motion/react";
-import { Widget } from "@zeus-network/zeus-stack-widget";
+import { Widget } from "@zeus-network/bitcoin-kit-widget";
 
 import BadgeButton from "../BadgeButton";
 

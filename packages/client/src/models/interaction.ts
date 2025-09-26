@@ -80,7 +80,7 @@ export default class InteractionModel extends ZeusService {
       currentStepAt: createdAt,
       status: InteractionStatus.BitcoinDepositToHotReserve,
       interactionType: InteractionType.Deposit,
-      appDeveloper: "ZeusStack",
+      appDeveloper: "BitcoinKit",
       minerFee: "0",
       serviceFee: btcToSatoshi(DEPOSIT_SERVICE_FEE_BTC).toString(),
       swapInfo: null,

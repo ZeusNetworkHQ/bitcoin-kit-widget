@@ -1,18 +1,18 @@
-# Zeus Stack Widget
+# BitcoinKit Widget
 
 <div align="center">
-  <img src="./apps/zeus-widget-demo/public/branding/zeus-stack.webp" alt="Zeus Stack Widget">
+  <img src="./apps/zeus-widget-demo/public/branding/bitcoin-kit.webp" alt="BitcoinKit Widget">
   
   <p>Instantly add tokenized Bitcoin flows to any website or app—no code, no friction.</p>
 
-[![npm version](https://badge.fury.io/js/@zeus-network%2Fzeus-stack-widget.svg)](https://www.npmjs.com/package/@zeus-network/zeus-stack-widget)
-[![GitHub branch check runs](https://img.shields.io/github/check-runs/ZeusNetworkHQ/zeus-stack-widget/main)](https://github.com/ZeusNetworkHQ/zeus-stack-widget/actions)
-[![Downloads](https://img.shields.io/npm/dm/%40zeus-network%2Fzeus-stack-widget)](https://www.npmjs.com/package/@zeus-network/zeus-stack-widget)
+[![npm version](https://badge.fury.io/js/@zeus-network%2Fbitcoin-kit-widget.svg)](https://www.npmjs.com/package/@zeus-network/bitcoin-kit-widget)
+[![GitHub branch check runs](https://img.shields.io/github/check-runs/ZeusNetworkHQ/bitcoin-kit-widget/main)](https://github.com/ZeusNetworkHQ/bitcoin-kit-widget/actions)
+[![Downloads](https://img.shields.io/npm/dm/%40zeus-network%2Fbitcoin-kit-widget)](https://www.npmjs.com/package/@zeus-network/bitcoin-kit-widget)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 </div>
 
-The Zeus Stack Widget is a JavaScript/React component library that provides a fully featured and customizable Bitcoin tokenization experience for web and mobile applications. The widget enables users to seamlessly deposit Bitcoin to receive zBTC (tokenized Bitcoin) and withdraw zBTC back to Bitcoin, all through an intuitive, embeddable interface.
+The BitcoinKit Widget is a JavaScript/React component library that provides a fully featured and customizable Bitcoin tokenization experience for web and mobile applications. The widget enables users to seamlessly deposit Bitcoin to receive zBTC (tokenized Bitcoin) and withdraw zBTC back to Bitcoin, all through an intuitive, embeddable interface.
 
 The widget can be embedded directly into your organization's web or mobile applications for a seamless user experience, or used in a popup/modal format for minimal integration effort.
 
@@ -33,13 +33,13 @@ See the [Usage Guide](#usage-guide) for more information on how to get started u
 
 ```bash
 # npm
-npm install @zeus-network/zeus-stack-widget
+npm install @zeus-network/bitcoin-kit-widget
 
 # yarn
-yarn add @zeus-network/zeus-stack-widget
+yarn add @zeus-network/bitcoin-kit-widget
 
 # pnpm
-pnpm add @zeus-network/zeus-stack-widget
+pnpm add @zeus-network/bitcoin-kit-widget
 ```
 
 ```tsx
@@ -47,8 +47,8 @@ import {
   Widget,
   BitcoinNetwork,
   SolanaNetwork,
-} from "@zeus-network/zeus-stack-widget";
-import "@zeus-network/zeus-stack-widget/assets/style.css";
+} from "@zeus-network/bitcoin-kit-widget";
+import "@zeus-network/bitcoin-kit-widget/assets/style.css";
 
 <Widget.Popover
   config={{
@@ -73,7 +73,7 @@ import "@zeus-network/zeus-stack-widget/assets/style.css";
 Try the widget without Bitcoin wallet extensions:
 
 ```tsx
-import { useDeriveWalletConnector } from "@zeus-network/zeus-stack-widget/bitcoin-wallet-adapter";
+import { useDeriveWalletConnector } from "@zeus-network/bitcoin-kit-widget/bitcoin-wallet-adapter";
 
 const deriveWallet = useDeriveWalletConnector(BitcoinNetwork.Regtest);
 
@@ -88,7 +88,7 @@ const deriveWallet = useDeriveWalletConnector(BitcoinNetwork.Regtest);
 </Widget.Popover>;
 ```
 
-**Live Demo**: [playground.zeusstack.dev](https://playground.zeusstack.dev)
+**Live Demo**: [playground.bitcoin-kit.dev](https://playground.bitcoin-kit.dev)
 
 ## Integration Modes
 
@@ -175,7 +175,7 @@ import {
   XverseConnector,
   PhantomConnector,
   useDeriveWalletConnector,
-} from "@zeus-network/zeus-stack-widget/bitcoin-wallet-adapter";
+} from "@zeus-network/bitcoin-kit-widget/bitcoin-wallet-adapter";
 
 function MyComponent() {
   const deriveWallet = useDeriveWalletConnector(BitcoinNetwork.Testnet);
@@ -214,7 +214,7 @@ import {
   // Development wallets
   MusesConnector, // Regtest only
   useDeriveWalletConnector, // Hook for derive wallet
-} from "@zeus-network/zeus-stack-widget/bitcoin-wallet-adapter";
+} from "@zeus-network/bitcoin-kit-widget/bitcoin-wallet-adapter";
 ```
 
 #### Network-Specific Wallet Setup
@@ -269,7 +269,7 @@ function DevelopmentSetup() {
 The widget automatically detects which wallets are installed and ready:
 
 ```tsx
-import { UniSatConnector } from "@zeus-network/zeus-stack-widget/bitcoin-wallet-adapter";
+import { UniSatConnector } from "@zeus-network/bitcoin-kit-widget/bitcoin-wallet-adapter";
 
 const unisatWallet = new UniSatConnector();
 
@@ -303,7 +303,7 @@ The Derive Wallet is a unique feature that creates a Bitcoin wallet derived from
 #### Usage
 
 ```tsx
-import { useDeriveWalletConnector } from "@zeus-network/zeus-stack-widget/bitcoin-wallet-adapter";
+import { useDeriveWalletConnector } from "@zeus-network/bitcoin-kit-widget/bitcoin-wallet-adapter";
 
 function MyComponent() {
   const deriveWallet = useDeriveWalletConnector(BitcoinNetwork.Regtest);
@@ -338,7 +338,7 @@ function MyComponent() {
 - **Supported Networks**: Regtest only (not Mainnet for security)
 - **Address Types**: Primarily uses P2TR (Taproot) addresses
 - **Signing**: Supports PSBT signing with tweaked keys
-- **Apollo Integration**: Compatible with [playground.zeusstack.dev](https://playground.zeusstack.dev) and [https://app.apolloportal.io/claim](https://https://app.apolloportal.io/claim) for claiming test funds
+- **Apollo Integration**: Compatible with [playground.bitcoin-kit.dev](https://playground.bitcoin-kit.dev) and [https://app.apolloportal.io/claim](https://https://app.apolloportal.io/claim) for claiming test funds
 
 #### Limitations
 
@@ -369,7 +369,7 @@ For detailed configuration options, see [`docs/configuration.md`](./docs/configu
 For projects not using Tailwind CSS, wrap the widget with `ZeusShadow` to prevent style conflicts:
 
 ```tsx
-import { ZeusShadow } from "@zeus-network/zeus-stack-widget";
+import { ZeusShadow } from "@zeus-network/bitcoin-kit-widget";
 
 <ZeusShadow>
   <Widget config={config} />
@@ -397,8 +397,8 @@ import { ZeusShadow } from "@zeus-network/zeus-stack-widget";
 Clone and set up the development environment:
 
 ```bash
-git clone https://github.com/ZeusNetworkHQ/zeus-stack-widget.git
-cd zeus-stack-widget
+git clone https://github.com/ZeusNetworkHQ/bitcoin-kit-widget.git
+cd bitcoin-kit-widget
 pnpm install
 ```
 
@@ -415,10 +415,10 @@ pnpm demo dev   # Start demo app
 ### Project Structure
 
 ```
-zeus-stack-widget/
+root/
 ├── apps/zeus-widget-demo/           # Demo Next.js app
 └── packages/
-    ├── zeus-stack-widget/           # Main widget library
+    ├── bitcoin-kit-widget/           # Main widget library
     ├── bitcoin-wallet-adapter/      # Bitcoin wallet connectors
     └── client/                      # API client utilities / Program interaction procedures
 ```
@@ -456,10 +456,10 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 
 ## Support
 
-- 🌐 [Zeus Stack](https://zeusnetwork.xyz/zeus-stack) - Official website
+- 🌐 [BitcoinKit](https://zeusnetwork.xyz/bitcoin-kit) - Official website
 - 📖 [Documentation](https://zeusnetwork.xyz/developers) - Developer docs
 - 💬 [Discord](https://discord.gg/zeusnetwork) - Community support
-- 🔗 [X](https://x.com/ZeusStackDev) - Updates and news
+- 🔗 [X](https://x.com/BitcoinKitDev) - Updates and news
 
 ## Built With
 
@@ -474,4 +474,4 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 
 ---
 
-**Links**: [Demo](https://playground.zeusstack.dev) • [Zeus Stack](https://zeusnetwork.xyz/zeus-stack) • [Docs](https://zeusnetwork.xyz/developers) • [Discord](https://discord.gg/zeusnetwork)
+**Links**: [Demo](https://playground.bitcoin-kit.dev) • [BitcoinKit](https://zeusnetwork.xyz/bitcoin-kit) • [Docs](https://zeusnetwork.xyz/developers) • [Discord](https://discord.gg/zeusnetwork)

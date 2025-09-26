@@ -1,10 +1,10 @@
 import { AegleApi } from "@zeus-network/client";
-import { BitcoinNetwork } from "@zeus-network/zeus-stack-widget";
+import { BitcoinNetwork } from "@zeus-network/bitcoin-kit-widget";
 import {
   BitcoinWalletProvider,
   BitcoinWalletSelector,
   useBitcoinWallet,
-} from "@zeus-network/zeus-stack-widget/bitcoin-wallet-adapter";
+} from "@zeus-network/bitcoin-kit-widget/bitcoin-wallet-adapter";
 import { useMemo, useState } from "react";
 
 import Button from "../Button";
