@@ -32,7 +32,7 @@ export default function Header() {
           <a href={process.env.NEXT_PUBLIC_ZEUS_STACK_HOME_LINK}>
             <img
               src="/branding/logo-primary.svg"
-              alt="ZeusStack Logo"
+              alt="BitcoinKit Logo"
               className="h-20 mt-1"
             />
           </a>
