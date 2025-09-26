@@ -1,7 +1,7 @@
 "use client";
 
 import { useWidgetConfig } from "@/providers/WidgetConfigProvider";
-import { Widget } from "@zeus-network/zeus-stack-widget";
+import { Widget } from "@zeus-network/bitcoin-kit-widget";
 
 export default function IntegratedTab() {
   const config = useWidgetConfig();

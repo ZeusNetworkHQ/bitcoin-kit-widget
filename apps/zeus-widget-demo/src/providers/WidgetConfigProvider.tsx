@@ -4,11 +4,11 @@ import { createContext, useContext, useMemo } from "react";
 import {
   BitcoinNetwork,
   WidgetWidgetConfig,
-} from "@zeus-network/zeus-stack-widget";
+} from "@zeus-network/bitcoin-kit-widget";
 import {
   Connectors,
   useDeriveWalletConnector,
-} from "@zeus-network/zeus-stack-widget/bitcoin-wallet-adapter";
+} from "@zeus-network/bitcoin-kit-widget/bitcoin-wallet-adapter";
 
 const WidgetConfigContext = createContext<WidgetWidgetConfig | null>(null);
 

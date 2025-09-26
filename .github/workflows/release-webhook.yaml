@@ -25,7 +25,7 @@ jobs:
               - type: "header"
                 text:
                   type: "plain_text"
-                  text: "🚀 Zeus Stack Widget ${{ github.event.release.tag_name }} Published"
+                  text: "🚀 BitcoinKit Widget ${{ github.event.release.tag_name }} Published"
               - type: "section"
                 text:
                   type: "mrkdwn"

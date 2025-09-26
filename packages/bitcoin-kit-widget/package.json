@@ -1,5 +1,5 @@
 {
-  "name": "@zeus-network/zeus-stack-widget",
+  "name": "@zeus-network/bitcoin-kit-widget",
   "version": "0.1.6",
   "description": "",
   "keywords": [
@@ -12,10 +12,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ZeusNetworkHQ/zeus-stack-widget.git"
+    "url": "git+https://github.com/ZeusNetworkHQ/bitcoin-kit-widget.git"
   },
   "bugs": {
-    "url": "https://github.com/ZeusNetworkHQ/zeus-stack-widget/issues"
+    "url": "https://github.com/ZeusNetworkHQ/bitcoin-kit-widget/issues"
   },
   "type": "module",
   "private": false,

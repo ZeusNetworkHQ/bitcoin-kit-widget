@@ -12,7 +12,10 @@ import {
 import { clusterApiUrl } from "@solana/web3.js";
 import { useMemo } from "react";
 import { enqueueSnackbar, SnackbarProvider } from "notistack";
-import { BitcoinNetwork, SolanaNetwork } from "@zeus-network/zeus-stack-widget";
+import {
+  BitcoinNetwork,
+  SolanaNetwork,
+} from "@zeus-network/bitcoin-kit-widget";
 
 import WidgetConfigProvider from "@/providers/WidgetConfigProvider";
 

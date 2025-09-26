@@ -29,7 +29,7 @@ export default function Header() {
       <header className="relative z-50 flex items-center justify-between w-full py-12 lg:py-16">
         <img
           src="/branding/logo-primary.svg"
-          alt="ZeusStack Logo"
+          alt="BitcoinKit Logo"
           className="h-20"
         />
         <div className="flex items-center gap-x-40">
