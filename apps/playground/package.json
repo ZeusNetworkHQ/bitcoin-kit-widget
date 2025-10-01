@@ -1,5 +1,5 @@
 {
-  "name": "@zeus-network/zeus-widget-demo",
+  "name": "@zeus-network/playground",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",

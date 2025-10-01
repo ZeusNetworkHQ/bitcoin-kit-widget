@@ -50,7 +50,7 @@ export default function EmbedSelector() {
           className={cn(
             "w-full relative rounded-16 body-body1-medium flex flex-col gap-y-1 sm:gap-y-0 sm:flex-row justify-center items-center gap-x-8 transition-colors sm:py-20 py-12",
             selectedTab !== "modal" && "hover:bg-sys-color-background-card/15",
-            selectedTab === "modal" && "text-sys-color-text-primary"
+            selectedTab === "modal" && "text-sys-color-text-primary",
           )}
         >
           {selectedTab === "modal" && (
@@ -74,7 +74,7 @@ export default function EmbedSelector() {
           className={cn(
             "w-full relative rounded-16 body-body1-medium flex flex-col gap-y-1 sm:gap-y-0 sm:flex-row justify-center items-center gap-x-8 transition-colors sm:py-20 py-12",
             selectedTab === "widget" && "text-sys-color-text-primary",
-            selectedTab !== "widget" && "hover:bg-sys-color-background-card/15"
+            selectedTab !== "widget" && "hover:bg-sys-color-background-card/15",
           )}
         >
           {selectedTab === "widget" && (
@@ -99,7 +99,7 @@ export default function EmbedSelector() {
             "w-full relative rounded-16 body-body1-medium flex flex-col gap-y-1 sm:gap-y-0 sm:flex-row justify-center items-center gap-x-8 transition-colors sm:py-20 py-12",
             selectedTab === "integrated" && "text-sys-color-text-primary",
             selectedTab !== "integrated" &&
-              "hover:bg-sys-color-background-card/15"
+              "hover:bg-sys-color-background-card/15",
           )}
         >
           {selectedTab === "integrated" && (

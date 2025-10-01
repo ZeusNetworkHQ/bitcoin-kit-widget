@@ -11,8 +11,8 @@ export default function Hero() {
             src="/graphics/plug.png"
             alt="Plug"
             className="h-[42px] md:h-[58px] w-[42px] md:w-[58px] flash-in opacity-0"
-          ></img>
-          <span className="zeus-stack-title flash-in opacity-0 bg-clip-text text-transparent [background-image:linear-gradient(85.6deg,#FFFFFF_5.26%,#ECE0FF_30.69%,#FEE0FF_48.39%,#FFEFE0_65.35%,#FFFAE0_78.62%)]">
+          />
+          <span className="bitcoin-kit-title flash-in opacity-0 bg-clip-text text-transparent [background-image:linear-gradient(85.6deg,#FFFFFF_5.26%,#ECE0FF_30.69%,#FEE0FF_48.39%,#FFEFE0_65.35%,#FFFAE0_78.62%)]">
             BitcoinKit
           </span>
         </span>

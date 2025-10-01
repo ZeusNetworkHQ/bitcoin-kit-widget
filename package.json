@@ -8,7 +8,7 @@
     "prepare": "husky",
     "build:widget": "turbo run build --filter=@zeus-network/bitcoin-kit-widget",
     "widget": "pnpm --filter @zeus-network/bitcoin-kit-widget",
-    "demo": "pnpm --filter @zeus-network/zeus-widget-demo",
+    "playground": "pnpm --filter @zeus-network/playground",
     "bitcoin": "pnpm --filter @zeus-network/bitcoin-wallet-adapter",
     "client": "pnpm --filter @zeus-network/client"
   },
