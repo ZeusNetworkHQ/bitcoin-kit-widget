@@ -36,7 +36,7 @@ export default function Button({
           "before:[background:linear-gradient(180deg,rgba(255,255,255,0.5),rgba(255,255,255,0.3))] [background:linear-gradient(314.6deg,#FFF4AB_2.43%,#FFEBD4_24.82%,#FFD4FD_59.61%,#CEABFF_97.04%)] text-sys-color-background-normal [box-shadow:inset_0px_4px_4px_rgba(255,255,255,0.25),inset_0px_4px_12px_rgba(255,255,255,0.5)] enabled:hover:[box-shadow:inset_0px_4px_4px_rgba(255,255,255,0.25),inset_0px_4px_16px_rgba(255,255,255,1)]",
         size === "sm" && "text-sm leading-[20px]",
         size === "md" && "text-base leading-[24px]",
-        className
+        className,
       )}
     >
       {isLoading && <Loading />}

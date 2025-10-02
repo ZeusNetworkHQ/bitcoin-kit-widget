@@ -103,13 +103,13 @@ const Modal = ({
 
   const handleDragStart = (
     _: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo
+    info: PanInfo,
   ) => {
     setInitialHeight(info.point.y);
   };
   const handleDragEnd = (
     _: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo
+    info: PanInfo,
   ) => {
     if (info.point.y - initialHeight > 150) {
       onClose?.();
@@ -137,7 +137,7 @@ const Modal = ({
             className={cn(
               "fixed inset-0 z-40 flex h-screen w-full items-center justify-center overflow-y-auto",
               backdropType === "overrideHeader" && "!z-60",
-              className
+              className,
             )}
           >
             {/* Backdrop */}
@@ -157,7 +157,7 @@ const Modal = ({
                   "absolute bg-transparent backdrop-blur-none",
                 // Override Header
                 backdropType === "overrideHeader" &&
-                  "bg-sys-color-background-overlay fixed inset-0 z-50 backdrop-blur-sm"
+                  "bg-sys-color-background-overlay fixed inset-0 z-50 backdrop-blur-sm",
               )}
             ></motion.div>
 
@@ -191,7 +191,7 @@ const Modal = ({
                   "absolute bottom-16 min-w-[calc(100dvw-16px)] sm:!relative sm:min-w-[auto]",
                 // Positioning
                 position !== null && "!absolute sm:!absolute",
-                cardClassName
+                cardClassName,
               )}
               style={{
                 width: width ? `${width}px` : "auto",
@@ -246,7 +246,7 @@ const ModalHeader = ({
             "text-sys-color-text-mute hover:text-sys-color-text-primary absolute right-16 top-16 transition hover:cursor-pointer",
             // Hide on Mobile if Responsive
             isResponsive && "hidden sm:block",
-            className
+            className,
           )}
           onClick={onClose}
           onKeyDown={(e) => {
@@ -293,7 +293,7 @@ const ModalBody = ({ children, className }: ModalBodyProps) => {
         type === "emphasized" && "pb-32 pt-8 sm:pt-16",
         // Binary Styles
         type === "binary" && "pb-24 pt-8 sm:pt-12",
-        className
+        className,
       )}
     >
       {children}
@@ -306,7 +306,7 @@ const ModalActions = ({ children, className }: ModalActionsProps) => {
     <div
       className={cn(
         "flex w-full flex-col items-center justify-center gap-y-24",
-        className
+        className,
       )}
     >
       <div className="relative z-10 flex w-full items-center gap-x-8">

@@ -170,11 +170,11 @@ body {
   }
 }
 
-.zeus-stack-title {
+.bitcoin-kit-title {
   @apply relative;
 }
 
-.zeus-stack-title::before {
+.bitcoin-kit-title::before {
   @apply content-["BitcoinKit"] blur-lg opacity-30 absolute bg-clip-text text-transparent;
   background-size: 200% 100% !important;
   background-image: linear-gradient(

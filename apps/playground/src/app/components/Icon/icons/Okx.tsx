@@ -22,7 +22,7 @@ export const OkxIcon = ({ className, size = 18 }: IconProps) => {
           y={0}
           maskUnits="userSpaceOnUse"
           style={{
-            maskType: 'luminance',
+            maskType: "luminance",
           }}
         >
           <path fill="#fff" d="M18 0H0v18h18z" />

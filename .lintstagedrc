@@ -2,7 +2,7 @@
   "*.{js,jsx,ts,tsx}": ["prettier --write"],
   "*.{json,md,yml,scss}": ["prettier --write"],
 
-  "apps/zeus-widget-demo/**/*.{js,jsx,ts,tsx}": ["pnpm demo lint --fix"],
+  "apps/playground/**/*.{js,jsx,ts,tsx}": ["pnpm playground lint --fix"],
   "packages/bitcoin-kit-widget/**/*.{js,jsx,ts,tsx}": [
     "pnpm widget lint --fix"
   ],

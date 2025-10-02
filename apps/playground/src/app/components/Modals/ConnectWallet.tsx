@@ -14,7 +14,7 @@ export default function ConnectWalletModal({
   const wallet = useWallet();
 
   const wallets = wallet.wallets.filter(
-    (wallet) => wallet.readyState !== WalletReadyState.Unsupported
+    (wallet) => wallet.readyState !== WalletReadyState.Unsupported,
   );
 
   const connectWallet = async (walletName: WalletName) => {

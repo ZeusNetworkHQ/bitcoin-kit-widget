@@ -1,7 +1,7 @@
 # BitcoinKit Widget
 
 <div align="center">
-  <img src="./apps/zeus-widget-demo/public/branding/bitcoin-kit.webp" alt="BitcoinKit Widget">
+  <img src="./apps/playground/public/branding/bitcoin-kit.webp" alt="BitcoinKit Widget">
   
   <p>Instantly add tokenized Bitcoin flows to any website or app—no code, no friction.</p>
 
@@ -405,20 +405,20 @@ pnpm install
 ### Available Commands
 
 ```bash
-pnpm dev        # Start development servers
-pnpm build      # Build all packages
-pnpm lint       # Run linting
-pnpm test       # Run tests
-pnpm demo dev   # Start demo app
+pnpm dev            # Start development servers
+pnpm build          # Build all packages
+pnpm lint           # Run linting
+pnpm test           # Run tests
+pnpm playground dev # Start demo app
 ```
 
 ### Project Structure
 
 ```
 root/
-├── apps/zeus-widget-demo/           # Demo Next.js app
+├── apps/playground/                 # Demo Next.js app
 └── packages/
-    ├── bitcoin-kit-widget/           # Main widget library
+    ├── bitcoin-kit-widget/          # Main widget library
     ├── bitcoin-wallet-adapter/      # Bitcoin wallet connectors
     └── client/                      # API client utilities / Program interaction procedures
 ```
