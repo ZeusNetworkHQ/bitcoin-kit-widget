@@ -1,7 +1,7 @@
 import {
   MINIMUM_WITHDRAW_AMOUNT_ZBTC,
-  WITHDRAW_INFRASTRUCTURE_FEE_SOL,
   WITHDRAW_SERVICE_FEE_RATE,
+  calculateInfrastructureFee,
 } from "@zeus-network/client";
 import BigNumber from "bignumber.js";
 
@@ -86,7 +86,7 @@ function ZBtcInputField({
           },
           {
             type: "Infrastructure Fee",
-            value: `${WITHDRAW_INFRASTRUCTURE_FEE_SOL} SOL`,
+            value: `${calculateInfrastructureFee(amount).toFormat()} SOL`,
           },
           {
             type: "Service Fee",
