@@ -5,8 +5,8 @@
 			"path": ".."
 		},
 		{
-			"name": "🚀 zeus-widget-demo",
-			"path": "../apps/zeus-widget-demo"
+			"name": "🚀 playground",
+			"path": "../apps/playground"
 		},
 		{
 			"name": "🧩 bitcoin-kit-widget",
