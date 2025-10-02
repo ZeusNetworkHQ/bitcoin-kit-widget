@@ -38,6 +38,7 @@ export const interactionSchema = z.object({
   amount: z.string(),
   minerFee: z.string(),
   serviceFee: z.string(),
+  layerFee: z.string().optional().nullable(),
   source: z.string(),
   destination: z.string(),
   guardianCertificate: guardianCertificateSchema.optional().nullable(),
