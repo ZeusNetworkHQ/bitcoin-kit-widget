@@ -10,7 +10,6 @@ import BN from "bn.js";
 import type BigNumber from "bignumber.js";
 
 import { type TwoWayPegReserveSetting } from "@/apis/hermes";
-import { WITHDRAW_INFRASTRUCTURE_FEE_SOL } from "@/constants";
 import { WithdrawError } from "@/errors";
 import ZeusService, { type CreateZeusServiceParams } from "@/lib/service";
 import ReserveSettingModel from "@/models/reserve-setting";
@@ -23,6 +22,7 @@ import {
   lamportsToSol,
 } from "@/utils";
 import { assertsSolanaSigner } from "@/utils";
+import { calculateInfrastructureFee } from "@/utils";
 
 export default class WithdrawService extends ZeusService {
   private readonly reserveSettingModel: ReserveSettingModel;
@@ -43,14 +43,17 @@ export default class WithdrawService extends ZeusService {
   ) {
     try {
       assertsSolanaSigner(solanaSigner);
+      const withdrawInfrastructureFee = calculateInfrastructureFee(
+        payloads.amount,
+      );
 
       const solBalance = lamportsToSol(
         await this.core.solanaConnection.getBalance(solanaSigner.publicKey),
       );
 
-      if (solBalance.lt(WITHDRAW_INFRASTRUCTURE_FEE_SOL)) {
+      if (solBalance.lt(withdrawInfrastructureFee)) {
         throw new Error(
-          `Insufficient SOL balance. Required: ${WITHDRAW_INFRASTRUCTURE_FEE_SOL} SOL, Available: ${solBalance} SOL`,
+          `Insufficient SOL balance. Required: ${withdrawInfrastructureFee.toFormat()} SOL, Available: ${solBalance} SOL`,
         );
       }
 

@@ -5,10 +5,10 @@ import { useBitcoinWallet } from "@zeus-network/bitcoin-wallet-adapter";
 import {
   MINIMUM_WITHDRAW_AMOUNT_ZBTC,
   WalletConnectionError,
-  WITHDRAW_INFRASTRUCTURE_FEE_SOL,
   WITHDRAW_SERVICE_FEE_RATE,
   WithdrawError,
   ZeusLayer,
+  calculateInfrastructureFee,
 } from "@zeus-network/client";
 import BigNumber from "bignumber.js";
 
@@ -110,7 +110,7 @@ function WithdrawDetails({
           },
           {
             label: "Infrastructure Fee",
-            value: `${WITHDRAW_INFRASTRUCTURE_FEE_SOL} SOL`,
+            value: `${calculateInfrastructureFee(amount).toFormat()} SOL`,
           },
           { label: "Estimated arrival", value: "~30 minutes" },
         ].map((item) => (
