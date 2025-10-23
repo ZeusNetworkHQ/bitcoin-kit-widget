@@ -3,10 +3,15 @@ import {
   buildDepositTransaction,
   type UTXO,
 } from "@zeus-network/zeus-stack-sdk/bitcoin";
+import { AddressType, getAddressInfo } from "bitcoin-address-validation";
 import * as bitcoin from "bitcoinjs-lib";
 
 import AresApi, { type AresUtxo } from "@/apis/ares";
-import { DepositError, WalletConnectionError } from "@/errors";
+import {
+  DepositError,
+  SupportWalletError,
+  WalletConnectionError,
+} from "@/errors";
 import ZeusService, { type CreateZeusServiceParams } from "@/lib/service";
 import { EntityDerivedReserveAddressModel } from "@/models";
 import InteractionModel from "@/models/interaction";
@@ -46,6 +51,12 @@ export default class DepositService extends ZeusService {
     try {
       if (!bitcoinSigner.pubkey || !bitcoinSigner.address)
         throw new WalletConnectionError();
+
+      if (getAddressInfo(bitcoinSigner.address).type !== AddressType.p2tr) {
+        throw new SupportWalletError(
+          "Only Taproot (P2TR) Bitcoin addresses are supported. Please use a compatible address and try again.",
+        );
+      }
 
       const { amount } = payloads;
       const solanaPublicKey = new PublicKey(payloads.solanaPublicKey);
