@@ -6,7 +6,7 @@ import type { BaseConnector } from "@/connectors";
 
 export interface BitcoinWallet {
   pubkey: string | null;
-  p2tr: string | null;
+  address: string | null;
   connected: boolean;
   connector: BaseConnector | null;
   connectors: BaseConnector[];

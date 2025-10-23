@@ -16,9 +16,9 @@ export default class AegleApi extends ZeusService {
 
   // --- PUBLIC ---
 
-  public async claimTestnetBitcoin(payload: { bitcoinP2trAddress: string }) {
+  public async claimTestnetBitcoin(payload: { bitcoinAddress: string }) {
     return this.post(
-      `api/v1/bitcoin-regtest-wallet/${payload.bitcoinP2trAddress}/claim`,
+      `api/v1/bitcoin-regtest-wallet/${payload.bitcoinAddress}/claim`,
       {},
       z.object({
         transactionId: z.string(),

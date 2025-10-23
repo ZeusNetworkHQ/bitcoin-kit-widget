@@ -4,8 +4,6 @@ import { AddressType, getAddressInfo } from "bitcoin-address-validation";
 import * as bitcoin from "bitcoinjs-lib";
 import { toXOnly } from "bitcoinjs-lib/src/psbt/bip371";
 
-import type { BitcoinNetwork } from "@/types";
-
 export function btcToSatoshi(
   btc: number | string | bigint | BigNumber,
 ): BigNumber {
@@ -20,20 +18,6 @@ export function satoshiToBtc(
 
 export function getInternalXOnlyPubkey(bitcoinPublicKey: string) {
   return toXOnly(Buffer.from(bitcoinPublicKey, "hex"));
-}
-
-export function getP2trAddress(
-  bitcoinPublicKey: string,
-  config: { bitcoinNetwork: BitcoinNetwork },
-) {
-  const { address } = bitcoin.payments.p2tr({
-    internalPubkey: toXOnly(Buffer.from(bitcoinPublicKey, "hex")),
-    network: bitcoin.networks[config.bitcoinNetwork],
-  });
-
-  if (!address) throw new Error("P2TR address not found");
-
-  return address;
 }
 
 export function bitcoinAddressToBytes(

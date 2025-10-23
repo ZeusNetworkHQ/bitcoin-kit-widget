@@ -66,6 +66,8 @@ export enum InteractionStatus {
 }
 
 export interface BitcoinSigner {
+  pubkey: string | null;
+  address: string | null;
   signPsbt: (psbt: bitcoin.Psbt) => Promise<string>;
 }
 

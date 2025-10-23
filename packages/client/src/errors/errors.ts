@@ -49,3 +49,13 @@ export class ClientRequestError extends WidgetError {
     this.name = "ClientRequestError";
   }
 }
+
+export class SupportWalletError extends WidgetError {
+  constructor(originalError?: string | Error) {
+    super(
+      "The connected wallet does not support the required features. Please use a compatible wallet.",
+      originalError,
+    );
+    this.name = "SupportWalletError";
+  }
+}
