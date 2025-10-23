@@ -15,7 +15,7 @@ import Modal, { ModalActions, ModalBody, ModalHeader } from "./Modal";
 import { useWidgetConfig } from "@/providers/WidgetConfigProvider";
 
 function ClaimTestnetModalContent({ onClose }: { onClose?: () => void }) {
-  const bitcoinWallets = useBitcoinWallet();
+  const bitcoinWallet = useBitcoinWallet();
 
   const [loading, setLoading] = useState(false);
   const [completed, setCompleted] = useState(false);
@@ -28,8 +28,8 @@ function ClaimTestnetModalContent({ onClose }: { onClose?: () => void }) {
 
   const handleClose = () => {
     onClose?.();
-    if (!bitcoinWallets.connected) {
-      bitcoinWallets.disconnect();
+    if (!bitcoinWallet.connected) {
+      bitcoinWallet.disconnect();
     }
   };
 
@@ -40,17 +40,17 @@ function ClaimTestnetModalContent({ onClose }: { onClose?: () => void }) {
   };
 
   const claimTestnetBitcoin = async () => {
-    if (!bitcoinWallets.connected) {
+    if (!bitcoinWallet.connected) {
       throw new Error("No connected Bitcoin wallet");
     }
-    if (!bitcoinWallets.p2tr) {
-      throw new Error("No P2TR address available");
+    if (!bitcoinWallet.address) {
+      throw new Error("No Bitcoin address available");
     }
 
     try {
       setLoading(true);
       await aegleApi.claimTestnetBitcoin({
-        bitcoinP2trAddress: bitcoinWallets.p2tr,
+        bitcoinAddress: bitcoinWallet.address,
       });
       setCompleted(true);
     } catch (error) {
@@ -111,7 +111,7 @@ function ClaimTestnetModalContent({ onClose }: { onClose?: () => void }) {
       </ModalBody>
 
       <ModalActions>
-        {bitcoinWallets.connected ? (
+        {bitcoinWallet.connected ? (
           <Button
             theme="primary"
             label="Claim"

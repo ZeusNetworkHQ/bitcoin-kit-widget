@@ -43,7 +43,7 @@ function DepositDetails({
   const zeusLayer = useZeusService(ZeusLayer);
   const { data: reserveAddress } = useReserveAddress(wallet.publicKey);
   const { data: satoshiBalance = 0, isLoading } = useSatoshiBalance(
-    bitcoinWallet.p2tr,
+    bitcoinWallet.address,
   );
 
   const isSufficientAmount =
@@ -53,12 +53,11 @@ function DepositDetails({
 
   const runDeposit = async () => {
     try {
-      if (!bitcoinWallet.pubkey || !wallet.publicKey)
+      if (!bitcoinWallet.pubkey || !wallet.publicKey || !bitcoinWallet.address)
         throw new WalletConnectionError();
 
       await zeusLayer.deposit().sign(bitcoinWallet, {
         amount: amount.toNumber(),
-        bitcoinPublicKey: bitcoinWallet.pubkey,
         solanaPublicKey: wallet.publicKey,
       });
 
@@ -255,11 +254,13 @@ function DepositDetails({
                 label: "Deposited to",
                 value: (
                   <div className="zeus:flex zeus:items-center zeus:flex-row zeus:gap-[8px]">
-                    {truncateMiddle(bitcoinWallet?.p2tr || "", 10)}
+                    {truncateMiddle(bitcoinWallet?.address || "", 10)}
                     <button
                       type="button"
                       className="zeus:h-[18px] zeus:w-[18px] zeus:cursor-pointer zeus:hover:text-[#F1F0F3] zeus:transition-colors"
-                      onClick={() => copyToClipboard(bitcoinWallet?.p2tr || "")}
+                      onClick={() =>
+                        copyToClipboard(bitcoinWallet?.address || "")
+                      }
                     >
                       <Icon variant="copy" />
                     </button>

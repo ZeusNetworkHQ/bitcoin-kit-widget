@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import * as bitcoin from "bitcoinjs-lib";
-import { toXOnly } from "bitcoinjs-lib/src/psbt/bip371";
 
 import type { BaseConnector } from "@/connectors";
 
@@ -20,16 +19,8 @@ function BitcoinWalletProvider({
   children,
 }: BitcoinWalletProviderProps) {
   const [pubkey, setPubkey] = useState<string | null>(null);
+  const [address, setAddress] = useState<string | null>(null);
   const [connector, setConnector] = useState<BaseConnector | null>(null);
-
-  const p2tr = useMemo(() => {
-    if (!pubkey || !connector) return null;
-    const { address: bitcoinAddress } = bitcoin.payments.p2tr({
-      internalPubkey: toXOnly(Buffer.from(pubkey, "hex")),
-      network: bitcoin.networks[network],
-    });
-    return bitcoinAddress || null;
-  }, [pubkey, connector, network]);
 
   const availableConnectors = useMemo(() => {
     return connectors.filter(
@@ -48,6 +39,7 @@ function BitcoinWalletProvider({
     }
 
     setConnector(connector);
+    setAddress(accounts[0]);
     setPubkey(await connector.getPublicKey());
   }, []);
 
@@ -56,6 +48,7 @@ function BitcoinWalletProvider({
     await connector.disconnect();
     setConnector(null);
     setPubkey(null);
+    setAddress(null);
   }, [connector]);
 
   const signMessage = useCallback(
@@ -125,7 +118,7 @@ function BitcoinWalletProvider({
       value={useMemo(
         () => ({
           pubkey,
-          p2tr,
+          address,
           connected: !!pubkey,
           connector,
           connectors: availableConnectors,
@@ -136,7 +129,7 @@ function BitcoinWalletProvider({
         }),
         [
           pubkey,
-          p2tr,
+          address,
           connector,
           availableConnectors,
           connect,

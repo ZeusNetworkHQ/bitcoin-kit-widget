@@ -6,7 +6,7 @@ import {
 import * as bitcoin from "bitcoinjs-lib";
 
 import AresApi, { type AresUtxo } from "@/apis/ares";
-import { DepositError } from "@/errors";
+import { DepositError, WalletConnectionError } from "@/errors";
 import ZeusService, { type CreateZeusServiceParams } from "@/lib/service";
 import { EntityDerivedReserveAddressModel } from "@/models";
 import InteractionModel from "@/models/interaction";
@@ -17,7 +17,6 @@ import {
   btcToSatoshi,
   snakify,
   getInternalXOnlyPubkey,
-  getP2trAddress,
   camelize,
 } from "@/utils";
 
@@ -41,14 +40,15 @@ export default class DepositService extends ZeusService {
     bitcoinSigner: BitcoinSigner,
     payloads: {
       solanaPublicKey: string | PublicKey;
-      bitcoinPublicKey: string;
       amount: number;
     },
   ) {
     try {
-      const { bitcoinPublicKey, amount } = payloads;
+      if (!bitcoinSigner.pubkey || !bitcoinSigner.address)
+        throw new WalletConnectionError();
+
+      const { amount } = payloads;
       const solanaPublicKey = new PublicKey(payloads.solanaPublicKey);
-      const bitcoinP2trAddress = getP2trAddress(bitcoinPublicKey, this.core);
       const twoWayPeg = await this.zplProgram.twoWayPegClient();
 
       const [reserveAddress, { minerFeeRate: feeRate }, utxos] =
@@ -56,7 +56,7 @@ export default class DepositService extends ZeusService {
           this.getEntityDerivedReserveAddress(solanaPublicKey),
           twoWayPeg.accounts.getConfiguration(),
           this.utxoModel.findMany({
-            bitcoinAddress: bitcoinP2trAddress,
+            bitcoinAddress: bitcoinSigner.address,
             ordinal: false,
           }),
         ]);
@@ -66,7 +66,7 @@ export default class DepositService extends ZeusService {
       if (!utxos || utxos.length === 0)
         throw new Error("No UTXOs available for deposit");
 
-      const userXOnlyPublicKey = getInternalXOnlyPubkey(bitcoinPublicKey);
+      const userXOnlyPublicKey = getInternalXOnlyPubkey(bitcoinSigner.pubkey);
       if (!userXOnlyPublicKey) throw new Error("User XOnly pubkey not found");
 
       const { psbt: depositPsbt, usedUTXOs } = buildDepositTransaction(
@@ -85,7 +85,7 @@ export default class DepositService extends ZeusService {
 
       await this.interactionModel.createDepositInteraction({
         transactionId,
-        bitcoinAddress: bitcoinPublicKey,
+        bitcoinAddress: bitcoinSigner.pubkey,
         solanaAddress: solanaPublicKey.toBase58(),
         amount: btcToSatoshi(amount).toNumber(),
       });
