@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import * as bitcoin from "bitcoinjs-lib";
 import { toXOnly } from "bitcoinjs-lib/src/psbt/bip371";
@@ -85,6 +85,38 @@ function BitcoinWalletProvider({
     },
     [connector],
   );
+
+  useEffect(() => {
+    let publicKey: string | undefined;
+    let network: string | undefined;
+
+    const onAccountChange = async () => {
+      if (!connector) {
+        console.error("Connector is not defined");
+        return;
+      }
+
+      if (
+        publicKey !== (await connector.getPublicKey()) ||
+        network !== (await connector.getNetwork())
+      ) {
+        disconnect();
+      }
+    };
+
+    // [Note] Some wallets like Phantom will emit accountsChanged right after connect, which will cause disconnect right after connect
+    // so we have to delay the listener registration a bit
+    const timer = setTimeout(async () => {
+      publicKey = await connector?.getPublicKey();
+      network = await connector?.getNetwork();
+      connector?.on("accountsChanged", onAccountChange);
+    }, 100);
+
+    return () => {
+      connector?.removeListener("accountsChanged", onAccountChange);
+      clearTimeout(timer);
+    };
+  }, [connector, disconnect]);
 
   if (connector && !availableConnectors.includes(connector)) {
     setConnector(null);
