@@ -109,7 +109,7 @@ export class OKXTestnetConnector extends BaseConnector {
     return provider;
   }
 
-  async getNetwork(): Promise<"livenet" | "testnet"> {
+  async getNetwork(): Promise<"livenet" | "testnet" | "regtest"> {
     return "testnet";
   }
 

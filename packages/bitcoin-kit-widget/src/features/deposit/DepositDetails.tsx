@@ -85,7 +85,7 @@ function DepositDetails({
             Change Amount
           </ZeusButton>
 
-          <BitcoinWalletSelector>
+          <BitcoinWalletSelector onError={handleError}>
             <BitcoinWalletSelector.Trigger asChild>
               <ZeusButton
                 variant="primary"
@@ -228,7 +228,7 @@ function DepositDetails({
             or
           </div>
 
-          <BitcoinWalletSelector>
+          <BitcoinWalletSelector onError={handleError}>
             <BitcoinWalletSelector.Trigger asChild>
               <ZeusButton
                 data-gtm-type={GtmEventType.Click}

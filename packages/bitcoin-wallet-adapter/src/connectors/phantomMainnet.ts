@@ -156,7 +156,7 @@ export class PhantomConnector extends BaseConnector {
     return provider;
   }
 
-  async getNetwork(): Promise<"livenet" | "testnet"> {
+  async getNetwork(): Promise<"livenet" | "testnet" | "regtest"> {
     return "livenet";
   }
 

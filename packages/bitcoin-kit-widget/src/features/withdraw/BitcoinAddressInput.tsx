@@ -4,6 +4,7 @@ import { useBitcoinWallet } from "@zeus-network/bitcoin-wallet-adapter";
 
 import BitcoinWalletSelector from "@/components/BitcoinWalletSelector";
 import Icon from "@/components/Icon";
+import { useErrorHandler } from "@/contexts/ConfigContext";
 import { truncateMiddle } from "@/utils";
 import { GtmEvent, GtmEventType } from "@/utils/gtm";
 
@@ -19,6 +20,8 @@ function BitcoinAddressInput({ address, onChange }: BitcoinAddressInputProps) {
 
   const onChangeRef = useRef(onChange);
   onChangeRef.current = onChange;
+
+  const handleError = useErrorHandler();
 
   const disconnectWallet = () => {
     bitcoinWallet.disconnect();
@@ -39,7 +42,7 @@ function BitcoinAddressInput({ address, onChange }: BitcoinAddressInputProps) {
 
     if (!address?.trim())
       return (
-        <BitcoinWalletSelector>
+        <BitcoinWalletSelector onError={handleError}>
           <BitcoinWalletSelector.Trigger asChild>
             <button
               type="button"

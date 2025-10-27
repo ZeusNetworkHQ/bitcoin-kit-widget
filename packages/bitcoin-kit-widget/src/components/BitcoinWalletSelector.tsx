@@ -1,4 +1,10 @@
-import { createContext, useContext, useMemo } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 
 import {
   Connectors,
@@ -31,12 +37,25 @@ function BitcoinWalletSelector({
   onConnected,
   onError,
 }: React.PropsWithChildren<BitcoinWalletSelectorContextValue>) {
+  const [open, setOpen] = useState(false);
+
+  const handleConnected = useCallback(
+    (connector: Connectors.BaseConnector) => {
+      setOpen(false);
+      onConnected?.(connector);
+    },
+    [onConnected],
+  );
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <BitcoinWalletSelectorContext.Provider
         value={useMemo(
-          () => ({ onConnected, onError }),
-          [onConnected, onError],
+          () => ({
+            onConnected: handleConnected,
+            onError,
+          }),
+          [handleConnected, onError],
         )}
       >
         {children}

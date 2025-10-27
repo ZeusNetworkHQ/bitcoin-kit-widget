@@ -5,6 +5,7 @@ import {
   BitcoinWalletSelector,
   useBitcoinWallet,
 } from "@zeus-network/bitcoin-kit-widget/bitcoin-wallet-adapter";
+import { enqueueSnackbar } from "notistack";
 import { useMemo, useState } from "react";
 
 import Button from "../Button";
@@ -121,7 +122,12 @@ function ClaimTestnetModalContent({ onClose }: { onClose?: () => void }) {
             onClick={() => claimTestnetBitcoin()}
           />
         ) : (
-          <BitcoinWalletSelector>
+          <BitcoinWalletSelector
+            onError={(error) => {
+              console.log({ error });
+              enqueueSnackbar(error.message, { variant: "error" });
+            }}
+          >
             <BitcoinWalletSelector.Trigger asChild>
               <Button
                 theme="primary"

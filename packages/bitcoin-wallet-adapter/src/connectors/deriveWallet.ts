@@ -43,6 +43,11 @@ export class DeriveWalletConnector extends BaseConnector {
     private readonly bitcoinNetwork: BitcoinNetwork,
   ) {
     super();
+
+    this.getNetwork = async () => {
+      if (bitcoinNetwork === "bitcoin") return "livenet";
+      return bitcoinNetwork;
+    };
   }
 
   isReady(): boolean {
@@ -151,7 +156,7 @@ export class DeriveWalletConnector extends BaseConnector {
     throw new Error(`${this.metadata.name} does not support getting provider!`);
   }
 
-  async getNetwork(): Promise<"livenet" | "testnet"> {
+  async getNetwork(): Promise<"livenet" | "testnet" | "regtest"> {
     return "testnet";
   }
 
