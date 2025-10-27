@@ -111,7 +111,7 @@ export default class ZplProgram extends ZeusService {
       solanaNetwork === SolanaNetwork.Mainnet &&
       bitcoinNetwork === BitcoinNetwork.Mainnet
     ) {
-      return "5ogaABGMX57MA44bfTXe3ia1XNxAFitqDEibg9xYkX35";
+      return "ZPLsAzVmV6gRipY8dzoWcGWJ81tkPUN9M7YfxJPru9w";
     }
     if (
       solanaNetwork === SolanaNetwork.Devnet &&
@@ -138,7 +138,7 @@ export default class ZplProgram extends ZeusService {
       solanaNetwork === SolanaNetwork.Mainnet &&
       bitcoinNetwork === BitcoinNetwork.Mainnet
     ) {
-      return "AFbCrUqgiyLpnBbybYGw8QJjqLWk5p4SNvo6tFRQftKL";
+      return "B8eCvQSjAtDCXc59fWZo4aL6w9KfSKwr9KXkotSkDDSg";
     }
     if (
       (solanaNetwork === SolanaNetwork.Devnet &&
