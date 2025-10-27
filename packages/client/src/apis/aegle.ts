@@ -50,7 +50,7 @@ export default class AegleApi extends ZeusService {
         bitcoinNetwork === BitcoinNetwork.Mainnet &&
         solanaNetwork === SolanaNetwork.Mainnet
       )
-        return "https://api-internal.apollobyzeus.app";
+        return "https://api.apollobyzeus.app";
 
       if (
         bitcoinNetwork === BitcoinNetwork.Testnet &&
