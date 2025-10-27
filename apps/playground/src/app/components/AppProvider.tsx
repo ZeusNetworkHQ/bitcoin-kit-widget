@@ -9,7 +9,6 @@ import {
   PhantomWalletAdapter,
   SolflareWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
-import { clusterApiUrl } from "@solana/web3.js";
 import { useMemo } from "react";
 import { enqueueSnackbar, SnackbarProvider } from "notistack";
 import {
@@ -19,10 +18,13 @@ import {
 
 import WidgetConfigProvider from "@/providers/WidgetConfigProvider";
 
+import { getSolanaRpcEndpoint } from "../lib/utils";
+
 const SOLANA_NETWORK = SolanaNetwork.Devnet;
 const BITCOIN_NETWORK = BitcoinNetwork.Regtest;
 const ENDPOINT =
-  process.env.NEXT_PUBLIC_SOLANA_RPC_URL || clusterApiUrl("devnet");
+  process.env.NEXT_PUBLIC_SOLANA_RPC_URL ||
+  getSolanaRpcEndpoint(SOLANA_NETWORK);
 
 export default function Provider({
   children,
