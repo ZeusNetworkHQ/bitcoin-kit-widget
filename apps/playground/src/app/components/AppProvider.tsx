@@ -22,7 +22,7 @@ import WidgetConfigProvider from "@/providers/WidgetConfigProvider";
 const SOLANA_NETWORK = SolanaNetwork.Devnet;
 const BITCOIN_NETWORK = BitcoinNetwork.Regtest;
 const ENDPOINT =
-  process.env.NEXT_PUBLIC_SOLANA_RPC_URL || clusterApiUrl(SOLANA_NETWORK);
+  process.env.NEXT_PUBLIC_SOLANA_RPC_URL || clusterApiUrl("devnet");
 
 export default function Provider({
   children,
