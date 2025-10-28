@@ -99,11 +99,11 @@ export class OKXConnector extends BaseConnector {
   }
 
   on(event: string, handler: (data?: unknown) => void) {
-    return this._event.on(event, handler);
+    return this.getProvider()?.on(event, handler);
   }
 
   removeListener(event: string, handler: (data?: unknown) => void) {
-    return this._event.removeListener(event, handler);
+    return this.getProvider()?.removeListener(event, handler);
   }
 
   getProvider() {

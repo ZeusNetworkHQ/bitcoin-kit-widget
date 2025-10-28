@@ -42,6 +42,8 @@ export interface OKXWalletBase {
   ): Promise<string>;
   signPsbt(psbt: string, opts?: Record<string, unknown>): Promise<string>;
   signPsbts(psbt: string[], opts?: Record<string, unknown>): Promise<string[]>;
+  on(event: string, handler: (data?: unknown) => void): void;
+  removeListener(event: string, handler: (data?: unknown) => void): void;
 }
 
 /**
@@ -96,6 +98,8 @@ export interface PhantomBitcoinWallet {
       psbtHex: Uint8Array,
       options?: Record<string, unknown>,
     ): Promise<Uint8Array>; // WARNING: this is not as same as the document, since the actual behavior is return Uint8Array
+    on(event: string, handler: (data?: unknown) => void): void;
+    removeListener(event: string, handler: (data?: unknown) => void): void;
   };
 }
 
