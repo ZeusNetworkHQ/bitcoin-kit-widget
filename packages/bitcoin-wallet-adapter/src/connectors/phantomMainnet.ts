@@ -116,15 +116,13 @@ export class PhantomConnector extends BaseConnector {
     if (!inputAddress) {
       throw new Error("No input address found");
     }
-    const inputsToSign: PhantomSignPsbtOptions = [];
-
-    for (let i = 0; i < inputLength; i++) {
-      inputsToSign.push({
+    const inputsToSign: PhantomSignPsbtOptions = [
+      {
         sigHash: 0x01, // bitcoinjs -> SIGHASH_ALL
         address: inputAddress,
         signingIndexes: Array.from({ length: inputLength }, (_, i) => i),
-      });
-    }
+      },
+    ];
 
     // WARNING: although the phantom documentation says the return type is Promise<string>, but the actual return type is Promise<Uint8Array>
     const signedPsbt = await this.getProviderOrThrow().signPSBT(fromHex(psbt), {
