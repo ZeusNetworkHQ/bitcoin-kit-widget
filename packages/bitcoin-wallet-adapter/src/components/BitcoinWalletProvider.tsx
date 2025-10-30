@@ -104,17 +104,15 @@ function BitcoinWalletProvider({
       }
     };
 
-    // [Note] Some wallets like Phantom will emit accountsChanged right after connect, which will cause disconnect right after connect
-    // so we have to delay the listener registration a bit
-    const timer = setTimeout(async () => {
+    const registerListener = async () => {
       publicKey = await connector?.getPublicKey();
       network = await connector?.getNetwork();
       connector?.on("accountsChanged", onAccountChange);
-    }, 100);
+    };
+    registerListener();
 
     return () => {
       connector?.removeListener("accountsChanged", onAccountChange);
-      clearTimeout(timer);
     };
   }, [connector, disconnect]);
 
