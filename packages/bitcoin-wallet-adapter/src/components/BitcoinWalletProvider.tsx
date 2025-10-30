@@ -100,7 +100,7 @@ function BitcoinWalletProvider({
         publicKey !== (await connector.getPublicKey()) ||
         network !== (await connector.getNetwork())
       ) {
-        disconnect();
+        await disconnect();
       }
     };
 
