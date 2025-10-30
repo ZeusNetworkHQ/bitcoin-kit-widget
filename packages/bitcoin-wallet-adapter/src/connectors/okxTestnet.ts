@@ -86,11 +86,11 @@ export class OKXTestnetConnector extends BaseConnector {
   }
 
   on(event: string, handler: (data?: unknown) => void) {
-    return this._event.on(event, handler);
+    return this.getProvider()?.on(event, handler);
   }
 
   removeListener(event: string, handler: (data?: unknown) => void) {
-    return this._event.removeListener(event, handler);
+    return this.getProvider()?.removeListener(event, handler);
   }
 
   getProvider() {
@@ -109,7 +109,7 @@ export class OKXTestnetConnector extends BaseConnector {
     return provider;
   }
 
-  async getNetwork(): Promise<"livenet" | "testnet"> {
+  async getNetwork(): Promise<"livenet" | "testnet" | "regtest"> {
     return "testnet";
   }
 

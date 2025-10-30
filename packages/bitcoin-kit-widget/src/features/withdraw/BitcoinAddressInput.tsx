@@ -4,6 +4,7 @@ import { useBitcoinWallet } from "@zeus-network/bitcoin-wallet-adapter";
 
 import BitcoinWalletSelector from "@/components/BitcoinWalletSelector";
 import Icon from "@/components/Icon";
+import { useErrorHandler } from "@/contexts/ConfigContext";
 import { truncateMiddle } from "@/utils";
 import { GtmEvent, GtmEventType } from "@/utils/gtm";
 
@@ -15,10 +16,12 @@ export interface BitcoinAddressInputProps {
 function BitcoinAddressInput({ address, onChange }: BitcoinAddressInputProps) {
   const bitcoinWallet = useBitcoinWallet();
   const [inputFocused, setInputFocused] = useState(false);
-  const connected = !!bitcoinWallet?.p2tr;
+  const connected = !!bitcoinWallet?.address;
 
   const onChangeRef = useRef(onChange);
   onChangeRef.current = onChange;
+
+  const handleError = useErrorHandler();
 
   const disconnectWallet = () => {
     bitcoinWallet.disconnect();
@@ -39,7 +42,7 @@ function BitcoinAddressInput({ address, onChange }: BitcoinAddressInputProps) {
 
     if (!address?.trim())
       return (
-        <BitcoinWalletSelector>
+        <BitcoinWalletSelector onError={handleError}>
           <BitcoinWalletSelector.Trigger asChild>
             <button
               type="button"
@@ -68,9 +71,9 @@ function BitcoinAddressInput({ address, onChange }: BitcoinAddressInputProps) {
   };
 
   useEffect(() => {
-    if (!bitcoinWallet?.p2tr) return;
-    onChangeRef.current?.(bitcoinWallet.p2tr);
-  }, [bitcoinWallet?.p2tr]);
+    if (!bitcoinWallet?.address) return;
+    onChangeRef.current?.(bitcoinWallet.address);
+  }, [bitcoinWallet?.address]);
 
   return (
     <div className="zeus:p-[8px] zeus:bg-[#16161B] zeus:border zeus:border-[#8B8A9E26] zeus:border-solid zeus:rounded-[12px] zeus:body-body1-semibold zeus:text-start zeus:wrap-anywhere zeus:gap-[12px] zeus:flex zeus:flex-row zeus:items-center">

@@ -116,15 +116,13 @@ export class PhantomConnector extends BaseConnector {
     if (!inputAddress) {
       throw new Error("No input address found");
     }
-    const inputsToSign: PhantomSignPsbtOptions = [];
-
-    for (let i = 0; i < inputLength; i++) {
-      inputsToSign.push({
+    const inputsToSign: PhantomSignPsbtOptions = [
+      {
         sigHash: 0x01, // bitcoinjs -> SIGHASH_ALL
         address: inputAddress,
         signingIndexes: Array.from({ length: inputLength }, (_, i) => i),
-      });
-    }
+      },
+    ];
 
     // WARNING: although the phantom documentation says the return type is Promise<string>, but the actual return type is Promise<Uint8Array>
     const signedPsbt = await this.getProviderOrThrow().signPSBT(fromHex(psbt), {
@@ -135,11 +133,11 @@ export class PhantomConnector extends BaseConnector {
   }
 
   on(event: string, handler: (data?: unknown) => void): void {
-    this._event.on(event, handler);
+    this.getProvider()?.on(event, handler);
   }
 
   removeListener(event: string, handler: (data?: unknown) => void): void {
-    this._event.removeListener(event, handler);
+    this.getProvider()?.removeListener(event, handler);
   }
 
   getProvider() {
@@ -158,7 +156,7 @@ export class PhantomConnector extends BaseConnector {
     return provider;
   }
 
-  async getNetwork(): Promise<"livenet" | "testnet"> {
+  async getNetwork(): Promise<"livenet" | "testnet" | "regtest"> {
     return "livenet";
   }
 

@@ -54,7 +54,7 @@ export default class AresApi extends ZeusService {
         bitcoinNetwork === BitcoinNetwork.Mainnet &&
         solanaNetwork === SolanaNetwork.Mainnet
       )
-        return "https://bitcoin-api-gateway-internal.zeuslayer.io";
+        return "https://bitcoin-api-gateway.zeuslayer.io";
 
       if (
         bitcoinNetwork === BitcoinNetwork.Testnet &&

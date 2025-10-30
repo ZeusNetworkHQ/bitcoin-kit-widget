@@ -75,7 +75,7 @@ export default class HermesApi extends ZeusService {
         bitcoinNetwork === BitcoinNetwork.Mainnet &&
         solanaNetwork === SolanaNetwork.Mainnet
       )
-        return "https://indexer-internal.zeuslayer.io/api";
+        return "https://indexer.zeuslayer.io/api";
 
       if (
         bitcoinNetwork === BitcoinNetwork.Testnet &&
