@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import * as bitcoin from "bitcoinjs-lib";
 import { toXOnly } from "bitcoinjs-lib/src/psbt/bip371";
@@ -85,6 +85,36 @@ function BitcoinWalletProvider({
     },
     [connector],
   );
+
+  useEffect(() => {
+    let publicKey: string | undefined;
+    let network: string | undefined;
+
+    const onAccountChange = async () => {
+      if (!connector) {
+        console.error("Connector is not defined");
+        return;
+      }
+
+      if (
+        publicKey !== (await connector.getPublicKey()) ||
+        network !== (await connector.getNetwork())
+      ) {
+        await disconnect();
+      }
+    };
+
+    const registerListener = async () => {
+      publicKey = await connector?.getPublicKey();
+      network = await connector?.getNetwork();
+      connector?.on("accountsChanged", onAccountChange);
+    };
+    registerListener();
+
+    return () => {
+      connector?.removeListener("accountsChanged", onAccountChange);
+    };
+  }, [connector, disconnect]);
 
   if (connector && !availableConnectors.includes(connector)) {
     setConnector(null);

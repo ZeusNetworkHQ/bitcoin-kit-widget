@@ -133,11 +133,11 @@ export class PhantomConnector extends BaseConnector {
   }
 
   on(event: string, handler: (data?: unknown) => void): void {
-    this._event.on(event, handler);
+    this.getProvider()?.on(event, handler);
   }
 
   removeListener(event: string, handler: (data?: unknown) => void): void {
-    this._event.removeListener(event, handler);
+    this.getProvider()?.removeListener(event, handler);
   }
 
   getProvider() {

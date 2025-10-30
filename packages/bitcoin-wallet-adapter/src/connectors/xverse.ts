@@ -26,6 +26,8 @@ export class XverseConnector extends BaseConnector {
   _network: BitcoinNetworkType.Mainnet | BitcoinNetworkType.Testnet =
     BitcoinNetworkType.Mainnet;
   _event = new EventEmitter();
+  _cleanupListenerMap: Record<string, Map<unknown, () => void>> = {};
+
   constructor() {
     super();
     this._event.setMaxListeners(100);
@@ -204,11 +206,33 @@ export class XverseConnector extends BaseConnector {
   }
 
   on(event: string, handler: (data?: unknown) => void) {
+    if (event === "accountsChanged") {
+      const cleanupListeners: VoidFunction[] = [];
+
+      cleanupListeners.push(
+        this.getProvider().addListener("accountChange", handler),
+        this.getProvider().addListener("networkChange", handler),
+      );
+
+      if (!this._cleanupListenerMap[event]) {
+        this._cleanupListenerMap[event] = new Map();
+      }
+      this._cleanupListenerMap[event].set(handler, () =>
+        cleanupListeners.forEach((cleanup) => cleanup()),
+      );
+    }
     return this._event.on(event, handler);
   }
+
   removeListener(event: string, handler: (data?: unknown) => void) {
+    if (this._cleanupListenerMap[event]?.has(handler)) {
+      const cleanup = this._cleanupListenerMap[event].get(handler);
+      if (cleanup) cleanup();
+      this._cleanupListenerMap[event].delete(handler);
+    }
     return this._event.removeListener(event, handler);
   }
+
   // TODO: entry point for provider, not sure what to do with provider since we directly call the wallet through json-rpc method
   getProvider() {
     try {
@@ -298,7 +322,17 @@ export class XverseConnector extends BaseConnector {
     });
     return result;
   }
+
+  private removeAllListeners() {
+    Object.values(this._cleanupListenerMap)
+      .flatMap((map) => Array.from(map.values()))
+      .forEach((cleanup) => cleanup());
+
+    this._cleanupListenerMap = {};
+  }
+
   disconnect() {
     request("wallet_disconnect", undefined);
+    this.removeAllListeners();
   }
 }
