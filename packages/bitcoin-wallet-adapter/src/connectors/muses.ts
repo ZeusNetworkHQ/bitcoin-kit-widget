@@ -17,8 +17,13 @@ export class MusesConnector extends InjectedConnector {
 
   constructor() {
     super("muses");
+
     this.isReady = () => {
       return typeof window !== "undefined" && window.muses !== undefined;
+    };
+
+    this.getNetwork = async (): Promise<"livenet" | "testnet" | "regtest"> => {
+      return "regtest";
     };
   }
 }

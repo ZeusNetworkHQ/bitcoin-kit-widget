@@ -27,7 +27,7 @@ export abstract class BaseConnector {
   ): void;
   [key: string]: any;
   abstract getProvider(): any;
-  abstract getNetwork(): Promise<"livenet" | "testnet">;
+  abstract getNetwork(): Promise<"livenet" | "testnet" | "regtest">;
   abstract switchNetwork(network: "livenet" | "testnet"): Promise<void>;
   abstract sendBitcoin(
     toAddress: string,

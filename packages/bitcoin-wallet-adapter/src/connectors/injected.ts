@@ -86,7 +86,7 @@ export abstract class InjectedConnector extends BaseConnector {
     return provider;
   }
 
-  async getNetwork(): Promise<"livenet" | "testnet"> {
+  async getNetwork(): Promise<"livenet" | "testnet" | "regtest"> {
     return this.getProviderOrThrow().getNetwork();
   }
 

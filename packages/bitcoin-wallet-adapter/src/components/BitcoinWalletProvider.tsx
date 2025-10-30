@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import * as bitcoin from "bitcoinjs-lib";
-import { toXOnly } from "bitcoinjs-lib/src/psbt/bip371";
 
 import type { BaseConnector } from "@/connectors";
 
@@ -20,22 +19,37 @@ function BitcoinWalletProvider({
   children,
 }: BitcoinWalletProviderProps) {
   const [pubkey, setPubkey] = useState<string | null>(null);
+  const [address, setAddress] = useState<string | null>(null);
   const [connector, setConnector] = useState<BaseConnector | null>(null);
-
-  const p2tr = useMemo(() => {
-    if (!pubkey || !connector) return null;
-    const { address: bitcoinAddress } = bitcoin.payments.p2tr({
-      internalPubkey: toXOnly(Buffer.from(pubkey, "hex")),
-      network: bitcoin.networks[network],
-    });
-    return bitcoinAddress || null;
-  }, [pubkey, connector, network]);
 
   const availableConnectors = useMemo(() => {
     return connectors.filter(
       (c): c is NonNullable<typeof c> => !!c && c.networks.includes(network),
     );
   }, [connectors, network]);
+
+  const verifyConnectorNetwork = useCallback(
+    async (connector: BaseConnector) => {
+      const connectedNetwork = await connector.getNetwork();
+      if (connectedNetwork === "livenet" && network === BitcoinNetwork.Mainnet)
+        return;
+      if (connectedNetwork === "regtest" && network === BitcoinNetwork.Regtest)
+        return;
+      if (connectedNetwork === "testnet" && network === BitcoinNetwork.Testnet)
+        return;
+
+      throw Error(
+        `Your ${connector.metadata.name} bitcoin wallet is currently connected to ${connectedNetwork} network. Please switch to ${
+          {
+            [BitcoinNetwork.Mainnet]: "livenet",
+            [BitcoinNetwork.Testnet]: "testnet",
+            [BitcoinNetwork.Regtest]: "regtest",
+          }[network]
+        } network in your wallet`,
+      );
+    },
+    [network],
+  );
 
   const connect = useCallback(async (connector: BaseConnector) => {
     // prevent error loop we need to connect to the wallet first, so that some wallet can change the network
@@ -47,7 +61,9 @@ function BitcoinWalletProvider({
       );
     }
 
+    await verifyConnectorNetwork(connector);
     setConnector(connector);
+    setAddress(accounts[0]);
     setPubkey(await connector.getPublicKey());
   }, []);
 
@@ -56,16 +72,19 @@ function BitcoinWalletProvider({
     await connector.disconnect();
     setConnector(null);
     setPubkey(null);
+    setAddress(null);
   }, [connector]);
 
   const signMessage = useCallback(
-    (message: string) => {
+    async (message: string) => {
       if (!connector) {
         throw new Error("No connector available to sign message");
       }
+      await verifyConnectorNetwork(connector);
+
       return connector.signMessage(message);
     },
-    [connector],
+    [connector, verifyConnectorNetwork],
   );
 
   const signPsbt = useCallback(
@@ -73,6 +92,7 @@ function BitcoinWalletProvider({
       if (!connector) {
         throw new Error("Wallet not connected");
       }
+      await verifyConnectorNetwork(connector);
 
       const signedPsbtHex = await connector.signPsbt(psbt.toHex(), {
         autoFinalized: false,
@@ -83,7 +103,7 @@ function BitcoinWalletProvider({
 
       return psbt.extractTransaction().toHex();
     },
-    [connector],
+    [connector, verifyConnectorNetwork],
   );
 
   useEffect(() => {
@@ -125,7 +145,7 @@ function BitcoinWalletProvider({
       value={useMemo(
         () => ({
           pubkey,
-          p2tr,
+          address,
           connected: !!pubkey,
           connector,
           connectors: availableConnectors,
@@ -136,7 +156,7 @@ function BitcoinWalletProvider({
         }),
         [
           pubkey,
-          p2tr,
+          address,
           connector,
           availableConnectors,
           connect,

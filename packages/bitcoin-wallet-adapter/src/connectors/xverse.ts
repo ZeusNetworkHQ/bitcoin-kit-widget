@@ -243,7 +243,7 @@ export class XverseConnector extends BaseConnector {
       return null;
     }
   }
-  async getNetwork(): Promise<"livenet" | "testnet"> {
+  async getNetwork(): Promise<"livenet" | "testnet" | "regtest"> {
     if (!this.isReady()) {
       throw new Error(`${this.metadata.name} is not install!`);
     }
@@ -273,7 +273,9 @@ export class XverseConnector extends BaseConnector {
         ? BitcoinNetworkType.Mainnet
         : BitcoinNetworkType.Testnet;
 
-    return this._network === BitcoinNetworkType.Mainnet ? "livenet" : "testnet";
+    if (res.result.bitcoin.name === "Mainnet") return "livenet";
+    if (res.result.bitcoin.name === "Regtest") return "regtest";
+    return "testnet";
   }
   async switchNetwork(): Promise<void> {
     throw new Error("Unsupported");
