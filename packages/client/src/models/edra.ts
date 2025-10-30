@@ -166,6 +166,7 @@ export default class EntityDerivedReserveAddressModel extends ZeusService {
       { preflightCommitment: "confirmed" },
     );
 
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     await this.announceCreation({ solanaPublicKey: signer.publicKey, edr });
     return { signature };
   }
@@ -227,6 +228,7 @@ export default class EntityDerivedReserveAddressModel extends ZeusService {
       { preflightCommitment: "confirmed" },
     );
 
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     await this.announceCreation({ solanaPublicKey: signer.publicKey, edr });
     return { signature };
   }
