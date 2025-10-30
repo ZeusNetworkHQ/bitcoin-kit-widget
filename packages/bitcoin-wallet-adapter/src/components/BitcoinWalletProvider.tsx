@@ -2,8 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import * as bitcoin from "bitcoinjs-lib";
 
-import type { BaseConnector } from "@/connectors";
-
+import { DeriveWalletConnector, type BaseConnector } from "@/connectors";
 import { BitcoinWalletContext } from "@/contexts/BitcoinWalletContext";
 import { BitcoinNetwork } from "@/types";
 
@@ -133,6 +132,15 @@ function BitcoinWalletProvider({
 
     return () => {
       connector?.removeListener("accountsChanged", onAccountChange);
+    };
+  }, [connector, disconnect]);
+
+  // [Note] derive wallet disconnection will not trigger when account changed
+  // so we need to add this effect as a workaround to auto disconnect
+  useEffect(() => {
+    if (!(connector instanceof DeriveWalletConnector)) return;
+    return () => {
+      disconnect();
     };
   }, [connector, disconnect]);
 
