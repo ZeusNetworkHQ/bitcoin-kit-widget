@@ -23,10 +23,12 @@ function BitcoinAddressInput({ address, onChange }: BitcoinAddressInputProps) {
 
   const handleError = useErrorHandler();
 
-  const disconnectWallet = () => {
-    bitcoinWallet.disconnect();
-    onChangeRef.current?.("");
-  };
+  useEffect(() => {
+    if (!connected) return;
+    return () => {
+      onChangeRef.current?.("");
+    };
+  }, [connected]);
 
   const getFieldButton = () => {
     if (connected)
@@ -34,7 +36,7 @@ function BitcoinAddressInput({ address, onChange }: BitcoinAddressInputProps) {
         <button
           type="button"
           className="zeus:p-[9px] zeus:border zeus:border-solid zeus:border-[#8B8A9E33] zeus:rounded-[8px] zeus:text-[#C7C5D1] zeus:hover:text-[#F1F0F3] zeus:bg-[#2C2C36] zeus:hover:bg-[#272730] zeus:shrink-0 zeus:cursor-pointer zeus:transition-colors"
-          onClick={() => disconnectWallet()}
+          onClick={() => bitcoinWallet.disconnect()}
         >
           <Icon variant="disconnect" />
         </button>

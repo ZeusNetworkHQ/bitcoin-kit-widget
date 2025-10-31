@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 
 import {
   type PopoverContentProps,
   type PopoverProps,
   type PopoverTriggerProps,
 } from "@radix-ui/react-popover";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useBitcoinWallet } from "@zeus-network/bitcoin-wallet-adapter";
 
 import ActivityPage from "./activity";
 import DepositPage from "./deposit";
@@ -44,6 +46,8 @@ interface WidgetProps {
 
 function WidgetBase({ className }: WidgetProps) {
   const [selectedTab, setSelectedTab] = useState(WidgetTab.DEPOSIT);
+  const { publicKey } = useWallet();
+  const bitcoinWallet = useBitcoinWallet();
 
   const tabConfigs = [
     {
@@ -92,7 +96,7 @@ function WidgetBase({ className }: WidgetProps) {
   );
 
   const contentsElement = (
-    <>
+    <Fragment key={publicKey?.toBase58()}>
       {tabConfigs.map((tab) => (
         <div
           key={tab.value}
@@ -101,7 +105,7 @@ function WidgetBase({ className }: WidgetProps) {
           {tab.content}
         </div>
       ))}
-    </>
+    </Fragment>
   );
 
   const footerLinksElement = (
@@ -137,6 +141,13 @@ function WidgetBase({ className }: WidgetProps) {
       ))}
     </div>
   );
+
+  // auto disconnect on solana account change or tab change
+  const disconnectBitcoinWalletRef = useRef(bitcoinWallet.disconnect);
+  disconnectBitcoinWalletRef.current = () => bitcoinWallet.disconnect();
+  useEffect(() => {
+    disconnectBitcoinWalletRef.current();
+  }, [selectedTab, publicKey]);
 
   return (
     <div
