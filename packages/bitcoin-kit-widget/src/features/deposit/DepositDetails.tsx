@@ -251,16 +251,14 @@ function DepositDetails({
           <div className="zeus:flex zeus:flex-col zeus:gap-[8px] zeus:mb-[16px]">
             {[
               {
-                label: "Deposited to",
+                label: "Send to",
                 value: (
                   <div className="zeus:flex zeus:items-center zeus:flex-row zeus:gap-[8px]">
-                    {truncateMiddle(bitcoinWallet?.address || "", 10)}
+                    {truncateMiddle(reserveAddress || "", 10)}
                     <button
                       type="button"
                       className="zeus:h-[18px] zeus:w-[18px] zeus:cursor-pointer zeus:hover:text-[#F1F0F3] zeus:transition-colors"
-                      onClick={() =>
-                        copyToClipboard(bitcoinWallet?.address || "")
-                      }
+                      onClick={() => copyToClipboard(reserveAddress || "")}
                     >
                       <Icon variant="copy" />
                     </button>
