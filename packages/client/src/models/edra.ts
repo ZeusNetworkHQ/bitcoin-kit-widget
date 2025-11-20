@@ -17,7 +17,6 @@ import EmissionSettingModel from "./emission-setting";
 import HotReserveBucketModel from "./hot-reserve-bucket";
 import ReserveSettingModel from "./reserve-setting";
 
-import { AegleApi } from "@/apis";
 import { EDRA_CREATE_FEE_SOL } from "@/constants";
 import ZeusService, { type CreateZeusServiceParams } from "@/lib/service";
 import ZplProgram from "@/programs/zpl";
@@ -55,7 +54,6 @@ export default class EntityDerivedReserveAddressModel extends ZeusService {
   private readonly emissionSettingModel: EmissionSettingModel;
   private readonly hrbModel: HotReserveBucketModel;
   private readonly zplProgram: ZplProgram;
-  private readonly aegleApi: AegleApi;
 
   constructor(params: CreateZeusServiceParams) {
     super(params);
@@ -63,7 +61,6 @@ export default class EntityDerivedReserveAddressModel extends ZeusService {
     this.reserveSettingModel = this.core.getOrInstall(ReserveSettingModel);
     this.emissionSettingModel = this.core.getOrInstall(EmissionSettingModel);
     this.hrbModel = this.core.getOrInstall(HotReserveBucketModel);
-    this.aegleApi = this.core.getOrInstall(AegleApi);
   }
 
   public async findMany(payload: { solanaPublicKey: PublicKey }) {
