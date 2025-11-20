@@ -5,7 +5,6 @@ import {
 } from "@solana/web3.js";
 import {
   BitcoinAddressType,
-  type EntityDerivedReserve,
   type EntityDerivedReserveAddress,
   type HotReserveBucket,
 } from "@zeus-network/zeus-stack-sdk/two-way-peg/types";
@@ -166,8 +165,6 @@ export default class EntityDerivedReserveAddressModel extends ZeusService {
       { preflightCommitment: "confirmed" },
     );
 
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    await this.announceCreation({ solanaPublicKey: signer.publicKey, edr });
     return { signature };
   }
 
@@ -228,27 +225,6 @@ export default class EntityDerivedReserveAddressModel extends ZeusService {
       { preflightCommitment: "confirmed" },
     );
 
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    await this.announceCreation({ solanaPublicKey: signer.publicKey, edr });
     return { signature };
-  }
-
-  private async announceCreation(payload: {
-    solanaPublicKey: PublicKey;
-    edr: EntityDerivedReserve;
-  }) {
-    const twoWayPegClient = await this.zplProgram.twoWayPegClient();
-    const entityDerivedReserveAddressPda = twoWayPegClient.pdas
-      .deriveEntityDerivedReserveAddress(
-        payload.solanaPublicKey,
-        payload.edr.publicKey,
-        BitcoinAddressType.P2tr,
-      )
-      .toBase58();
-
-    await this.aegleApi.postCoboAddress({
-      type: "entityDerivedReserveAddress",
-      entityDerivedReserveAddressPda,
-    });
   }
 }
