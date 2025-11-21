@@ -5,7 +5,6 @@ import {
 } from "@solana/web3.js";
 import {
   BitcoinAddressType,
-  type EntityDerivedReserve,
   type EntityDerivedReserveAddress,
   type HotReserveBucket,
 } from "@zeus-network/zeus-stack-sdk/two-way-peg/types";
@@ -18,17 +17,35 @@ import EmissionSettingModel from "./emission-setting";
 import HotReserveBucketModel from "./hot-reserve-bucket";
 import ReserveSettingModel from "./reserve-setting";
 
-import { AegleApi } from "@/apis";
 import { EDRA_CREATE_FEE_SOL } from "@/constants";
 import ZeusService, { type CreateZeusServiceParams } from "@/lib/service";
 import ZplProgram from "@/programs/zpl";
-import { type SolanaSigner } from "@/types";
+import { SolanaNetwork, type SolanaSigner } from "@/types";
 import { assertsSolanaSigner, lamportsToSol, satoshiToBtc } from "@/utils";
 
 dayjs.extend(utc);
 
 const REMAINING_STORE_QUOTA_PERCENTAGE_THRESHOLD = 0.9;
 const SAFETY_RATIO = 20000;
+
+/** cspell:disable */
+const GUARDIAN_RESERVE_SETTING_WHITELIST = [
+  "A6T9pkRqByG6KBaW3WAzKWv4ZwVNAZTCndiPniJDLmyR", // axia8
+  "B8eCvQSjAtDCXc59fWZo4aL6w9KfSKwr9KXkotSkDDSg", // zeus-foundation
+  "CPy1dw45j3jjMD3f5En6s7Q6PQjTWNkgPLwXo1BMn2Mb", // mechanism-capital
+  "4pEfvvbbjVCwqtiCSm4t2GRP1ydXA6K4FfVNFU8Uzr9n", // animoca-ventures
+  "EmVS2Kyapv9p7UepGSEBBRCgsMAzEys8d17Mu5W5hUE", // anagram
+];
+
+//NOTE: Once an emission setting's escrow balance has reached 5 million, it can be added to this list and will no longer be subject to the 20000:1 restriction
+const INFINITE_RESERVE_SETTINGS_LIST = [
+  "A6T9pkRqByG6KBaW3WAzKWv4ZwVNAZTCndiPniJDLmyR", // axia8
+  "B8eCvQSjAtDCXc59fWZo4aL6w9KfSKwr9KXkotSkDDSg", // zeus-foundation
+  "CPy1dw45j3jjMD3f5En6s7Q6PQjTWNkgPLwXo1BMn2Mb", // mechanism-capital
+  "4pEfvvbbjVCwqtiCSm4t2GRP1ydXA6K4FfVNFU8Uzr9n", // animoca-ventures
+  "EmVS2Kyapv9p7UepGSEBBRCgsMAzEys8d17Mu5W5hUE", // anagram
+];
+/** cspell:enable */
 
 export type { EntityDerivedReserveAddress };
 
@@ -37,7 +54,6 @@ export default class EntityDerivedReserveAddressModel extends ZeusService {
   private readonly emissionSettingModel: EmissionSettingModel;
   private readonly hrbModel: HotReserveBucketModel;
   private readonly zplProgram: ZplProgram;
-  private readonly aegleApi: AegleApi;
 
   constructor(params: CreateZeusServiceParams) {
     super(params);
@@ -45,7 +61,6 @@ export default class EntityDerivedReserveAddressModel extends ZeusService {
     this.reserveSettingModel = this.core.getOrInstall(ReserveSettingModel);
     this.emissionSettingModel = this.core.getOrInstall(EmissionSettingModel);
     this.hrbModel = this.core.getOrInstall(HotReserveBucketModel);
-    this.aegleApi = this.core.getOrInstall(AegleApi);
   }
 
   public async findMany(payload: { solanaPublicKey: PublicKey }) {
@@ -111,11 +126,28 @@ export default class EntityDerivedReserveAddressModel extends ZeusService {
           remainingBtcQuotaPercentage: remainingBtcQuota.dividedBy(maxBtcQuota),
         };
       })
-      .filter(({ remainingBtcQuotaPercentage }) =>
-        remainingBtcQuotaPercentage.lt(
+      .filter(({ remainingBtcQuotaPercentage, address }) => {
+        if (INFINITE_RESERVE_SETTINGS_LIST.includes(address)) {
+          return true;
+        }
+
+        const isLessThanThreshold = remainingBtcQuotaPercentage.lt(
           REMAINING_STORE_QUOTA_PERCENTAGE_THRESHOLD,
-        ),
-      );
+        );
+
+        if (this.core.solanaNetwork === SolanaNetwork.Mainnet) {
+          const isInWhitelist =
+            GUARDIAN_RESERVE_SETTING_WHITELIST.includes(address);
+
+          return isLessThanThreshold && isInWhitelist;
+        }
+
+        if (this.core.solanaNetwork === SolanaNetwork.Devnet) {
+          return true;
+        }
+
+        return isLessThanThreshold;
+      });
 
     if (reserveSettingsWithQuota.length === 0) {
       throw new Error("No suitable guardians found after quota filtering.");
@@ -166,8 +198,6 @@ export default class EntityDerivedReserveAddressModel extends ZeusService {
       { preflightCommitment: "confirmed" },
     );
 
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    await this.announceCreation({ solanaPublicKey: signer.publicKey, edr });
     return { signature };
   }
 
@@ -228,27 +258,6 @@ export default class EntityDerivedReserveAddressModel extends ZeusService {
       { preflightCommitment: "confirmed" },
     );
 
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    await this.announceCreation({ solanaPublicKey: signer.publicKey, edr });
     return { signature };
-  }
-
-  private async announceCreation(payload: {
-    solanaPublicKey: PublicKey;
-    edr: EntityDerivedReserve;
-  }) {
-    const twoWayPegClient = await this.zplProgram.twoWayPegClient();
-    const entityDerivedReserveAddressPda = twoWayPegClient.pdas
-      .deriveEntityDerivedReserveAddress(
-        payload.solanaPublicKey,
-        payload.edr.publicKey,
-        BitcoinAddressType.P2tr,
-      )
-      .toBase58();
-
-    await this.aegleApi.postCoboAddress({
-      type: "entityDerivedReserveAddress",
-      entityDerivedReserveAddressPda,
-    });
   }
 }
